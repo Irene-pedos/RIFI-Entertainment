@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils"
 import type { ReactNode } from "react"
 
 type PageIntroProps = {
@@ -5,6 +6,8 @@ type PageIntroProps = {
   title: string
   description: string
   children?: ReactNode
+  className?: string
+  containerClassName?: string
 }
 
 export function PageIntro({
@@ -12,10 +15,17 @@ export function PageIntro({
   title,
   description,
   children,
+  className,
+  containerClassName,
 }: PageIntroProps) {
   return (
-    <section className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-      <div className="max-w-3xl space-y-6">
+    <section
+      className={cn(
+        "mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8",
+        containerClassName
+      )}
+    >
+      <div className={cn("max-w-3xl space-y-6", className)}>
         <div className="text-xs font-semibold tracking-[0.32em] text-primary uppercase">
           {eyebrow}
         </div>

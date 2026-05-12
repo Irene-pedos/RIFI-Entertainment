@@ -155,6 +155,175 @@ export const translations = {
       contactRifi: "Contact RiFi",
       whatsappUs: "WhatsApp Us",
     },
+    models: {
+      eyebrow: "RiFi Models Management",
+      title: "Professional model services for fashion, commercial, and events.",
+      description:
+        "RiFi Models Management connects talented models with leading brands, photographers, and event organizers. We focus on professionalism, diversity, and clear coordination for every booking.",
+      services: [
+        {
+          title: "Fashion Models",
+          description:
+            "High-energy models for runway, editorial, and fashion campaigns.",
+        },
+        {
+          title: "Commercial Models",
+          description:
+            "Versatile talent for advertising, print media, and brand representation.",
+        },
+        {
+          title: "Event Models",
+          description:
+            "Professional hosts and models for product launches, exhibitions, and corporate events.",
+        },
+        {
+          title: "Kids Models",
+          description:
+            "Young talent for clothing brands, commercials, and family-oriented campaigns.",
+        },
+      ],
+      gallery: {
+        title: "Model Showcase",
+        description:
+          "Explore our diverse portfolio of professional models ready for your next project.",
+      },
+      forms: {
+        application: {
+          title: "Join RiFi Models",
+          description:
+            "Are you an aspiring or experienced model? Apply to join our talent roster and start your journey with RiFi.",
+          button: "Online Application Form",
+        },
+        booking: {
+          title: "Book a Model",
+          description:
+            "Looking for the right face for your brand or event? Tell us about your requirements and we will help you find the perfect match.",
+          button: "Client Booking Form",
+        },
+      },
+      requirements: {
+        title: "Application Requirements",
+        description:
+          "To process your application, please have the following ready:",
+        items: [
+          "Recent professional photos (Headshot and Full-body)",
+          "Your current height and measurements",
+          "A brief summary of your modeling experience",
+          "Links to your professional social media or portfolio",
+        ],
+      },
+      bookingInfo: {
+        title: "Booking Information",
+        description: "When booking a model, please provide these details:",
+        items: [
+          "Event or campaign date and location",
+          "Type of assignment (Runway, Editorial, Event, etc.)",
+          "Specific model requirements (Gender, Age range, Look)",
+          "Duration of the booking and usage rights",
+        ],
+      },
+      applicationForm: {
+        title: "Model Application",
+        fields: {
+          fullName: "Full Name",
+          email: "Email Address",
+          phone: "Phone Number",
+          height: "Height (cm)",
+          measurements: "Measurements (Bust/Waist/Hips)",
+          experience: "Modeling Experience",
+          socialMedia: "Social Media / Portfolio Link",
+          photos: "Upload Photos (Max 3)",
+        },
+        submit: "Submit Application",
+        success:
+          "Thank you for applying! We will review your profile and get back to you.",
+      },
+      bookingForm: {
+        title: "Model Booking Request",
+        fields: {
+          clientName: "Client / Company Name",
+          email: "Email Address",
+          phone: "Phone Number",
+          eventDate: "Event / Shoot Date",
+          location: "Location",
+          assignmentType: "Assignment Type",
+          requirements: "Model Requirements / Specific Profiles",
+          duration: "Duration / Usage Rights",
+        },
+        submit: "Send Booking Request",
+        success:
+          "Thank you! Your booking request has been sent. We will contact you shortly.",
+      },
+    },
+    wedding: {
+      eyebrow: "RiFi Wedding Organization",
+      title:
+        "Creating unforgettable wedding experiences with style and elegance.",
+      description:
+        "RiFi Wedding Organization provides end-to-end planning, professional coordination, and premium entertainment. From the first consultation to the final dance, we ensure your special day is seamless and memorable.",
+      services: [
+        {
+          title: "Wedding Planning",
+          description:
+            "Comprehensive planning including venue selection, timeline management, and vendor coordination.",
+        },
+        {
+          title: "Catering Services",
+          description:
+            "Exquisite culinary experiences tailored to your taste and guest preferences.",
+        },
+        {
+          title: "Event Decoration",
+          description:
+            "Bespoke styling and decor that brings your wedding vision to life with elegance.",
+        },
+        {
+          title: "Traditional Dance",
+          description:
+            "Authentic Rwandan traditional dance performances to add cultural richness to your celebration.",
+        },
+        {
+          title: "Live Saxophonist",
+          description:
+            "Sophisticated live music to create a beautiful atmosphere during your ceremony or reception.",
+        },
+        {
+          title: "MC & Coordination",
+          description:
+            "Professional Master of Ceremonies and on-site coordination to keep your event on track.",
+        },
+      ],
+      booking: {
+        title: "Start Planning Your Dream Wedding",
+        description:
+          "Tell us about your wedding vision and let us help you bring it to life with our professional services.",
+        button: "Online Booking Form",
+      },
+      bookingForm: {
+        title: "Wedding Booking Request",
+        fields: {
+          coupleNames: "Names of the Couple",
+          email: "Email Address",
+          phone: "Phone Number",
+          weddingDate: "Preferred Wedding Date",
+          location: "Desired Location / Venue",
+          estimatedGuests: "Estimated Number of Guests",
+          requestedServices: "Requested Services",
+          additionalDetails: "Additional Details or Vision",
+        },
+        services: {
+          planning: "Wedding Planning",
+          catering: "Catering",
+          decoration: "Event Decoration",
+          dance: "Traditional Dance",
+          sax: "Live Saxophonist",
+          mc: "MC & Coordination",
+        },
+        submit: "Send Booking Request",
+        success:
+          "Thank you! Your wedding booking request has been sent. We will contact you soon to start planning your special day.",
+      },
+    },
     protocol: {
       eyebrow: "Protocol & Services",
       title:
@@ -320,13 +489,11 @@ export const translations = {
         },
         {
           title: "Protocol na Hospitality",
-          description:
-            "Abakira abantu n'ushers b'umwuga kuri event zose.",
+          description: "Abakira abantu n'ushers b'umwuga kuri event zose.",
         },
         {
           title: "Imbyino Gakondo",
-          description:
-            "Imbaraga n'umuco mu mbyino nyarwanda z'umwimerere.",
+          description: "Imbaraga n'umuco mu mbyino nyarwanda z'umwimerere.",
         },
         {
           title: "Ingero n'Ingendo",
@@ -364,6 +531,174 @@ export const translations = {
         "Koresha urupapuro rwo kutwandikira utangire booking inquiry cyangwa wandikire itsinda rya RiFi vuba.",
       contactRifi: "Vugisha RiFi",
       whatsappUs: "Twandikire kuri WhatsApp",
+    },
+    models: {
+      eyebrow: "Gucunga Abamodeli",
+      title: "Serivisi z'abamodeli b'umwuga ku moda, kwamamaza, n'ibirori.",
+      description:
+        "RiFi Models Management ihuza abamodeli bafite impano n'ibirango bikomeye, abafotozi, n'abategura ibirori. Twibanda ku bunyamwuga, kugaragaza isura zitandukanye, no guhuza ibikorwa neza kuri buri booking.",
+      services: [
+        {
+          title: "Abamodeli b'Imideli",
+          description:
+            "Abamodeli bafite imbaraga ku runway, editorial, n'ibikorwa by'imideri.",
+        },
+        {
+          title: "Abamodeli bo Kwamamaza",
+          description:
+            "Impano zitandukanye mu kwamamaza, print media, no guhagararira ibirango.",
+        },
+        {
+          title: "Abamodeli b'Ibirori",
+          description:
+            "Abakira abantu n'abamodeli b'umwuga mu kwerekana ibicuruzwa bishya, imurikagurisha, n'ibirori by'ibigo.",
+        },
+        {
+          title: "Abamodeli b'Abana",
+          description:
+            "Impano z'abana mu birango by'imyenda, kwamamaza, n'ibindi bikorwa bigenewe imiryango.",
+        },
+      ],
+      gallery: {
+        title: "Kwerekana Abamodeli",
+        description:
+          "Sura portfolio yacu y'abamodeli b'umwuga biteguye gukorana nawe kuri project yawe itaha.",
+      },
+      forms: {
+        application: {
+          title: "Injira muri RiFi Models",
+          description:
+            "Uri umumodeli mushya cyangwa ufite uburambe? Saba kwinjira mu itsinda ryacu utangire urugendo rwawe na RiFi.",
+          button: "Fungura Ifishi yo Gusaba",
+        },
+        booking: {
+          title: "Fata Umumodeli",
+          description:
+            "Ushaka isura ikwiriye ikirango cyawe cyangwa event yawe? Tubwire ibyo ukeneye t澤ufashe kubona uwo wifuza.",
+          button: "Ifishi ya Booking",
+        },
+      },
+      requirements: {
+        title: "Ibisabwa mu Gusaba",
+        description:
+          "Kugira ngo dosiye yawe isuzumwe, banza utegure ibi bikurikira:",
+        items: [
+          "Amafoto ya vuba ya kinyamwuga (Isura n'Umubiri wose)",
+          "Uburebure bwawe n'ingano (Measurements) by'ubu",
+          "Incamake y'uburambe bwawe mu bumanekeri",
+          "Links za social media cyangwa portfolio yawe",
+        ],
+      },
+      bookingInfo: {
+        title: "Amakuru ya Booking",
+        description: "Iyo ufata umumodeli, usabwa gutanga aya makuru:",
+        items: [
+          "Italiki n'aho event cyangwa kwamamaza bizabera",
+          "Ubwoko bw'akazi (Runway, Editorial, Event, n'ibindi)",
+          "Ibisabwa ku mumodeli (Igitsina, Imyaka, Isura)",
+          "Igihe booking izamara n'uburenganzira bwo gukoresha amafoto",
+        ],
+      },
+      applicationForm: {
+        title: "Gusaba Kwinjira",
+        fields: {
+          fullName: "Amazina Yombi",
+          email: "Imeli",
+          phone: "Telefoni",
+          height: "Uburebure (cm)",
+          measurements: "Ingano (Gituza/Iburyo/Ibumoso)",
+          experience: "Uburambe mu Bumanekeri",
+          socialMedia: "Link ya Social Media / Portfolio",
+          photos: "Ohereza Amafoto (Max 3)",
+        },
+        submit: "Ohereza Ifishi",
+        success:
+          "Murakoze gusaba! Tuzasuzuma profile yawe maze tukuvugishe vuba.",
+      },
+      bookingForm: {
+        title: "Gusaba Umumodeli (Booking)",
+        fields: {
+          clientName: "Amazina y'Umukiliya / Ikigo",
+          email: "Imeli",
+          phone: "Telefoni",
+          eventDate: "Italiki ya Event",
+          location: "Aho bizabera",
+          assignmentType: "Ubwoko bw'Akazi",
+          requirements: "Ibisabwa ku Mumodeli",
+          duration: "Igihe bizamara / Uburenganzira bwo gukoresha amafoto",
+        },
+        submit: "Ohereza Booking",
+        success: "Murakoze! Booking yanyu yakiriwe. Tuzabavugisha vuba.",
+      },
+    },
+    wedding: {
+      eyebrow: "Gutegura Ubukwe",
+      title:
+        "Kurema ibihe bitazibagirana mu bukwe bwawe mu buryo bwiza kandi bujyanye n'igihe.",
+      description:
+        "RiFi Wedding Organization itanga serivisi zose kuva ku ntangiriro kugeza ku musozo, coordination y'umwuga, n'imyidagaduro y'indashyikirwa. Kuva ku nama ya mbere kugeza ku mbyino ya nyuma, dushyira imbere ko umunsi wawe udasanzwe uba uruhare rwiza.",
+      services: [
+        {
+          title: "Igenamigambi ry'Ubukwe",
+          description:
+            "Igenamigambi ryuzuye ririmo guhitamo aho ubukwe buzabera, gucunga igihe, no guhuza abandi bafatanyabikorwa.",
+        },
+        {
+          title: "Serivisi za Catering",
+          description:
+            "Uburambe buhebuje mu byo kurya bijyanye n'amahitamo yawe n'ay'abashyitsi bawe.",
+        },
+        {
+          title: "Decoration ya Event",
+          description:
+            "Styling n'imitako yihariye ituma icyerekezo cyawe cy'ubukwe bwawe kiba impamo mu buryo bwiza.",
+        },
+        {
+          title: "Imbyino Gakondo",
+          description:
+            "Imbyino gakondo nyarwanda z'umwimerere zongera umuco n'ishema mu birori byanyu.",
+        },
+        {
+          title: "Live Saxophonist",
+          description:
+            "umuziki w'ako kanya ugezweho uha uburyo bwiza ibirori byanyu.",
+        },
+        {
+          title: "MC & Coordination",
+          description:
+            "MC w'umwuga no guhuza ibikorwa byose kugira ngo event yawe igende neza.",
+        },
+      ],
+      booking: {
+        title: "Tangira Igenamigambi ry'Ubukwe bw'Inzozi Zawe",
+        description:
+          "Tubwire icyerekezo ufite ku bukwe bwawe maze tugufashe kugishyira mu bikorwa binyuze muri serivisi zacu z'umwuga.",
+        button: "Ifishi ya Booking",
+      },
+      bookingForm: {
+        title: "Gusaba Gutegura Ubukwe",
+        fields: {
+          coupleNames: "Amazina y'Abageni",
+          email: "Imeli",
+          phone: "Telefoni",
+          weddingDate: "Italiki y'Ubukwe",
+          location: "Aho ubukwe buzabera",
+          estimatedGuests: "Umubare w'Abashyitsi bateganyijwe",
+          requestedServices: "Serivisi Mukeneye",
+          additionalDetails: "Ibindi bisobanuro cyangwa Icyerekezo",
+        },
+        services: {
+          planning: "Igenamigambi ry'Ubukwe",
+          catering: "Catering",
+          decoration: "Decoration",
+          dance: "Imbyino Gakondo",
+          sax: "Live Saxophonist",
+          mc: "MC & Coordination",
+        },
+        submit: "Ohereza Ifishi",
+        success:
+          "Murakoze! Ifishi yanyu yakiriwe. Tuzabavugisha vuba kugira ngo dutangire gutegura uwo munsi wanyu udasanzwe.",
+      },
     },
     protocol: {
       eyebrow: "Serivisi za Protocol",
@@ -575,6 +910,177 @@ export const translations = {
       contactRifi: "Contacter RiFi",
       whatsappUs: "Ecrire sur WhatsApp",
     },
+    models: {
+      eyebrow: "RiFi Gestion des Modèles",
+      title:
+        "Services de mannequins professionnels pour la mode, la publicité et les événements.",
+      description:
+        "RiFi Models Management connecte des mannequins talentueux avec des marques leaders, des photographes et des organisateurs d'événements. Nous privilégions le professionnalisme, la diversité et une coordination claire pour chaque réservation.",
+      services: [
+        {
+          title: "Mannequins de Mode",
+          description:
+            "Mannequins dynamiques pour défilés, éditoriaux et campagnes de mode.",
+        },
+        {
+          title: "Mannequins Publicitaires",
+          description:
+            "Talents polyvalents pour la publicité, les médias imprimés et la représentation de marque.",
+        },
+        {
+          title: "Mannequins Événementiels",
+          description:
+            "Hôtes et mannequins professionnels pour lancements de produits, expositions et événements d'entreprise.",
+        },
+        {
+          title: "Mannequins Enfants",
+          description:
+            "Jeunes talents pour les marques de vêtements, la publicité et les campagnes orientées famille.",
+        },
+      ],
+      gallery: {
+        title: "Vitrine des Modèles",
+        description:
+          "Explorez notre portfolio diversifié de mannequins professionnels prêts pour votre prochain projet.",
+      },
+      forms: {
+        application: {
+          title: "Rejoindre RiFi Models",
+          description:
+            "Vous êtes un mannequin aspirant ou expérimenté ? Postulez pour rejoindre notre liste de talents et commencez votre parcours avec RiFi.",
+          button: "Formulaire de Candidature",
+        },
+        booking: {
+          title: "Réserver un Mannequin",
+          description:
+            "Vous cherchez le visage idéal pour votre marque ou votre événement ? Dites-nous vos besoins et nous vous aiderons à trouver le profil parfait.",
+          button: "Formulaire de Réservation",
+        },
+      },
+      requirements: {
+        title: "Conditions de Candidature",
+        description:
+          "Pour traiter votre candidature, veuillez préparer les éléments suivants :",
+        items: [
+          "Photos professionnelles récentes (Portrait et Plein pied)",
+          "Votre taille et vos mensurations actuelles",
+          "Un bref résumé de votre expérience de mannequinat",
+          "Liens vers vos réseaux sociaux professionnels ou portfolio",
+        ],
+      },
+      bookingInfo: {
+        title: "Informations de Réservation",
+        description:
+          "Lors de la réservation d'un mannequin, veuillez fournir ces détails :",
+        items: [
+          "Date et lieu de l'événement ou de la campagne",
+          "Type de mission (Défilé, Éditorial, Événement, etc.)",
+          "Exigences spécifiques du modèle (Sexe, Tranche d'âge, Look)",
+          "Durée de la réservation et droits d'utilisation",
+        ],
+      },
+      applicationForm: {
+        title: "Candidature de Mannequin",
+        fields: {
+          fullName: "Nom Complet",
+          email: "Adresse Email",
+          phone: "Numéro de Téléphone",
+          height: "Taille (cm)",
+          measurements: "Mensurations (Poitrine/Taille/Hanches)",
+          experience: "Expérience de Mannequinat",
+          socialMedia: "Lien Réseaux Sociaux / Portfolio",
+          photos: "Télécharger des Photos (Max 3)",
+        },
+        submit: "Soumettre la Candidature",
+        success:
+          "Merci pour votre candidature ! Nous examinerons votre profil et vous recontacterons.",
+      },
+      bookingForm: {
+        title: "Demande de Réservation de Mannequin",
+        fields: {
+          clientName: "Nom du Client / Entreprise",
+          email: "Adresse Email",
+          phone: "Numéro de Téléphone",
+          eventDate: "Date de l'Événement / Shooting",
+          location: "Lieu",
+          assignmentType: "Type de Mission",
+          requirements: "Exigences du Modèle / Profils Spécifiques",
+          duration: "Durée / Droits d'Utilisation",
+        },
+        submit: "Envoyer la Demande",
+        success:
+          "Merci ! Votre demande de réservation a été envoyée. Nous vous contacterons sous peu.",
+      },
+    },
+    wedding: {
+      eyebrow: "RiFi Organisation de Mariage",
+      title:
+        "Créer des expériences de mariage inoubliables avec style et élégance.",
+      description:
+        "RiFi Wedding Organization propose une planification de bout en bout, une coordination professionnelle et un divertissement de premier choix. De la première consultation à la dernière danse, nous veillons à ce que votre journée spéciale soit fluide et mémorable.",
+      services: [
+        {
+          title: "Planification de Mariage",
+          description:
+            "Planification complète comprenant la sélection du lieu, la gestion du calendrier et la coordination des prestataires.",
+        },
+        {
+          title: "Services Traiteur",
+          description:
+            "Expériences culinaires exquises adaptées à vos goûts et aux préférences de vos invités.",
+        },
+        {
+          title: "Décoration d'Événement",
+          description:
+            "Style et décor sur mesure qui donnent vie à votre vision de mariage avec élégance.",
+        },
+        {
+          title: "Danse Traditionnelle",
+          description:
+            "Performances authentiques de danse traditionnelle rwandaise pour ajouter une richesse culturelle à votre célébration.",
+        },
+        {
+          title: "Saxophoniste Live",
+          description:
+            "Musique live sophistiquée pour créer une atmosphère magnifique lors de votre cérémonie ou réception.",
+        },
+        {
+          title: "MC & Coordination",
+          description:
+            "Maître de cérémonie professionnel et coordination sur place pour assurer le bon déroulement de votre événement.",
+        },
+      ],
+      booking: {
+        title: "Commencez à planifier le mariage de vos rêves",
+        description:
+          "Parlez-nous de votre vision de mariage et laissez-nous vous aider à la réaliser avec nos services professionnels.",
+        button: "Formulaire de Réservation",
+      },
+      bookingForm: {
+        title: "Demande de Réservation de Mariage",
+        fields: {
+          coupleNames: "Noms des Mariés",
+          email: "Adresse Email",
+          phone: "Numéro de Téléphone",
+          weddingDate: "Date du Mariage",
+          location: "Lieu Souhaité",
+          estimatedGuests: "Nombre d'Invités Estimé",
+          requestedServices: "Services Demandés",
+          additionalDetails: "Détails Supplémentaires ou Vision",
+        },
+        services: {
+          planning: "Planification de Mariage",
+          catering: "Service Traiteur",
+          decoration: "Décoration d'Événement",
+          dance: "Danse Traditionnelle",
+          sax: "Saxophoniste Live",
+          mc: "MC & Coordination",
+        },
+        submit: "Envoyer la Demande",
+        success:
+          "Merci ! Votre demande de réservation de mariage a été envoyée. Nous vous contacterons bientôt pour commencer à planifier votre journée spéciale.",
+      },
+    },
     protocol: {
       eyebrow: "Protocole & Services",
       title:
@@ -631,7 +1137,8 @@ export const translations = {
         "Nous assurons une expérience d'accueil visible et disciplinée tout au long de l'événement.",
       ],
       contactEyebrow: "Contacter RiFi",
-      contactTitle: "Besoin d'un soutien protocolaire pour votre prochain événement ?",
+      contactTitle:
+        "Besoin d'un soutien protocolaire pour votre prochain événement ?",
       contactDescription:
         "Contactez RiFi Entertainment pour la planification du protocole, le soutien des hôtesses, la gestion VIP et l'hospitalité événementielle à Kigali, Rwanda.",
       requestService: "Demander le service",
@@ -676,7 +1183,6 @@ export function useCurrentLanguage() {
     return paramLang || defaultLanguage
   }, [searchParams])
 }
-
 
 export function useTranslations() {
   const language = useCurrentLanguage()

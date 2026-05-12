@@ -68,7 +68,10 @@ export const Footer7 = ({
             {socialLinks.length > 0 && (
               <ul className="flex items-center space-x-6 text-muted-foreground">
                 {socialLinks.map((social, idx) => (
-                  <li key={idx} className="transition-colors hover:text-primary">
+                  <li
+                    key={idx}
+                    className="transition-colors hover:text-primary"
+                  >
                     <a
                       href={social.href}
                       aria-label={social.label}

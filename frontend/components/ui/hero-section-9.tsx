@@ -146,7 +146,7 @@ const HeroSection = ({
                   <p className="text-xl font-bold tracking-tight text-foreground">
                     {stat.value}
                   </p>
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  <p className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
                     {stat.label}
                   </p>
                 </div>
@@ -169,7 +169,7 @@ const HeroSection = ({
             animate="animate"
           />
           <motion.div
-            className="absolute bottom-10 right-1/4 h-12 w-12 border border-secondary/40 bg-secondary/10"
+            className="absolute right-1/4 bottom-10 h-12 w-12 border border-secondary/40 bg-secondary/10"
             variants={floatingVariants}
             animate="animate"
             style={{ transitionDelay: "0.5s" }}
@@ -183,7 +183,7 @@ const HeroSection = ({
 
           {/* Images - All rounded-none for sharp corners */}
           <motion.div
-            className="absolute left-1/2 top-0 h-48 w-48 -translate-x-1/2 border border-border/70 bg-muted p-2 shadow-sm sm:h-64 sm:w-64 lg:h-80 lg:w-80"
+            className="absolute top-0 left-1/2 h-48 w-48 -translate-x-1/2 border border-border/70 bg-muted p-2 shadow-sm sm:h-64 sm:w-64 lg:h-80 lg:w-80"
             style={{ transformOrigin: "bottom center" }}
             variants={imageVariants}
           >
@@ -194,7 +194,7 @@ const HeroSection = ({
             />
           </motion.div>
           <motion.div
-            className="absolute right-0 top-1/3 h-40 w-40 border border-border/70 bg-muted p-2 shadow-sm sm:h-56 sm:w-56 lg:h-72 lg:w-72"
+            className="absolute top-1/3 right-0 h-40 w-40 border border-border/70 bg-muted p-2 shadow-sm sm:h-56 sm:w-56 lg:h-72 lg:w-72"
             style={{ transformOrigin: "left center" }}
             variants={imageVariants}
           >
