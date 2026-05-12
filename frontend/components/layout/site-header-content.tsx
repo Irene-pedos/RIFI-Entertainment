@@ -1,7 +1,6 @@
 "use client"
 
 import {
-  Camera,
   HeartHandshake,
   ImageIcon,
   Languages,
@@ -66,12 +65,6 @@ export function SiteHeaderContent({ children }: SiteHeaderContentProps) {
           url: "/gallery",
         },
         {
-          title: t.nav["/testimonials"],
-          description: t.home.testimonialsTitle,
-          icon: <Camera className="size-5 shrink-0" />,
-          url: "/testimonials",
-        },
-        {
           title: t.nav["/about"],
           description: t.home.overview,
           icon: <MapPinned className="size-5 shrink-0" />,
@@ -99,7 +92,6 @@ export function SiteHeaderContent({ children }: SiteHeaderContentProps) {
       menu={menu}
       mobileExtraLinks={[
         { name: t.nav["/gallery"], url: "/gallery" },
-        { name: t.nav["/testimonials"], url: "/testimonials" },
         { name: t.nav["/about"], url: "/about" },
         { name: t.nav["/tours-travel"], url: "/tours-travel" },
       ]}

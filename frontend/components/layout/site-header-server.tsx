@@ -1,5 +1,4 @@
 import {
-  Camera,
   HeartHandshake,
   ImageIcon,
   Languages,
@@ -63,12 +62,6 @@ const staticMenu: MenuItem[] = [
         url: "/gallery",
       },
       {
-        title: "Testimonials",
-        description: "Client testimonials",
-        icon: <Camera className="size-5 shrink-0" />,
-        url: "/testimonials",
-      },
-      {
         title: "About",
         description: "About us",
         icon: <MapPinned className="size-5 shrink-0" />,
@@ -97,7 +90,6 @@ export function SiteHeaderServer({ utilitySlot }: SiteHeaderServerProps) {
       menu={staticMenu}
       mobileExtraLinks={[
         { name: "Gallery", url: "/gallery" },
-        { name: "Testimonials", url: "/testimonials" },
         { name: "About", url: "/about" },
         { name: "Tours & Travel", url: "/tours-travel" },
       ]}

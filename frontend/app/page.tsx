@@ -105,7 +105,7 @@ export default function HomePage() {
   return (
     <>
       <HeroSection
-        className="-mt-20 pt-20"
+        className="-mt-28 sm:-mt-32"
         title={t.home.heroTitle}
         subtitle={t.home.tagline}
         actions={[

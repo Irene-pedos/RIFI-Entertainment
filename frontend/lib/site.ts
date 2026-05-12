@@ -25,7 +25,6 @@ export const siteConfig = {
     { href: "/dance", label: "Dance" },
     { href: "/tours-travel", label: "Tours & Travel" },
     { href: "/gallery", label: "Gallery" },
-    { href: "/testimonials", label: "Testimonials" },
     { href: "/contact", label: "Contact" },
   ],
   featuredServices: [
