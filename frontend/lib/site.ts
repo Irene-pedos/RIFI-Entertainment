@@ -14,7 +14,6 @@ export const siteConfig = {
   languages: [
     { code: "en", label: "ENG" },
     { code: "rw", label: "KINY" },
-    { code: "sw", label: "SWA" },
     { code: "fr", label: "FRENCH" },
   ],
   navItems: [
@@ -26,7 +25,6 @@ export const siteConfig = {
     { href: "/dance", label: "Dance" },
     { href: "/tours-travel", label: "Tours & Travel" },
     { href: "/gallery", label: "Gallery" },
-    { href: "/testimonials", label: "Testimonials" },
     { href: "/contact", label: "Contact" },
   ],
   featuredServices: [

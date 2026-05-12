@@ -91,7 +91,11 @@ const HeroSection = ({
   return (
     <section
       className={cn(
+<<<<<<< HEAD
         "relative w-full overflow-hidden bg-background py-16 sm:py-24 lg:py-32",
+=======
+        "relative flex min-h-screen w-full items-center overflow-hidden bg-background py-12 lg:py-20",
+>>>>>>> Irene
         className
       )}
     >
@@ -176,52 +180,52 @@ const HeroSection = ({
 
         {/* Right Column: Image Collage */}
         <motion.div
-          className="relative h-[400px] w-full sm:h-[500px] lg:h-[600px]"
+          className="relative h-[450px] w-full sm:h-[550px] lg:h-[650px]"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
           {/* Decorative Shapes - Using sharp borders/squares instead of circles */}
           <motion.div
-            className="absolute -top-4 left-1/4 h-16 w-16 border border-primary/20 bg-primary/5"
+            className="absolute -top-4 right-1/4 h-16 w-16 border border-primary/20 bg-primary/5"
             variants={floatingVariants}
             animate="animate"
           />
           <motion.div
-            className="absolute bottom-10 right-1/4 h-12 w-12 border border-secondary/40 bg-secondary/10"
+            className="absolute bottom-1/4 left-1/4 h-12 w-12 border border-secondary/40 bg-secondary/10"
             variants={floatingVariants}
             animate="animate"
             style={{ transitionDelay: "0.5s" }}
           />
-          <motion.div
-            className="absolute bottom-1/4 left-4 h-6 w-6 border border-muted-foreground/20 bg-muted/20"
-            variants={floatingVariants}
-            animate="animate"
-            style={{ transitionDelay: "1s" }}
-          />
 
           {/* Images - All rounded-none for sharp corners */}
           <motion.div
-            className="absolute left-1/2 top-0 h-48 w-48 -translate-x-1/2 border border-border/70 bg-muted p-2 shadow-sm sm:h-64 sm:w-64 lg:h-80 lg:w-80"
-            style={{ transformOrigin: "bottom center" }}
+            className="absolute left-0 top-0 h-[280px] w-[240px] border border-border/70 bg-muted p-2 shadow-sm sm:h-[380px] sm:w-[320px] lg:h-[480px] lg:w-[400px]"
+            style={{ transformOrigin: "top left" }}
             variants={imageVariants}
           >
             <Image
               src={images[0]}
               alt="Hero image 1"
               fill
+<<<<<<< HEAD
               className="object-cover"
+=======
+              className="object-cover p-2"
+              sizes="(max-width: 640px) 240px, (max-width: 1024px) 320px, 400px"
+>>>>>>> Irene
             />
           </motion.div>
           <motion.div
-            className="absolute right-0 top-1/3 h-40 w-40 border border-border/70 bg-muted p-2 shadow-sm sm:h-56 sm:w-56 lg:h-72 lg:w-72"
-            style={{ transformOrigin: "left center" }}
+            className="absolute right-0 bottom-0 h-[240px] w-[200px] border border-border/70 bg-muted p-2 shadow-sm sm:h-[320px] sm:w-[280px] lg:h-[420px] lg:w-[360px]"
+            style={{ transformOrigin: "bottom right" }}
             variants={imageVariants}
           >
             <Image
               src={images[1]}
               alt="Hero image 2"
               fill
+<<<<<<< HEAD
               className="object-cover"
             />
           </motion.div>
@@ -235,6 +239,10 @@ const HeroSection = ({
               alt="Hero image 3"
               fill
               className="object-cover"
+=======
+              className="object-cover p-2"
+              sizes="(max-width: 640px) 200px, (max-width: 1024px) 280px, 360px"
+>>>>>>> Irene
             />
           </motion.div>
         </motion.div>

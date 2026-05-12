@@ -11,6 +11,7 @@ import {
 } from "lucide-react"
 
 import { PageIntro } from "@/components/marketing/page-intro"
+import { ProtocolBookingForm } from "@/components/marketing/protocol-booking-form"
 import { Button } from "@/components/ui/button"
 import { useTranslations } from "@/lib/i18n"
 import { siteConfig } from "@/lib/site"
@@ -130,6 +131,10 @@ export default function ProtocolServicesPage() {
             ))}
           </div>
         </div>
+      </section>
+
+      <section className="mx-auto w-full max-w-[1600px] px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8">
+        <ProtocolBookingForm />
       </section>
 
       <section className="mx-auto w-full max-w-[1600px] px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8">

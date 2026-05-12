@@ -105,10 +105,9 @@ export default function HomePage() {
   return (
     <>
       <HeroSection
-        className="-mt-20 pt-20"
+        className="-mt-28 sm:-mt-32"
         title={t.home.heroTitle}
         subtitle={t.home.tagline}
-        videoSrc="https://assets.mixkit.co/videos/preview/mixkit-clouds-and-blue-sky-2408-large.mp4"
         actions={[
           {
             text: t.home.bookService,
@@ -187,23 +186,6 @@ export default function HomePage() {
               </Button>
             </article>
           ))}
-        </div>
-      </section>
-
-      <section className="mx-auto w-full max-w-[1600px] px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8">
-        <div className="rounded-3xl border border-border/70 bg-card/85 p-8 text-center shadow-sm">
-          <p className="text-xs font-semibold tracking-[0.32em] text-primary uppercase">
-            {t.home.toursEyebrow}
-          </p>
-          <h2 className="mt-4 font-heading text-3xl font-semibold tracking-tight">
-            {t.home.toursTitle}
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-muted-foreground">
-            {t.home.toursDescription}
-          </p>
-          <Button asChild variant="outline" className="mt-8 px-6">
-            <Link href="/tours-travel">{t.home.openToursButton}</Link>
-          </Button>
         </div>
       </section>
 
