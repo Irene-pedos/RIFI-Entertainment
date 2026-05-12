@@ -1,6 +1,7 @@
 "use client"
 
 import React from "react"
+import Image from "next/image"
 import { motion, type Variants } from "framer-motion"
 import { type VariantProps } from "class-variance-authority"
 
@@ -28,6 +29,7 @@ interface HeroSectionProps {
   actions: ActionProps[]
   stats: StatProps[]
   images: string[]
+  videoSrc?: string
   className?: string
 }
 
@@ -83,16 +85,33 @@ const HeroSection = ({
   actions,
   stats,
   images,
+  videoSrc,
   className,
 }: HeroSectionProps) => {
   return (
     <section
       className={cn(
-        "w-full overflow-hidden bg-background py-16 sm:py-24 lg:py-32",
+        "relative w-full overflow-hidden bg-background py-16 sm:py-24 lg:py-32",
         className
       )}
     >
-      <div className="mx-auto grid max-w-[1600px] grid-cols-1 items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
+      {/* Background Video or Gradient Overlay */}
+      {videoSrc && (
+        <div className="absolute inset-0 z-0">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="h-full w-full object-cover opacity-20"
+          >
+            <source src={videoSrc} type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
+        </div>
+      )}
+
+      <div className="relative z-10 mx-auto grid max-w-[1600px] grid-cols-1 items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
         {/* Left Column: Text Content */}
         <motion.div
           className="flex flex-col items-center text-center lg:items-start lg:text-left"
@@ -187,10 +206,11 @@ const HeroSection = ({
             style={{ transformOrigin: "bottom center" }}
             variants={imageVariants}
           >
-            <img
+            <Image
               src={images[0]}
               alt="Hero image 1"
-              className="h-full w-full object-cover"
+              fill
+              className="object-cover"
             />
           </motion.div>
           <motion.div
@@ -198,10 +218,11 @@ const HeroSection = ({
             style={{ transformOrigin: "left center" }}
             variants={imageVariants}
           >
-            <img
+            <Image
               src={images[1]}
               alt="Hero image 2"
-              className="h-full w-full object-cover"
+              fill
+              className="object-cover"
             />
           </motion.div>
           <motion.div
@@ -209,10 +230,11 @@ const HeroSection = ({
             style={{ transformOrigin: "top right" }}
             variants={imageVariants}
           >
-            <img
+            <Image
               src={images[2]}
               alt="Hero image 3"
-              className="h-full w-full object-cover"
+              fill
+              className="object-cover"
             />
           </motion.div>
         </motion.div>

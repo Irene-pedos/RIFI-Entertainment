@@ -14,6 +14,7 @@ export const siteConfig = {
   languages: [
     { code: "en", label: "ENG" },
     { code: "rw", label: "KINY" },
+    { code: "sw", label: "SWA" },
     { code: "fr", label: "FRENCH" },
   ],
   navItems: [

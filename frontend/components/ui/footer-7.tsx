@@ -37,7 +37,7 @@ export const Footer7 = ({
   legalLinks = [],
 }: Footer7Props) => {
   return (
-    <footer className="border-t border-border/70 bg-card py-20 lg:py-32">
+    <footer className="border-t border-border/70 bg-card py-8 lg:py-12">
       <div className="mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-8">
         <div className="flex w-full flex-col justify-between gap-10 lg:flex-row lg:items-start lg:text-left">
           <div className="flex w-full flex-col justify-between gap-6 lg:items-start">

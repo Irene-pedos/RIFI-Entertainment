@@ -14,8 +14,8 @@ export function PageIntro({
   children,
 }: PageIntroProps) {
   return (
-    <section className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-      <div className="max-w-3xl space-y-6">
+    <section className="w-full px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+      <div className="w-full space-y-4">
         <div className="text-xs font-semibold tracking-[0.32em] text-primary uppercase">
           {eyebrow}
         </div>
