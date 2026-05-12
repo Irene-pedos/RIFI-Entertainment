@@ -473,6 +473,59 @@ export const translations = {
       requestService: "Request Service",
       whatsappUs: "WhatsApp Us",
     },
+    about: {
+      eyebrow: "Who We Are",
+      missionTitle: "Our Mission",
+      missionText: "To transform every event into an extraordinary experience by providing world-class entertainment, professional protocol, and innovative event management solutions in Rwanda and beyond.",
+      visionTitle: "Our Vision",
+      visionText: "To be the leading entertainment and event agency in the region, recognized for our creativity, excellence, and the professional growth of the talents we manage.",
+      valuesTitle: "Our Core Values",
+      workWithUsTitle: "Work With Us",
+      workWithUsText: "Ready to elevate your next event with RiFi Entertainment's professional touch?",
+      getInTouch: "Get in Touch Today",
+      philosophyTitle: "Our Philosophy",
+      philosophyText: "\"We believe that every celebration tells a story. At RiFi, we don't just manage events; we curate moments that linger in the hearts of your guests long after the music stops.\"",
+      values: {
+        excellence: {
+          label: "Excellence",
+          description: "We strive for the highest standards in every event and performance we deliver.",
+        },
+        professionalism: {
+          label: "Professionalism",
+          description: "Our team is trained to provide elite protocol and coordination services.",
+        },
+        reliability: {
+          label: "Reliability",
+          description: "Clients trust us to handle their most important moments with precision.",
+        },
+        vision: {
+          label: "Vision",
+          description: "Creating unique and unforgettable experiences tailored to your needs.",
+        },
+      },
+    },
+    contact: {
+      eyebrow: "Contact Us",
+      title: "Let's Start a Conversation",
+      description: "Get in touch with RiFi Entertainment today and let us help you create unforgettable experiences for your special events, entertainment needs, tours, and celebrations. Our team is ready to assist you with bookings, inquiries, collaborations, and customized services designed to match your vision.",
+      secondaryDescription: "Whether you are planning a wedding, organizing a corporate event, looking for professional models, booking dance entertainment, or arranging tours and travel services, we are here to provide professional support and exceptional service every step of the way. Have a question or looking to book an event? Reach out to us through any of the channels below.",
+      infoTitle: "Contact Information",
+      quickSupportTitle: "Quick Support",
+      quickSupportText: "Need an immediate response? Our WhatsApp line is the fastest way to get in touch with our booking team.",
+      chatWhatsApp: "Chat on WhatsApp",
+      formTitle: "Send us a Message",
+      formName: "Full Name",
+      formNamePlaceholder: "Your Name",
+      formEmail: "Email Address",
+      formEmailPlaceholder: "name@example.com",
+      formSubject: "Subject",
+      formSubjectPlaceholder: "How can we help?",
+      formMessage: "Message",
+      formMessagePlaceholder: "Tell us about your event...",
+      formSubmit: "Send Message",
+      mapTitle: "Visit Our Office",
+      location: "Kigali, Rwanda",
+    },
   },
   rw: {
     nav: {
@@ -1639,6 +1692,59 @@ export const translations = {
       requestService: "Demander le service",
       whatsappUs: "Écrivez-nous sur WhatsApp",
     },
+    about: {
+      eyebrow: "Qui Sommes-Nous",
+      missionTitle: "Notre Mission",
+      missionText: "Transformer chaque événement en une expérience extraordinaire en fournissant un divertissement de classe mondiale, un protocole professionnel et des solutions de gestion d'événements innovantes au Rwanda et au-delà.",
+      visionTitle: "Notre Vision",
+      visionText: "Être l'agence de divertissement et d'événements leader dans la région, reconnue pour notre créativité, notre excellence et la croissance professionnelle des talents que nous gérons.",
+      valuesTitle: "Nos Valeurs Fondamentales",
+      workWithUsTitle: "Travaillez avec Nous",
+      workWithUsText: "Prêt à élever votre prochain événement avec la touche professionnelle de RiFi Entertainment ?",
+      getInTouch: "Contactez-nous Aujourd'hui",
+      philosophyTitle: "Notre Philosophie",
+      philosophyText: "\"Nous croyons que chaque célébration raconte une histoire. Chez RiFi, nous ne gérons pas seulement des événements ; nous créons des moments qui restent gravés dans le cœur de vos invités longtemps après que la musique s'arrête.\"",
+      values: {
+        excellence: {
+          label: "Excellence",
+          description: "Nous visons les normes les plus élevées dans chaque événement et performance que nous livrons.",
+        },
+        professionalism: {
+          label: "Professionnalisme",
+          description: "Notre équipe est formée pour fournir des services de protocole et de coordination d'élite.",
+        },
+        reliability: {
+          label: "Fiabilité",
+          description: "Les clients nous font confiance pour gérer leurs moments les plus importants avec précision.",
+        },
+        vision: {
+          label: "Vision",
+          description: "Créer des expériences uniques et inoubliables adaptées à vos besoins.",
+        },
+      },
+    },
+    contact: {
+      eyebrow: "Contactez-nous",
+      title: "Commençons une Conversation",
+      description: "Contactez RiFi Entertainment dès aujourd'hui et laissez-nous vous aider à créer des expériences inoubliables pour vos événements spéciaux, vos besoins en divertissement, vos visites et vos célébrations. Notre équipe est prête à vous aider avec les réservations, les demandes, les collaborations et les services personnalisés conçus pour correspondre à votre vision.",
+      secondaryDescription: "Que vous planifiiez un mariage, organisiez un événement d'entreprise, recherchiez des mannequins professionnels, réserviez des spectacles de danse ou organisiez des services de voyage et de tourisme, nous sommes là pour vous fournir un soutien professionnel et un service exceptionnel à chaque étape. Vous avez une question ou vous cherchez à réserver un événement ? Contactez-nous via l'un des canaux ci-dessous.",
+      infoTitle: "Coordonnées",
+      quickSupportTitle: "Support Rapide",
+      quickSupportText: "Besoin d'une réponse immédiate ? Notre ligne WhatsApp est le moyen le plus rapide de contacter notre équipe de réservation.",
+      chatWhatsApp: "Discuter sur WhatsApp",
+      formTitle: "Envoyez-nous un Message",
+      formName: "Nom Complet",
+      formNamePlaceholder: "Votre Nom",
+      formEmail: "Adresse Email",
+      formEmailPlaceholder: "nom@exemple.com",
+      formSubject: "Objet",
+      formSubjectPlaceholder: "Comment pouvons-nous vous aider ?",
+      formMessage: "Message",
+      formMessagePlaceholder: "Parlez-nous de votre événement...",
+      formSubmit: "Envoyer le Message",
+      mapTitle: "Visitez Nos Bureaux",
+      location: "Kigali, Rwanda",
+    },
   },
 } as const
 
@@ -1656,9 +1762,11 @@ export function getLanguageFromSearchParams(
 
 export function useCurrentLanguage() {
   const searchParams = useSearchParams()
+  const [language, setLanguage] = useState<LanguageCode>(defaultLanguage)
 
-  return useMemo(() => {
+  useEffect(() => {
     const paramLang = getLanguageFromSearchParams(searchParams)
+    const storedLang = typeof window !== "undefined" ? localStorage.getItem(LANGUAGE_STORAGE_KEY) : null
 
     if (typeof window !== "undefined") {
       if (paramLang) {
@@ -1677,8 +1785,9 @@ export function useCurrentLanguage() {
 
     return paramLang || defaultLanguage
   }, [searchParams])
-}
 
+  return language
+}
 
 export function useTranslations() {
   const language = useCurrentLanguage()

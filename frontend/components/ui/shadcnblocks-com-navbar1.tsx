@@ -69,7 +69,7 @@ const Navbar1 = ({
   utilitySlot,
 }: Navbar1Props) => {
   return (
-    <section className="py-4">
+    <section className="py-2">
       <div className="mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-8">
         <nav className="hidden items-center justify-between border border-border/70 bg-background/92 px-5 py-3 shadow-sm lg:flex">
           <div className="flex items-center gap-6">
