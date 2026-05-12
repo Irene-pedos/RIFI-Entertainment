@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils"
 import type { ReactNode } from "react"
 
 type PageIntroProps = {
@@ -7,6 +8,8 @@ type PageIntroProps = {
   description: string
   centered?: boolean
   children?: ReactNode
+  className?: string
+  containerClassName?: string
 }
 
 export function PageIntro({
@@ -15,6 +18,8 @@ export function PageIntro({
   description,
   centered = false,
   children,
+  className,
+  containerClassName,
 }: PageIntroProps) {
   return (
     <section className="w-full px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
