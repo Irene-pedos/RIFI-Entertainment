@@ -1,0 +1,224 @@
+"use client"
+
+import React from "react"
+import { motion, type Variants } from "framer-motion"
+import { type VariantProps } from "class-variance-authority"
+
+import { cn } from "@/lib/utils"
+import { Button, buttonVariants } from "@/components/ui/button"
+
+// Define the props for reusability
+interface StatProps {
+  value: string
+  label: string
+  icon: React.ReactNode
+}
+
+interface ActionProps {
+  text: string
+  onClick?: () => void
+  href?: string
+  variant?: VariantProps<typeof buttonVariants>["variant"]
+  className?: string
+}
+
+interface HeroSectionProps {
+  title: React.ReactNode
+  subtitle: string
+  actions: ActionProps[]
+  stats: StatProps[]
+  images: string[]
+  className?: string
+}
+
+// Animation variants for Framer Motion
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+}
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.4,
+      ease: "easeOut",
+    },
+  },
+}
+
+const imageVariants: Variants = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.6,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+}
+
+const floatingVariants: Variants = {
+  animate: {
+    y: [0, -6, 0],
+    transition: {
+      duration: 4,
+      repeat: Infinity,
+      ease: "easeInOut",
+    },
+  },
+}
+
+const HeroSection = ({
+  title,
+  subtitle,
+  actions,
+  stats,
+  images,
+  className,
+}: HeroSectionProps) => {
+  return (
+    <section
+      className={cn(
+        "w-full overflow-hidden bg-background py-16 sm:py-24 lg:py-32",
+        className
+      )}
+    >
+      <div className="mx-auto grid max-w-[1600px] grid-cols-1 items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
+        {/* Left Column: Text Content */}
+        <motion.div
+          className="flex flex-col items-center text-center lg:items-start lg:text-left"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.h1
+            className="font-heading text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl"
+            variants={itemVariants}
+          >
+            {title}
+          </motion.h1>
+          <motion.p
+            className="mt-6 max-w-md text-base leading-7 text-muted-foreground sm:text-lg"
+            variants={itemVariants}
+          >
+            {subtitle}
+          </motion.p>
+          <motion.div
+            className="mt-8 flex flex-wrap justify-center gap-3 lg:justify-start"
+            variants={itemVariants}
+          >
+            {actions.map((action, index) => (
+              <Button
+                key={index}
+                onClick={action.onClick}
+                variant={action.variant}
+                size="lg"
+                className={cn("px-6", action.className)}
+                asChild={!!action.href}
+              >
+                {action.href ? (
+                  <a href={action.href}>{action.text}</a>
+                ) : (
+                  action.text
+                )}
+              </Button>
+            ))}
+          </motion.div>
+          <motion.div
+            className="mt-12 flex flex-wrap justify-center gap-8 lg:justify-start"
+            variants={itemVariants}
+          >
+            {stats.map((stat, index) => (
+              <div key={index} className="flex items-center gap-4">
+                <div className="flex h-10 w-10 items-center justify-center border border-border/70 bg-muted/50">
+                  {stat.icon}
+                </div>
+                <div>
+                  <p className="text-xl font-bold tracking-tight text-foreground">
+                    {stat.value}
+                  </p>
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                    {stat.label}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </motion.div>
+        </motion.div>
+
+        {/* Right Column: Image Collage */}
+        <motion.div
+          className="relative h-[400px] w-full sm:h-[500px] lg:h-[600px]"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {/* Decorative Shapes - Using sharp borders/squares instead of circles */}
+          <motion.div
+            className="absolute -top-4 left-1/4 h-16 w-16 border border-primary/20 bg-primary/5"
+            variants={floatingVariants}
+            animate="animate"
+          />
+          <motion.div
+            className="absolute bottom-10 right-1/4 h-12 w-12 border border-secondary/40 bg-secondary/10"
+            variants={floatingVariants}
+            animate="animate"
+            style={{ transitionDelay: "0.5s" }}
+          />
+          <motion.div
+            className="absolute bottom-1/4 left-4 h-6 w-6 border border-muted-foreground/20 bg-muted/20"
+            variants={floatingVariants}
+            animate="animate"
+            style={{ transitionDelay: "1s" }}
+          />
+
+          {/* Images - All rounded-none for sharp corners */}
+          <motion.div
+            className="absolute left-1/2 top-0 h-48 w-48 -translate-x-1/2 border border-border/70 bg-muted p-2 shadow-sm sm:h-64 sm:w-64 lg:h-80 lg:w-80"
+            style={{ transformOrigin: "bottom center" }}
+            variants={imageVariants}
+          >
+            <img
+              src={images[0]}
+              alt="Hero image 1"
+              className="h-full w-full object-cover"
+            />
+          </motion.div>
+          <motion.div
+            className="absolute right-0 top-1/3 h-40 w-40 border border-border/70 bg-muted p-2 shadow-sm sm:h-56 sm:w-56 lg:h-72 lg:w-72"
+            style={{ transformOrigin: "left center" }}
+            variants={imageVariants}
+          >
+            <img
+              src={images[1]}
+              alt="Hero image 2"
+              className="h-full w-full object-cover"
+            />
+          </motion.div>
+          <motion.div
+            className="absolute bottom-0 left-0 h-32 w-32 border border-border/70 bg-muted p-2 shadow-sm sm:h-48 sm:w-48 lg:h-64 lg:w-64"
+            style={{ transformOrigin: "top right" }}
+            variants={imageVariants}
+          >
+            <img
+              src={images[2]}
+              alt="Hero image 3"
+              className="h-full w-full object-cover"
+            />
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+
+export default HeroSection
