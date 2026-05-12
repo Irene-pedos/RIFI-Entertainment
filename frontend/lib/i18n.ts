@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo } from "react"
+import { useEffect, useState, useMemo } from "react"
 import { useSearchParams, type ReadonlyURLSearchParams } from "next/navigation"
 
 import { siteConfig } from "@/lib/site"
@@ -1771,7 +1771,8 @@ export function useCurrentLanguage() {
     if (typeof window !== "undefined") {
       if (paramLang) {
         localStorage.setItem(LANGUAGE_STORAGE_KEY, paramLang)
-        return paramLang
+        setLanguage(paramLang)
+        return
       }
 
       const storedLang = localStorage.getItem(LANGUAGE_STORAGE_KEY)
@@ -1779,11 +1780,12 @@ export function useCurrentLanguage() {
         storedLang &&
         siteConfig.languages.some((l) => l.code === storedLang)
       ) {
-        return storedLang as LanguageCode
+        setLanguage(storedLang as LanguageCode)
+        return
       }
     }
 
-    return paramLang || defaultLanguage
+    setLanguage(paramLang || defaultLanguage)
   }, [searchParams])
 
   return language
