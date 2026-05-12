@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { Geist_Mono, Inter, Noto_Sans } from "next/font/google"
+import { Suspense } from "react"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
@@ -52,7 +53,9 @@ export default function RootLayout({
     >
       <body>
         <ThemeProvider>
-          <SiteShell>{children}</SiteShell>
+          <Suspense fallback={null}>
+            <SiteShell>{children}</SiteShell>
+          </Suspense>
         </ThemeProvider>
       </body>
     </html>

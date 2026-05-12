@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { useEffect, useState, useMemo } from "react"
 import { useSearchParams, type ReadonlyURLSearchParams } from "next/navigation"
 
 import { siteConfig } from "@/lib/site"
@@ -217,6 +217,59 @@ export const translations = {
       requestService: "Request Service",
       whatsappUs: "WhatsApp Us",
     },
+    about: {
+      eyebrow: "Who We Are",
+      missionTitle: "Our Mission",
+      missionText: "To transform every event into an extraordinary experience by providing world-class entertainment, professional protocol, and innovative event management solutions in Rwanda and beyond.",
+      visionTitle: "Our Vision",
+      visionText: "To be the leading entertainment and event agency in the region, recognized for our creativity, excellence, and the professional growth of the talents we manage.",
+      valuesTitle: "Our Core Values",
+      workWithUsTitle: "Work With Us",
+      workWithUsText: "Ready to elevate your next event with RiFi Entertainment's professional touch?",
+      getInTouch: "Get in Touch Today",
+      philosophyTitle: "Our Philosophy",
+      philosophyText: "\"We believe that every celebration tells a story. At RiFi, we don't just manage events; we curate moments that linger in the hearts of your guests long after the music stops.\"",
+      values: {
+        excellence: {
+          label: "Excellence",
+          description: "We strive for the highest standards in every event and performance we deliver.",
+        },
+        professionalism: {
+          label: "Professionalism",
+          description: "Our team is trained to provide elite protocol and coordination services.",
+        },
+        reliability: {
+          label: "Reliability",
+          description: "Clients trust us to handle their most important moments with precision.",
+        },
+        vision: {
+          label: "Vision",
+          description: "Creating unique and unforgettable experiences tailored to your needs.",
+        },
+      },
+    },
+    contact: {
+      eyebrow: "Contact Us",
+      title: "Let's Start a Conversation",
+      description: "Get in touch with RiFi Entertainment today and let us help you create unforgettable experiences for your special events, entertainment needs, tours, and celebrations. Our team is ready to assist you with bookings, inquiries, collaborations, and customized services designed to match your vision.",
+      secondaryDescription: "Whether you are planning a wedding, organizing a corporate event, looking for professional models, booking dance entertainment, or arranging tours and travel services, we are here to provide professional support and exceptional service every step of the way. Have a question or looking to book an event? Reach out to us through any of the channels below.",
+      infoTitle: "Contact Information",
+      quickSupportTitle: "Quick Support",
+      quickSupportText: "Need an immediate response? Our WhatsApp line is the fastest way to get in touch with our booking team.",
+      chatWhatsApp: "Chat on WhatsApp",
+      formTitle: "Send us a Message",
+      formName: "Full Name",
+      formNamePlaceholder: "Your Name",
+      formEmail: "Email Address",
+      formEmailPlaceholder: "name@example.com",
+      formSubject: "Subject",
+      formSubjectPlaceholder: "How can we help?",
+      formMessage: "Message",
+      formMessagePlaceholder: "Tell us about your event...",
+      formSubmit: "Send Message",
+      mapTitle: "Visit Our Office",
+      location: "Kigali, Rwanda",
+    },
   },
   rw: {
     nav: {
@@ -377,27 +430,27 @@ export const translations = {
         {
           title: "Kwakira Abashyitsi",
           description:
-            "Warm and organized guest arrival handling, registration flow, direction support, and first-contact hospitality for private and corporate events.",
+            "Kwakira abashyitsi mu buryo buteguwe neza, kwandika abaza, n'ubufatanye mu kumenya aho bicara kuri event zawe.",
         },
         {
           title: "Guhuza Ibirori",
           description:
-            "On-site coordination for schedules, guest movement, vendor timing, and smooth communication between the host team and service providers.",
+            "Guhuza gahunda ku munsi wa event, kumenya uko abashyitsi bimuka, gukurikirana vendors, no guhuza itumanaho hagati y'uwateguye event n'abandi batanga serivisi.",
         },
         {
           title: "Serivisi za VIP",
           description:
-            "Professional support for VIP guests, priority handling, reserved access guidance, and discreet high-standard service during events.",
+            "Ubufasha bw'umwuga ku bashyitsi b'icyubahiro (VIP), kubakira mu buryo bwihariye, no kubayobora aho bateganyirijwe.",
         },
         {
           title: "Ushers b'Umwuga",
           description:
-            "Well-presented ushers to guide guests, manage seating, support venue flow, and help maintain an orderly event environment.",
+            "Ushers bateguye neza kugira ngo bayobore abashyitsi, babereke aho bicara, kandi bafashe kumenya uko abantu bimuka mu nzu.",
         },
         {
           title: "Gucunga Hospitality",
           description:
-            "Structured hospitality oversight for guest comfort, service experience, presentation quality, and front-facing event professionalism.",
+            "Gukurikirana ko abashyitsi bameze neza, serivisi bahabwa, n'ubunyamwuga mu bijyanye no kwakira abantu.",
         },
       ],
       whyTitle: "Kuki RiFi",
@@ -426,6 +479,59 @@ export const translations = {
         "Vugisha RiFi Entertainment ku itegurwa rya protocol, ushers, kwakira abanyacyubahiro, na hospitality i Kigali mu Rwanda.",
       requestService: "Saba Serivisi",
       whatsappUs: "Twandikire kuri WhatsApp",
+    },
+    about: {
+      eyebrow: "Abo Turi Bo",
+      missionTitle: "Inshingano Zacu",
+      missionText: "Guhindura buri birori mu buryo budasanzwe dutanga imyidagaduro yo ku rwego rwo hejuru, protocol y'umwuga, n'ibisubizo bishya mu gutegura ibirori mu Rwanda no hanze yaho.",
+      visionTitle: "Icyerekezo Cyacu",
+      visionText: "Kuba ikigo kiyoboye mu myidagaduro n'ibirori mu akarere, kizwiho guhanga udushya, ubunyamwuga, no gufasha impano ducunga gukura.",
+      valuesTitle: "Indangagaciro Zacu",
+      workWithUsTitle: "Dukorane",
+      workWithUsText: "Witeguye kuzamura ibirori byawe bitaha ubufashijwe n'ubunyamwuga bwa RiFi Entertainment?",
+      getInTouch: "Twandikire Uyu Munsi",
+      philosophyTitle: "Imyemerere Yacu",
+      philosophyText: "\"Twemera ko buri birori bivuga inkuru. Muri RiFi, ntitucunga gusa ibirori; dutegura ibihe biguma mu mitima y'abashyitsi bawe n'iyo umuziki wahagaze.\"",
+      values: {
+        excellence: {
+          label: "Ubunyamwuga",
+          description: "Tuharanira urwego rwo hejuru muri buri birori n'imyidagaduro dutanga.",
+        },
+        professionalism: {
+          label: "Kuba Umunyamwuga",
+          description: "Itsinda ryacu ryatojwe gutanga serivisi za elite protocol no guhuza ibikorwa.",
+        },
+        reliability: {
+          label: "Kwizigirwa",
+          description: "Abakiliya batugirira icyizere cyo gucunga ibihe byabo by'ingenzi neza.",
+        },
+        vision: {
+          label: "Icyerekezo",
+          description: "Guhanga uburambe budasanzwe kandi butazibagirana buhuye n'ibyo ukeneye.",
+        },
+      },
+    },
+    contact: {
+      eyebrow: "Twandikire",
+      title: "Tangira Ikiganiro",
+      description: "Vugisha RiFi Entertainment uyu munsi tugufashe guhanga uburambe budasanzwe mu birori byawe, imyidagaduro, ingendo, n'ibirori bitandukanye. Itsinda ryacu ryiteguye kugufasha kuri booking, ibibazo, ubufatanye, na serivisi zihariye ziteguwe hakurikijwe icyo wifuza.",
+      secondaryDescription: "Waba utegura ubukwe, utegura ibirori by'ikigo, ushaka abamodeli b'umwuga, ushaka imyidagaduro y'imbyino, cyangwa utegura ingendo, turi hano kugira ngo tuguhe ubufasha bw'umwuga na serivisi nziza muri buri ntambwe. Waba ufite ikibazo cyangwa ushaka booking? Twandikire ukoresheje uburyo buri munsi.",
+      infoTitle: "Amakuru y'Itumanaho",
+      quickSupportTitle: "Ubufasha bwihuse",
+      quickSupportText: "Ukeneye igisubizo cyihuse? WhatsApp yacu ni uburyo bwihuse bwo kuvugana n'itsinda rishinzwe booking.",
+      chatWhatsApp: "Twandikire kuri WhatsApp",
+      formTitle: "Tyoherereze Ubutumwa",
+      formName: "Amazina Yose",
+      formNamePlaceholder: "Amazina Yawe",
+      formEmail: "Imeli Address",
+      formEmailPlaceholder: "izina@rugero.com",
+      formSubject: "Icyo ushaka",
+      formSubjectPlaceholder: "Twagufasha ute?",
+      formMessage: "Ubutumwa",
+      formMessagePlaceholder: "Tubwire kuri event yawe...",
+      formSubmit: "Ohereza Ubutumwa",
+      mapTitle: "Sura Ibiro Byacu",
+      location: "Kigali, Rwanda",
     },
   },
   fr: {
@@ -587,27 +693,27 @@ export const translations = {
         {
           title: "Accueil des Invités",
           description:
-            "Warm and organized guest arrival handling, registration flow, direction support, and first-contact hospitality for private and corporate events.",
+            "Accueil chaleureux et organisé des invités, gestion du flux d'inscription, aide à l'orientation et hospitalité de premier contact pour les événements privés et d'entreprise.",
         },
         {
           title: "Coordination d'Événements",
           description:
-            "On-site coordination for schedules, guest movement, vendor timing, and smooth communication between the host team and service providers.",
+            "Coordination sur site pour les horaires, les déplacements des invités, le timing des fournisseurs et une communication fluide entre l'équipe hôte et les prestataires de services.",
         },
         {
           title: "Services VIP",
           description:
-            "Professional support for VIP guests, priority handling, reserved access guidance, and discreet high-standard service during events.",
+            "Soutien professionnel pour les invités VIP, gestion prioritaire, orientation vers l'accès réservé et service discret de haut niveau pendant les événements.",
         },
         {
           title: "Hôtesses & Stewards Professionnels",
           description:
-            "Well-presented ushers to guide guests, manage seating, support venue flow, and help maintain an orderly event environment.",
+            "Ushers bien présentés pour guider les invités, gérer les places assises, soutenir le flux du lieu et aider à maintenir un environnement événementiel ordonné.",
         },
         {
           title: "Gestion de l'Hospitalité",
           description:
-            "Structured hospitality oversight for guest comfort, service experience, presentation quality, and front-facing event professionalism.",
+            "Supervision structurée de l'hospitalité pour le confort des invités, l'expérience de service, la qualité de la présentation et le professionnalisme de l'événement en contact avec le public.",
         },
       ],
       whyTitle: "Pourquoi RiFi",
@@ -637,6 +743,59 @@ export const translations = {
       requestService: "Demander le service",
       whatsappUs: "Écrivez-nous sur WhatsApp",
     },
+    about: {
+      eyebrow: "Qui Sommes-Nous",
+      missionTitle: "Notre Mission",
+      missionText: "Transformer chaque événement en une expérience extraordinaire en fournissant un divertissement de classe mondiale, un protocole professionnel et des solutions de gestion d'événements innovantes au Rwanda et au-delà.",
+      visionTitle: "Notre Vision",
+      visionText: "Être l'agence de divertissement et d'événements leader dans la région, reconnue pour notre créativité, notre excellence et la croissance professionnelle des talents que nous gérons.",
+      valuesTitle: "Nos Valeurs Fondamentales",
+      workWithUsTitle: "Travaillez avec Nous",
+      workWithUsText: "Prêt à élever votre prochain événement avec la touche professionnelle de RiFi Entertainment ?",
+      getInTouch: "Contactez-nous Aujourd'hui",
+      philosophyTitle: "Notre Philosophie",
+      philosophyText: "\"Nous croyons que chaque célébration raconte une histoire. Chez RiFi, nous ne gérons pas seulement des événements ; nous créons des moments qui restent gravés dans le cœur de vos invités longtemps après que la musique s'arrête.\"",
+      values: {
+        excellence: {
+          label: "Excellence",
+          description: "Nous visons les normes les plus élevées dans chaque événement et performance que nous livrons.",
+        },
+        professionalism: {
+          label: "Professionnalisme",
+          description: "Notre équipe est formée pour fournir des services de protocole et de coordination d'élite.",
+        },
+        reliability: {
+          label: "Fiabilité",
+          description: "Les clients nous font confiance pour gérer leurs moments les plus importants avec précision.",
+        },
+        vision: {
+          label: "Vision",
+          description: "Créer des expériences uniques et inoubliables adaptées à vos besoins.",
+        },
+      },
+    },
+    contact: {
+      eyebrow: "Contactez-nous",
+      title: "Commençons une Conversation",
+      description: "Contactez RiFi Entertainment dès aujourd'hui et laissez-nous vous aider à créer des expériences inoubliables pour vos événements spéciaux, vos besoins en divertissement, vos visites et vos célébrations. Notre équipe est prête à vous aider avec les réservations, les demandes, les collaborations et les services personnalisés conçus pour correspondre à votre vision.",
+      secondaryDescription: "Que vous planifiiez un mariage, organisiez un événement d'entreprise, recherchiez des mannequins professionnels, réserviez des spectacles de danse ou organisiez des services de voyage et de tourisme, nous sommes là pour vous fournir un soutien professionnel et un service exceptionnel à chaque étape. Vous avez une question ou vous cherchez à réserver un événement ? Contactez-nous via l'un des canaux ci-dessous.",
+      infoTitle: "Coordonnées",
+      quickSupportTitle: "Support Rapide",
+      quickSupportText: "Besoin d'une réponse immédiate ? Notre ligne WhatsApp est le moyen le plus rapide de contacter notre équipe de réservation.",
+      chatWhatsApp: "Discuter sur WhatsApp",
+      formTitle: "Envoyez-nous un Message",
+      formName: "Nom Complet",
+      formNamePlaceholder: "Votre Nom",
+      formEmail: "Adresse Email",
+      formEmailPlaceholder: "nom@exemple.com",
+      formSubject: "Objet",
+      formSubjectPlaceholder: "Comment pouvons-nous vous aider ?",
+      formMessage: "Message",
+      formMessagePlaceholder: "Parlez-nous de votre événement...",
+      formSubmit: "Envoyer le Message",
+      mapTitle: "Visitez Nos Bureaux",
+      location: "Kigali, Rwanda",
+    },
   },
 } as const
 
@@ -654,29 +813,25 @@ export function getLanguageFromSearchParams(
 
 export function useCurrentLanguage() {
   const searchParams = useSearchParams()
+  const [language, setLanguage] = useState<LanguageCode>(defaultLanguage)
 
-  return useMemo(() => {
+  useEffect(() => {
     const paramLang = getLanguageFromSearchParams(searchParams)
+    const storedLang = typeof window !== "undefined" ? localStorage.getItem(LANGUAGE_STORAGE_KEY) : null
 
-    if (typeof window !== "undefined") {
-      if (paramLang) {
-        localStorage.setItem(LANGUAGE_STORAGE_KEY, paramLang)
-        return paramLang
-      }
-
-      const storedLang = localStorage.getItem(LANGUAGE_STORAGE_KEY)
-      if (
-        storedLang &&
-        siteConfig.languages.some((l) => l.code === storedLang)
-      ) {
-        return storedLang as LanguageCode
-      }
+    if (paramLang) {
+      setLanguage(paramLang)
+      localStorage.setItem(LANGUAGE_STORAGE_KEY, paramLang)
+    } else if (
+      storedLang &&
+      siteConfig.languages.some((l) => l.code === storedLang)
+    ) {
+      setLanguage(storedLang as LanguageCode)
     }
-
-    return paramLang || defaultLanguage
   }, [searchParams])
-}
 
+  return language
+}
 
 export function useTranslations() {
   const language = useCurrentLanguage()

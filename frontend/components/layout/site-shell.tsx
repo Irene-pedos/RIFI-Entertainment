@@ -16,7 +16,7 @@ export function SiteShell({ children }: SiteShellProps) {
           <SiteHeader />
         </Suspense>
       </div>
-      <main className="flex-1 pt-28 sm:pt-32">
+      <main className="flex-1 pt-20 sm:pt-24">
         <Suspense fallback={null}>{children}</Suspense>
       </main>
       <Suspense fallback={null}>
