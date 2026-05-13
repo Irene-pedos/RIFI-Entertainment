@@ -8,6 +8,13 @@ import {
   Plus,
   Search,
   Loader2,
+  CheckCircle,
+  AlertCircle,
+  X,
+  Eye,
+  Edit,
+  Trash2,
+  Check,
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -52,28 +59,74 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { trpc } from "@/lib/trpc"
+import { cn } from "@/lib/utils"
 
 export default function BookingsPage() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false)
+  const [isDetailsDialogOpen, setIsDetailsDialogOpen] = React.useState(false)
+  const [isEditDialogOpen, setIsEditDialogOpen] = React.useState(false)
+  const [selectedBooking, setSelectedBooking] = React.useState<any>(null)
   const [searchQuery, setSearchQuery] = React.useState("")
+  const [selectedIds, setSelectedIds] = React.useState<Set<string>>(new Set())
+  const [feedback, setFeedback] = React.useState<{ type: 'success' | 'error', message: string } | null>(null)
+  
   const utils = trpc.useUtils()
 
   const { data: bookings, isLoading: isBookingsLoading } = trpc.booking.list.useQuery()
   const { data: summary, isLoading: isSummaryLoading } = trpc.booking.dashboardSummary.useQuery()
+
+  React.useEffect(() => {
+    if (feedback) {
+      const timer = setTimeout(() => setFeedback(null), 5000)
+      return () => clearTimeout(timer)
+    }
+  }, [feedback])
 
   const createMutation = trpc.booking.create.useMutation({
     onSuccess: () => {
       utils.booking.list.invalidate()
       utils.booking.dashboardSummary.invalidate()
       setIsCreateDialogOpen(false)
+      setFeedback({ type: 'success', message: 'Booking created successfully' })
     },
+    onError: (error) => {
+      setFeedback({ type: 'error', message: error.message || 'Failed to create booking' })
+    }
+  })
+
+  const updateMutation = trpc.booking.update.useMutation({
+    onSuccess: () => {
+      utils.booking.list.invalidate()
+      utils.booking.dashboardSummary.invalidate()
+      setIsEditDialogOpen(false)
+      setFeedback({ type: 'success', message: 'Booking updated successfully' })
+    },
+    onError: (error) => {
+      setFeedback({ type: 'error', message: error.message || 'Failed to update booking' })
+    }
   })
 
   const updateStatusMutation = trpc.booking.updateStatus.useMutation({
     onSuccess: () => {
       utils.booking.list.invalidate()
       utils.booking.dashboardSummary.invalidate()
+      setFeedback({ type: 'success', message: 'Status updated successfully' })
     },
+    onError: (error) => {
+      setFeedback({ type: 'error', message: error.message || 'Failed to update status' })
+    }
+  })
+
+  const bulkUpdateStatusMutation = trpc.booking.bulkUpdateStatus.useMutation({
+    onSuccess: () => {
+      utils.booking.list.invalidate()
+      utils.booking.dashboardSummary.invalidate()
+      setSelectedIds(new Set())
+      setFeedback({ type: 'success', message: 'Selected bookings updated successfully' })
+    },
+    onError: (error) => {
+      setFeedback({ type: 'error', message: error.message || 'Failed to update selected bookings' })
+    }
   })
 
   const handleCreateBooking = (e: React.FormEvent<HTMLFormElement>) => {
@@ -85,8 +138,26 @@ export default function BookingsPage() {
       email: formData.get("email") as string,
       phone: formData.get("phone") as string,
       serviceType: formData.get("service") as any,
-      eventDate: formData.get("date") as string,
+      eventDate: formData.get("date") as string || undefined,
       sourcePage: "admin-dashboard",
+    })
+  }
+
+  const handleEditBooking = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (!selectedBooking) return
+
+    const formData = new FormData(e.currentTarget)
+    updateMutation.mutate({
+      id: selectedBooking.id,
+      data: {
+        clientName: formData.get("client") as string,
+        email: formData.get("email") as string,
+        phone: formData.get("phone") as string,
+        serviceType: formData.get("service") as any,
+        eventDate: formData.get("date") as string || undefined,
+        notes: formData.get("notes") as string,
+      }
     })
   }
 
@@ -96,8 +167,37 @@ export default function BookingsPage() {
     b.bookingCode.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
+  const toggleSelectAll = () => {
+    if (selectedIds.size === filteredBookings?.length && filteredBookings.length > 0) {
+      setSelectedIds(new Set())
+    } else {
+      setSelectedIds(new Set(filteredBookings?.map(b => b.id)))
+    }
+  }
+
+  const toggleSelect = (id: string) => {
+    const newSet = new Set(selectedIds)
+    if (newSet.has(id)) newSet.delete(id)
+    else newSet.add(id)
+    setSelectedIds(newSet)
+  }
+
   return (
-    <div className="space-y-6 pt-6">
+    <div className="space-y-6 pt-6 relative">
+      {/* Feedback Message */}
+      {feedback && (
+        <div className={cn(
+          "fixed top-4 right-4 z-50 flex items-center gap-3 p-4 shadow-lg border rounded-none transition-all duration-300 animate-in fade-in slide-in-from-top-4",
+          feedback.type === 'success' ? "bg-emerald-50 border-emerald-200 text-emerald-800" : "bg-destructive/5 border-destructive/20 text-destructive"
+        )}>
+          {feedback.type === 'success' ? <CheckCircle className="size-5" /> : <AlertCircle className="size-5" />}
+          <p className="text-sm font-medium">{feedback.message}</p>
+          <button onClick={() => setFeedback(null)} className="ml-2 hover:opacity-70">
+            <X className="size-4" />
+          </button>
+        </div>
+      )}
+
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-col gap-1">
           <h1 className="text-3xl font-semibold tracking-tight">Manage Bookings</h1>
@@ -105,63 +205,86 @@ export default function BookingsPage() {
             View and manage all service bookings and event schedules.
           </p>
         </div>
-        <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-          <DialogTrigger asChild>
-            <Button className="rounded-none">
-              <Plus className="mr-2 size-4" />
-              New Booking
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="rounded-none border-border/70 sm:max-w-[425px]">
-            <form onSubmit={handleCreateBooking}>
-              <DialogHeader>
-                <DialogTitle>Create New Booking</DialogTitle>
-                <DialogDescription>
-                  Enter the client details and service requirements for the new booking.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="client" className="text-xs font-semibold uppercase tracking-wider">Client Name</Label>
-                  <Input id="client" name="client" required placeholder="e.g. Jean Paul" className="rounded-none border-border/70" />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider">Email Address</Label>
-                  <Input id="email" name="email" type="email" required placeholder="client@example.rw" className="rounded-none border-border/70" />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="phone" className="text-xs font-semibold uppercase tracking-wider">Phone Number</Label>
-                  <Input id="phone" name="phone" required placeholder="+250 788 000 000" className="rounded-none border-border/70" />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="service" className="text-xs font-semibold uppercase tracking-wider">Service Type</Label>
-                  <Select name="service" required defaultValue="WEDDING">
-                    <SelectTrigger id="service" className="rounded-none border-border/70">
-                      <SelectValue placeholder="Select a service" />
-                    </SelectTrigger>
-                    <SelectContent className="rounded-none border-border/70">
-                      <SelectItem value="WEDDING">Wedding Organization</SelectItem>
-                      <SelectItem value="DANCE">Dance Performance</SelectItem>
-                      <SelectItem value="MODELS">Model Booking</SelectItem>
-                      <SelectItem value="PROTOCOL">Protocol Services</SelectItem>
-                      <SelectItem value="TOURS">Tours & Travel</SelectItem>
-                      <SelectItem value="MEDIA">Media Production</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="date" className="text-xs font-semibold uppercase tracking-wider">Event Date</Label>
-                  <Input id="date" name="date" type="date" className="rounded-none border-border/70" />
-                </div>
-              </div>
-              <DialogFooter>
-                <Button type="submit" className="rounded-none w-full" disabled={createMutation.isPending}>
-                  {createMutation.isPending ? "Creating..." : "Confirm Booking"}
+        <div className="flex gap-2">
+          {selectedIds.size > 0 && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="rounded-none border-primary/20 bg-primary/5 text-primary">
+                  Bulk Actions ({selectedIds.size})
                 </Button>
-              </DialogFooter>
-            </form>
-          </DialogContent>
-        </Dialog>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="rounded-none">
+                <DropdownMenuLabel>Change Status To</DropdownMenuLabel>
+                <DropdownMenuItem onClick={() => bulkUpdateStatusMutation.mutate({ ids: Array.from(selectedIds), status: 'CONFIRMED' })}>
+                  Confirmed
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => bulkUpdateStatusMutation.mutate({ ids: Array.from(selectedIds), status: 'COMPLETED' })}>
+                  Completed
+                </DropdownMenuItem>
+                <DropdownMenuItem className="text-destructive" onClick={() => bulkUpdateStatusMutation.mutate({ ids: Array.from(selectedIds), status: 'CANCELLED' })}>
+                  Cancelled
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+          <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="rounded-none">
+                <Plus className="mr-2 size-4" />
+                New Booking
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="rounded-none border-border/70 sm:max-w-[425px]">
+              <form onSubmit={handleCreateBooking}>
+                <DialogHeader>
+                  <DialogTitle>Create New Booking</DialogTitle>
+                  <DialogDescription>
+                    Enter the client details and service requirements for the new booking.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="client" className="text-xs font-semibold uppercase tracking-wider">Client Name</Label>
+                    <Input id="client" name="client" required placeholder="e.g. Jean Paul" className="rounded-none border-border/70" />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider">Email Address</Label>
+                    <Input id="email" name="email" type="email" required placeholder="client@example.rw" className="rounded-none border-border/70" />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="phone" className="text-xs font-semibold uppercase tracking-wider">Phone Number</Label>
+                    <Input id="phone" name="phone" required placeholder="+250 788 000 000" className="rounded-none border-border/70" />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="service" className="text-xs font-semibold uppercase tracking-wider">Service Type</Label>
+                    <Select name="service" required defaultValue="WEDDING">
+                      <SelectTrigger id="service" className="rounded-none border-border/70">
+                        <SelectValue placeholder="Select a service" />
+                      </SelectTrigger>
+                      <SelectContent className="rounded-none border-border/70">
+                        <SelectItem value="WEDDING">Wedding Organization</SelectItem>
+                        <SelectItem value="DANCE">Dance Performance</SelectItem>
+                        <SelectItem value="MODELS">Model Booking</SelectItem>
+                        <SelectItem value="PROTOCOL">Protocol Services</SelectItem>
+                        <SelectItem value="TOURS">Tours & Travel</SelectItem>
+                        <SelectItem value="MEDIA">Media Production</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="date" className="text-xs font-semibold uppercase tracking-wider">Event Date</Label>
+                    <Input id="date" name="date" type="date" className="rounded-none border-border/70" />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button type="submit" className="rounded-none w-full" disabled={createMutation.isPending}>
+                    {createMutation.isPending ? "Creating..." : "Confirm Booking"}
+                  </Button>
+                </DialogFooter>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
@@ -240,6 +363,14 @@ export default function BookingsPage() {
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent border-b border-border/70">
+                <TableHead className="w-[40px]">
+                  <input 
+                    type="checkbox" 
+                    className="size-4 accent-primary rounded-none"
+                    checked={!!filteredBookings?.length && selectedIds.size === filteredBookings.length}
+                    onChange={toggleSelectAll}
+                  />
+                </TableHead>
                 <TableHead className="w-[100px] text-xs font-semibold uppercase tracking-wider">Code</TableHead>
                 <TableHead className="text-xs font-semibold uppercase tracking-wider">Client</TableHead>
                 <TableHead className="text-xs font-semibold uppercase tracking-wider">Service</TableHead>
@@ -252,18 +383,29 @@ export default function BookingsPage() {
             <TableBody>
               {isBookingsLoading ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="h-24 text-center">
+                  <TableCell colSpan={8} className="h-24 text-center">
                     <Loader2 className="animate-spin size-6 mx-auto" />
                   </TableCell>
                 </TableRow>
               ) : filteredBookings?.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="h-24 text-center text-muted-foreground">
+                  <TableCell colSpan={8} className="h-24 text-center text-muted-foreground">
                     No bookings found.
                   </TableCell>
                 </TableRow>
               ) : filteredBookings?.map((booking) => (
-                <TableRow key={booking.id} className="hover:bg-muted/30 border-b border-border/70">
+                <TableRow key={booking.id} className={cn(
+                  "hover:bg-muted/30 border-b border-border/70 transition-colors",
+                  selectedIds.has(booking.id) && "bg-primary/5"
+                )}>
+                  <TableCell>
+                    <input 
+                      type="checkbox" 
+                      className="size-4 accent-primary rounded-none"
+                      checked={selectedIds.has(booking.id)}
+                      onChange={() => toggleSelect(booking.id)}
+                    />
+                  </TableCell>
                   <TableCell className="font-mono text-xs text-muted-foreground">{booking.bookingCode}</TableCell>
                   <TableCell>
                     <div className="flex flex-col">
@@ -276,13 +418,14 @@ export default function BookingsPage() {
                     {booking.eventDate ? new Date(booking.eventDate).toLocaleDateString() : "TBD"}
                   </TableCell>
                   <TableCell>
-                    <span className={`inline-flex items-center border px-2 py-0.5 text-[10px] font-medium ${
+                    <span className={cn(
+                      "inline-flex items-center border px-2 py-0.5 text-[10px] font-medium uppercase tracking-tight",
                       booking.status === 'CONFIRMED' ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-600' :
                       booking.status === 'PENDING' ? 'border-amber-500/20 bg-amber-500/10 text-amber-600' :
                       booking.status === 'CANCELLED' ? 'border-destructive/20 bg-destructive/10 text-destructive' :
                       booking.status === 'COMPLETED' ? 'border-blue-500/20 bg-blue-500/10 text-blue-600' :
                       'border-muted-foreground/20 bg-muted/10 text-muted-foreground'
-                    }`}>
+                    )}>
                       {booking.status}
                     </span>
                   </TableCell>
@@ -298,25 +441,40 @@ export default function BookingsPage() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="rounded-none">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem>View Details</DropdownMenuItem>
-                        <DropdownMenuItem>Edit Booking</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => {
+                          setSelectedBooking(booking);
+                          setIsDetailsDialogOpen(true);
+                        }}>
+                          <Eye className="mr-2 size-3.5" />
+                          View Details
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => {
+                          setSelectedBooking(booking);
+                          setIsEditDialogOpen(true);
+                        }}>
+                          <Edit className="mr-2 size-3.5" />
+                          Edit Booking
+                        </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem 
                           className="text-emerald-600"
                           onClick={() => updateStatusMutation.mutate({ id: booking.id, status: "CONFIRMED" })}
                         >
+                          <Check className="mr-2 size-3.5" />
                           Mark as Confirmed
                         </DropdownMenuItem>
                         <DropdownMenuItem 
                           className="text-blue-600"
                           onClick={() => updateStatusMutation.mutate({ id: booking.id, status: "COMPLETED" })}
                         >
+                          <CheckCircle className="mr-2 size-3.5" />
                           Mark as Completed
                         </DropdownMenuItem>
                         <DropdownMenuItem 
                           className="text-destructive"
                           onClick={() => updateStatusMutation.mutate({ id: booking.id, status: "CANCELLED" })}
                         >
+                          <X className="mr-2 size-3.5" />
                           Cancel Booking
                         </DropdownMenuItem>
                       </DropdownMenuContent>
@@ -328,6 +486,129 @@ export default function BookingsPage() {
           </Table>
         </CardContent>
       </Card>
+
+      {/* Details Dialog */}
+      <Dialog open={isDetailsDialogOpen} onOpenChange={setIsDetailsDialogOpen}>
+        <DialogContent className="rounded-none border-border/70 sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Booking Details</DialogTitle>
+            <DialogDescription>
+              Full information for booking {selectedBooking?.bookingCode}
+            </DialogDescription>
+          </DialogHeader>
+          {selectedBooking && (
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-2 gap-4 border-b border-border/50 pb-4">
+                <div className="space-y-1">
+                  <span className="text-[10px] font-semibold uppercase text-muted-foreground">Client Name</span>
+                  <p className="text-sm font-medium">{selectedBooking.clientName}</p>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-[10px] font-semibold uppercase text-muted-foreground">Email</span>
+                  <p className="text-sm font-medium">{selectedBooking.email}</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4 border-b border-border/50 pb-4">
+                <div className="space-y-1">
+                  <span className="text-[10px] font-semibold uppercase text-muted-foreground">Phone</span>
+                  <p className="text-sm font-medium">{selectedBooking.phone}</p>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-[10px] font-semibold uppercase text-muted-foreground">Service Type</span>
+                  <p className="text-sm font-medium">{selectedBooking.serviceType}</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4 border-b border-border/50 pb-4">
+                <div className="space-y-1">
+                  <span className="text-[10px] font-semibold uppercase text-muted-foreground">Event Date</span>
+                  <p className="text-sm font-medium">{selectedBooking.eventDate ? new Date(selectedBooking.eventDate).toLocaleDateString() : 'Not set'}</p>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-[10px] font-semibold uppercase text-muted-foreground">Status</span>
+                  <div>
+                    <span className={cn(
+                      "inline-flex items-center border px-2 py-0.5 text-[10px] font-medium uppercase tracking-tight",
+                      selectedBooking.status === 'CONFIRMED' ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-600' :
+                      selectedBooking.status === 'PENDING' ? 'border-amber-500/20 bg-amber-500/10 text-amber-600' :
+                      selectedBooking.status === 'CANCELLED' ? 'border-destructive/20 bg-destructive/10 text-destructive' :
+                      selectedBooking.status === 'COMPLETED' ? 'border-blue-500/20 bg-blue-500/10 text-blue-600' :
+                      'border-muted-foreground/20 bg-muted/10 text-muted-foreground'
+                    )}>
+                      {selectedBooking.status}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="space-y-1">
+                <span className="text-[10px] font-semibold uppercase text-muted-foreground">Message / Notes</span>
+                <p className="text-sm leading-relaxed">{selectedBooking.message || selectedBooking.notes || 'No notes provided.'}</p>
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button onClick={() => setIsDetailsDialogOpen(false)} className="rounded-none w-full">Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="rounded-none border-border/70 sm:max-w-[425px]">
+          <form onSubmit={handleEditBooking}>
+            <DialogHeader>
+              <DialogTitle>Edit Booking</DialogTitle>
+              <DialogDescription>
+                Update the information for {selectedBooking?.bookingCode}
+              </DialogDescription>
+            </DialogHeader>
+            {selectedBooking && (
+              <div className="grid gap-4 py-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="edit-client" className="text-xs font-semibold uppercase tracking-wider">Client Name</Label>
+                  <Input id="edit-client" name="client" defaultValue={selectedBooking.clientName} required className="rounded-none border-border/70" />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="edit-email" className="text-xs font-semibold uppercase tracking-wider">Email Address</Label>
+                  <Input id="edit-email" name="email" type="email" defaultValue={selectedBooking.email} required className="rounded-none border-border/70" />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="edit-phone" className="text-xs font-semibold uppercase tracking-wider">Phone Number</Label>
+                  <Input id="edit-phone" name="phone" defaultValue={selectedBooking.phone} required className="rounded-none border-border/70" />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="edit-service" className="text-xs font-semibold uppercase tracking-wider">Service Type</Label>
+                  <Select name="service" defaultValue={selectedBooking.serviceType}>
+                    <SelectTrigger id="edit-service" className="rounded-none border-border/70">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-none border-border/70">
+                      <SelectItem value="WEDDING">Wedding Organization</SelectItem>
+                      <SelectItem value="DANCE">Dance Performance</SelectItem>
+                      <SelectItem value="MODELS">Model Booking</SelectItem>
+                      <SelectItem value="PROTOCOL">Protocol Services</SelectItem>
+                      <SelectItem value="TOURS">Tours & Travel</SelectItem>
+                      <SelectItem value="MEDIA">Media Production</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="edit-date" className="text-xs font-semibold uppercase tracking-wider">Event Date</Label>
+                  <Input id="edit-date" name="date" type="date" defaultValue={selectedBooking.eventDate ? new Date(selectedBooking.eventDate).toISOString().split('T')[0] : ''} className="rounded-none border-border/70" />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="edit-notes" className="text-xs font-semibold uppercase tracking-wider">Notes</Label>
+                  <textarea id="edit-notes" name="notes" defaultValue={selectedBooking.notes || ''} className="min-h-[80px] w-full rounded-none border border-border/70 bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
+                </div>
+              </div>
+            )}
+            <DialogFooter>
+              <Button type="submit" className="rounded-none w-full" disabled={updateMutation.isPending}>
+                {updateMutation.isPending ? "Saving..." : "Save Changes"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

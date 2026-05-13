@@ -46,14 +46,13 @@ export default function RootLayout({
       lang="en"
       suppressHydrationWarning
       className={cn(
-        "font-sans antialiased",
+        "antialiased",
         fontMono.variable,
-        "font-sans",
         notoSans.variable,
         interHeading.variable
       )}
     >
-      <body>
+      <body suppressHydrationWarning>
         <TRPCProvider>
           <ThemeProvider>
             <Suspense fallback={null}>

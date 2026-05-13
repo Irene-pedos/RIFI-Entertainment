@@ -12,6 +12,9 @@ import {
   Loader2,
   Trash2,
   Edit,
+  CheckCircle,
+  AlertCircle,
+  X,
 } from "lucide-react"
 import Image from "next/image"
 
@@ -48,6 +51,7 @@ import {
 } from "@/components/ui/select"
 import { trpc } from "@/lib/trpc"
 import { supabase } from "@/lib/supabase"
+import { cn } from "@/lib/utils"
 
 type MediaCategory = 'HERO' | 'GALLERY' | 'SERVICE' | 'TEAM' | 'OTHER';
 
@@ -59,7 +63,18 @@ export default function AdminMediaLibrary() {
   const [uploading, setUploading] = React.useState(false)
   const [editingItem, setEditingItem] = React.useState<any>(null)
   
+  const [feedback, setFeedback] = React.useState<{ type: 'success' | 'error', message: string } | null>(null)
+  const fileInputRef = React.useRef<HTMLInputElement>(null)
+  
   const utils = trpc.useUtils()
+
+  React.useEffect(() => {
+    if (feedback) {
+      const timer = setTimeout(() => setFeedback(null), 5000)
+      return () => clearTimeout(timer)
+    }
+  }, [feedback])
+
   const { data: mediaItems, isLoading } = trpc.media.list.useQuery(
     selectedCategory === "ALL" ? undefined : { category: selectedCategory as any }
   )
@@ -68,6 +83,10 @@ export default function AdminMediaLibrary() {
     onSuccess: () => {
       utils.media.list.invalidate()
       setIsUploadOpen(false)
+      setFeedback({ type: 'success', message: 'File uploaded and registered successfully' })
+    },
+    onError: (error) => {
+      setFeedback({ type: 'error', message: `Metadata error: ${error.message}` })
     }
   })
 
@@ -75,11 +94,21 @@ export default function AdminMediaLibrary() {
     onSuccess: () => {
       utils.media.list.invalidate()
       setIsEditOpen(false)
+      setFeedback({ type: 'success', message: 'Metadata updated successfully' })
+    },
+    onError: (error) => {
+      setFeedback({ type: 'error', message: error.message })
     }
   })
 
   const deleteMetadataMutation = trpc.media.deleteMetadata.useMutation({
-    onSuccess: () => utils.media.list.invalidate()
+    onSuccess: () => {
+      utils.media.list.invalidate()
+      setFeedback({ type: 'success', message: 'File deleted successfully' })
+    },
+    onError: (error) => {
+      setFeedback({ type: 'error', message: error.message })
+    }
   })
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,50 +117,43 @@ export default function AdminMediaLibrary() {
 
     try {
       setUploading(true)
-      const fileExt = file.name.split('.').pop()
-      const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`
-      const filePath = `uploads/${fileName}`
+      
+      const token = localStorage.getItem("rifi_auth_token")
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/trpc"
+      const baseApiUrl = apiUrl.replace("/trpc", "")
+      
+      const formData = new FormData()
+      formData.append("file", file)
+      formData.append("category", "OTHER")
 
-      const { data, error } = await supabase.storage
-        .from('media')
-        .upload(filePath, file)
-
-      if (error) throw error
-
-      const { data: { publicUrl } } = supabase.storage
-        .from('media')
-        .getPublicUrl(filePath)
-
-      createMetadataMutation.mutate({
-        fileName,
-        originalName: file.name,
-        mimeType: file.type,
-        fileSize: file.size,
-        publicUrl,
-        storagePath: filePath,
-        category: 'OTHER',
+      const response = await fetch(`${baseApiUrl}/upload`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        },
+        body: formData
       })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || "Upload failed")
+      }
+
+      await response.json()
+      utils.media.list.invalidate()
+      setIsUploadOpen(false)
+      setFeedback({ type: 'success', message: 'File uploaded successfully' })
     } catch (error: any) {
-      alert(`Error uploading file: ${error.message}`)
+      setFeedback({ type: 'error', message: `Upload error: ${error.message}` })
     } finally {
       setUploading(false)
+      if (fileInputRef.current) fileInputRef.current.value = ''
     }
   }
 
   const handleDelete = async (item: any) => {
-    if (!confirm("Are you sure you want to delete this file?")) return
-
-    try {
-      const { error } = await supabase.storage
-        .from('media')
-        .remove([item.storagePath])
-
-      if (error) throw error
-
-      deleteMetadataMutation.mutate(item.id)
-    } catch (error: any) {
-      alert(`Error deleting file: ${error.message}`)
-    }
+    if (!confirm("Are you sure you want to delete this file? This cannot be undone.")) return
+    deleteMetadataMutation.mutate(item.id)
   }
 
   const filteredItems = mediaItems?.filter(item => 
@@ -140,7 +162,21 @@ export default function AdminMediaLibrary() {
   )
 
   return (
-    <div className="space-y-6 pt-6">
+    <div className="space-y-6 pt-6 relative">
+      {/* Feedback Message */}
+      {feedback && (
+        <div className={cn(
+          "fixed top-4 right-4 z-50 flex items-center gap-3 p-4 shadow-lg border rounded-none transition-all duration-300 animate-in fade-in slide-in-from-top-4",
+          feedback.type === 'success' ? "bg-emerald-50 border-emerald-200 text-emerald-800" : "bg-destructive/5 border-destructive/20 text-destructive"
+        )}>
+          {feedback.type === 'success' ? <CheckCircle className="size-5" /> : <AlertCircle className="size-5" />}
+          <p className="text-sm font-medium">{feedback.message}</p>
+          <button onClick={() => setFeedback(null)} className="ml-2 hover:opacity-70">
+            <X className="size-4" />
+          </button>
+        </div>
+      )}
+
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-col gap-1">
           <h1 className="text-3xl font-semibold tracking-tight">Media Library</h1>
@@ -149,8 +185,8 @@ export default function AdminMediaLibrary() {
           </p>
         </div>
         <Button className="rounded-none" onClick={() => setIsUploadOpen(true)}>
-          <Upload className="mr-2 size-4" />
-          Upload Files
+          <Plus className="mr-2 size-4" />
+          Add Media
         </Button>
       </div>
 
@@ -165,20 +201,31 @@ export default function AdminMediaLibrary() {
           <div className="grid gap-4 py-4">
             <div className="flex flex-col items-center justify-center border-2 border-dashed border-border/70 bg-muted/10 py-10 transition-colors hover:bg-muted/20">
               {uploading ? (
-                <Loader2 className="size-8 animate-spin text-primary" />
+                <div className="flex flex-col items-center gap-2">
+                  <Loader2 className="size-8 animate-spin text-primary" />
+                  <p className="text-[10px] font-medium animate-pulse">Uploading file...</p>
+                </div>
               ) : (
                 <>
                   <Upload className="size-8 text-muted-foreground opacity-40" />
                   <p className="mt-4 text-xs font-medium text-muted-foreground">
-                    Click the button below to browse files
+                    Drag and drop or click to browse
                   </p>
-                  <Input 
+                  <input 
                     type="file" 
-                    className="mt-4 border-none bg-transparent shadow-none" 
+                    ref={fileInputRef}
+                    className="hidden" 
                     onChange={handleUpload}
-                    disabled={uploading}
+                    accept="image/*,video/*"
                   />
-                  <p className="mt-1 text-[10px] text-muted-foreground/60">
+                  <Button 
+                    variant="secondary" 
+                    className="mt-4 rounded-none h-9 text-xs"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    Choose File
+                  </Button>
+                  <p className="mt-4 text-[10px] text-muted-foreground/60">
                     Maximum file size: 10MB (JPG, PNG, MP4)
                   </p>
                 </>

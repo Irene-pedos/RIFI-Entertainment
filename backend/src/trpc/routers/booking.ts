@@ -89,6 +89,26 @@ export const bookingRouter = router({
       }
     }),
 
+  bulkUpdateStatus: protectedProcedure
+    .input(z.object({
+      ids: z.array(z.string()),
+      status: z.nativeEnum(BookingStatus),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      try {
+        return await ctx.db.booking.updateMany({
+          where: { id: { in: input.ids } },
+          data: { status: input.status },
+        });
+      } catch (error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to update bookings",
+          cause: error,
+        });
+      }
+    }),
+
   update: protectedProcedure
     .input(z.object({
       id: z.string().min(1, "Booking ID is required"),

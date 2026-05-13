@@ -3,6 +3,7 @@ import { router, protectedProcedure } from "../trpc.js";
 import { MediaCategory } from "../../lib/types.js";
 import { TRPCError } from "@trpc/server";
 import { logger } from "../../lib/logger.js";
+import { supabase } from "../../lib/supabase.js";
 
 const mediaMetadataInput = z.object({
   fileName: z.string(),
@@ -79,15 +80,43 @@ export const mediaRouter = router({
     .input(z.string().min(1, "Media ID is required"))
     .mutation(async ({ ctx, input }) => {
       try {
-        const asset = await ctx.db.mediaAsset.delete({
+        const asset = await ctx.db.mediaAsset.findUnique({
           where: { id: input },
         });
-        logger.info(`Media metadata deleted: ${asset.id}`);
-        return asset;
+
+        if (!asset) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Media asset not found",
+          });
+        }
+
+        // Delete from Supabase Storage
+        try {
+          const { error: storageError } = await supabase.storage
+            .from("rifi-media")
+            .remove([asset.storagePath]);
+          
+          if (storageError) {
+            logger.error(`Storage deletion error for ${asset.storagePath}:`, storageError);
+            // We continue anyway to keep DB in sync, or we could throw. 
+            // Usually better to keep going if the file is already gone.
+          }
+        } catch (storageErr) {
+          logger.error(`Failed to delete from storage:`, storageErr);
+        }
+
+        const deletedAsset = await ctx.db.mediaAsset.delete({
+          where: { id: input },
+        });
+        
+        logger.info(`Media asset and storage deleted: ${deletedAsset.id}`);
+        return deletedAsset;
       } catch (error) {
+        if (error instanceof TRPCError) throw error;
         throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Media asset not found",
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to delete media asset",
           cause: error,
         });
       }
