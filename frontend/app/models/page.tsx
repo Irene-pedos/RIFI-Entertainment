@@ -18,6 +18,8 @@ import { useTranslations } from "@/lib/i18n"
 
 const serviceIcons = [Camera, Clapperboard, Star, Users]
 
+import { trpc } from "@/lib/trpc"
+
 export default function ModelsPage() {
   const t = useTranslations()
   const { models } = t
@@ -28,20 +30,44 @@ export default function ModelsPage() {
   const [applicationSubmitted, setApplicationSubmitted] = useState(false)
   const [bookingSubmitted, setBookingSubmitted] = useState(false)
 
+  const applyMutation = trpc.model.submitApplication.useMutation({
+    onSuccess: () => setApplicationSubmitted(true),
+  })
+
+  const bookingMutation = trpc.booking.create.useMutation({
+    onSuccess: () => setBookingSubmitted(true),
+  })
+
   const scrollToForm = (ref: React.RefObject<HTMLDivElement | null>) => {
     ref.current?.scrollIntoView({ behavior: "smooth", block: "start" })
   }
 
-  const handleApplicationSubmit = (e: React.FormEvent) => {
+  const handleApplicationSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setApplicationSubmitted(true)
-    // In a real app, you'd handle the form submission logic here
+    const formData = new FormData(e.currentTarget)
+    applyMutation.mutate({
+      fullName: formData.get("fullName") as string,
+      email: formData.get("email") as string,
+      phone: formData.get("phone") as string,
+      heightCm: Number(formData.get("height")),
+      measurements: formData.get("measurements") as string,
+      socialMedia: formData.get("socialMedia") as string,
+      experience: formData.get("experience") as string,
+    })
   }
 
-  const handleBookingSubmit = (e: React.FormEvent) => {
+  const handleBookingSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setBookingSubmitted(true)
-    // In a real app, you'd handle the form submission logic here
+    const formData = new FormData(e.currentTarget)
+    bookingMutation.mutate({
+      clientName: formData.get("clientName") as string,
+      email: formData.get("email") as string,
+      phone: formData.get("phone") as string,
+      serviceType: "MODELS",
+      eventDate: formData.get("eventDate") as string,
+      message: `Type: ${formData.get("assignmentType")}. Requirements: ${formData.get("requirements")}`,
+      sourcePage: "models",
+    })
   }
 
   const galleryItems = [
@@ -226,8 +252,9 @@ export default function ModelsPage() {
                         {models.applicationForm.fields.fullName}
                       </label>
                       <input
+                        name="fullName"
                         required
-                        className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                       />
                     </div>
                     <div className="space-y-2">
@@ -235,9 +262,10 @@ export default function ModelsPage() {
                         {models.applicationForm.fields.email}
                       </label>
                       <input
+                        name="email"
                         required
                         type="email"
-                        className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                       />
                     </div>
                   </div>
@@ -247,37 +275,54 @@ export default function ModelsPage() {
                         {models.applicationForm.fields.phone}
                       </label>
                       <input
+                        name="phone"
                         required
-                        className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                       />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium leading-none">
                         {models.applicationForm.fields.height}
                       </label>
-                      <input className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+                      <input
+                        name="height"
+                        type="number"
+                        className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      />
                     </div>
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium leading-none">
                       {models.applicationForm.fields.measurements}
                     </label>
-                    <input className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+                    <input
+                      name="measurements"
+                      className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium leading-none">
                       {models.applicationForm.fields.socialMedia}
                     </label>
-                    <input className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+                    <input
+                      name="socialMedia"
+                      className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium leading-none">
                       {models.applicationForm.fields.experience}
                     </label>
-                    <textarea className="flex min-h-[100px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+                    <textarea
+                      name="experience"
+                      className="flex min-h-[100px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    />
                   </div>
-                  <Button type="submit" className="h-12 w-full text-base">
-                    {models.applicationForm.submit}
+                  {applyMutation.error && (
+                    <p className="text-sm text-destructive">{applyMutation.error.message}</p>
+                  )}
+                  <Button type="submit" className="h-12 w-full text-base" disabled={applyMutation.isPending}>
+                    {applyMutation.isPending ? "Submitting..." : models.applicationForm.submit}
                   </Button>
                 </form>
               )}

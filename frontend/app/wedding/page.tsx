@@ -17,9 +17,9 @@ import { Button } from "@/components/ui/button"
 import { Gallery4 } from "@/components/ui/gallery4"
 import { useTranslations } from "@/lib/i18n"
 import { siteConfig } from "@/lib/site"
+import { trpc } from "@/lib/trpc"
 
 const weddingIcons = [ClipboardCheck, Utensils, Sparkles, Users, Music, Mic]
-
 const serviceKeys = ["planning", "catering", "decoration", "dance", "sax", "mc"]
 
 export default function WeddingPage() {
@@ -29,6 +29,10 @@ export default function WeddingPage() {
   const bookingFormRef = useRef<HTMLDivElement>(null)
   const [submitted, setSubmitted] = useState(false)
   const [selectedServices, setSelectedServices] = useState<string[]>([])
+
+  const mutation = trpc.booking.create.useMutation({
+    onSuccess: () => setSubmitted(true),
+  })
 
   const scrollToForm = (serviceKey?: string) => {
     if (serviceKey) {
@@ -42,45 +46,51 @@ export default function WeddingPage() {
     })
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setSubmitted(true)
-    // Form submission logic would go here
+    const formData = new FormData(e.currentTarget)
+    
+    mutation.mutate({
+      clientName: formData.get("coupleNames") as string,
+      email: formData.get("email") as string,
+      phone: formData.get("phone") as string,
+      serviceType: "WEDDING",
+      eventDate: formData.get("weddingDate") as string,
+      location: formData.get("location") as string,
+      guestCount: Number(formData.get("estimatedGuests")),
+      message: `Services: ${selectedServices.join(", ")}. Details: ${formData.get("additionalDetails")}`,
+      sourcePage: "wedding",
+    })
   }
 
   const galleryItems = [
     {
       id: "1",
       title: "Elegant Reception",
-      description:
-        "Sophisticated decor and lighting for an unforgettable night.",
+      description: "Sophisticated decor and lighting for an unforgettable night.",
       href: "/gallery?category=wedding",
-      image:
-        "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&q=80&w=800",
+      image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&q=80&w=800",
     },
     {
       id: "2",
       title: "Traditional Celebration",
       description: "Authentic cultural performances and ceremonies.",
       href: "/gallery?category=wedding",
-      image:
-        "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800",
+      image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800",
     },
     {
       id: "3",
       title: "Outdoor Ceremony",
       description: "Beautiful garden settings and floral arrangements.",
       href: "/gallery?category=wedding",
-      image:
-        "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800",
+      image: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800",
     },
     {
       id: "4",
       title: "Premium Catering",
       description: "Exquisite culinary presentation and service.",
       href: "/gallery?category=wedding",
-      image:
-        "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&q=80&w=800",
+      image: "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&q=80&w=800",
     },
   ]
 
@@ -112,7 +122,6 @@ export default function WeddingPage() {
       </div>
 
       <div className="flex flex-col gap-12 md:gap-24 lg:gap-32">
-        {/* Features List Section */}
         <section className="mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-8">
           <div className="rounded-3xl border border-primary/10 bg-primary/5 p-8 md:p-12">
             <h2 className="font-heading text-2xl font-semibold tracking-tight md:text-3xl">
@@ -141,7 +150,6 @@ export default function WeddingPage() {
           </div>
         </section>
 
-        {/* Services Section */}
         <section className="mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-8">
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {wedding.services.map((service, index) => {
@@ -178,7 +186,6 @@ export default function WeddingPage() {
           </div>
         </section>
 
-        {/* Gallery Section */}
         <section className="mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-8">
           <Gallery4
             title="Wedding Highlights"
@@ -187,7 +194,6 @@ export default function WeddingPage() {
           />
         </section>
 
-        {/* Inline Booking Form Section */}
         <section className="mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-8">
           <div
             ref={bookingFormRef}
@@ -227,6 +233,7 @@ export default function WeddingPage() {
                       {wedding.bookingForm.fields.coupleNames}
                     </label>
                     <input
+                      name="coupleNames"
                       required
                       className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                     />
@@ -236,6 +243,7 @@ export default function WeddingPage() {
                       {wedding.bookingForm.fields.email}
                     </label>
                     <input
+                      name="email"
                       required
                       type="email"
                       className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
@@ -249,6 +257,7 @@ export default function WeddingPage() {
                       {wedding.bookingForm.fields.phone}
                     </label>
                     <input
+                      name="phone"
                       required
                       className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                     />
@@ -258,6 +267,7 @@ export default function WeddingPage() {
                       {wedding.bookingForm.fields.weddingDate}
                     </label>
                     <input
+                      name="weddingDate"
                       type="date"
                       className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                     />
@@ -269,13 +279,14 @@ export default function WeddingPage() {
                     <label className="text-sm leading-none font-medium">
                       {wedding.bookingForm.fields.location}
                     </label>
-                    <input className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50" />
+                    <input name="location" className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm leading-none font-medium">
                       {wedding.bookingForm.fields.estimatedGuests}
                     </label>
                     <input
+                      name="estimatedGuests"
                       type="number"
                       className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                     />
@@ -316,11 +327,12 @@ export default function WeddingPage() {
                   <label className="text-sm leading-none font-medium">
                     {wedding.bookingForm.fields.additionalDetails}
                   </label>
-                  <textarea className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50" />
+                  <textarea name="additionalDetails" className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50" />
                 </div>
 
-                <Button type="submit" className="h-14 w-full text-lg">
-                  {wedding.bookingForm.submit}
+                {mutation.error && <p className="text-sm text-destructive">{mutation.error.message}</p>}
+                <Button type="submit" className="h-14 w-full text-lg" disabled={mutation.isPending}>
+                  {mutation.isPending ? "Sending..." : wedding.bookingForm.submit}
                 </Button>
               </form>
             )}

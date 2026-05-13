@@ -228,6 +228,246 @@ export const translations = {
         success: "Thank you! Your booking request has been sent successfully.",
       },
     },
+    about: {
+      eyebrow: "About RiFi",
+      missionTitle: "Our Mission",
+      missionText: "To provide world-class entertainment and event management services that exceed expectations and create lasting memories for our clients.",
+      visionTitle: "Our Vision",
+      visionText: "To be the leading entertainment and event agency in East Africa, recognized for professionalism, creativity, and excellence.",
+      valuesTitle: "Our Values",
+      values: {
+        excellence: {
+          label: "Excellence",
+          description: "We strive for the highest quality in every event we manage and every performance we deliver."
+        },
+        professionalism: {
+          label: "Professionalism",
+          description: "Our team maintains a high standard of discipline, appearance, and conduct at all times."
+        },
+        reliability: {
+          label: "Reliability",
+          description: "Clients trust us to deliver on time and as promised, ensuring peace of mind for every booking."
+        },
+        vision: {
+          label: "Visionary",
+          description: "We look ahead to trends and innovate to keep our entertainment experiences fresh and impactful."
+        }
+      },
+      workWithUsTitle: "Work With Us",
+      workWithUsText: "Are you a talented performer, model, or event professional? Join the RiFi team and be part of Kigali's most dynamic entertainment agency.",
+      getInTouch: "Get in Touch",
+      philosophyTitle: "Our Philosophy",
+      philosophyText: "We believe that every event is a unique story. Our role is to ensure that story is told with elegance, energy, and flawless execution."
+    },
+    models: {
+      eyebrow: "Models Management",
+      title: "Professional Modeling Agency in Kigali",
+      description: "RiFi Models represents a diverse range of talent for fashion, commercial, and event bookings. We focus on professionalism, grooming, and versatility.",
+      services: [
+        { title: "Fashion Shows", description: "Experienced runway models for high-fashion and commercial shows." },
+        { title: "Commercial Shoots", description: "Models for photography, video advertisements, and brand campaigns." },
+        { title: "Event Hosting", description: "Professional models for high-end event hosting and brand representation." },
+        { title: "Kids Modeling", description: "A dedicated section for talented child models for various projects." }
+      ],
+      requirements: {
+        title: "Joining RiFi Models",
+        description: "We are always looking for new talent. Here is what we look for:",
+        items: [
+          "Professional attitude and punctuality",
+          "Willingness to learn and take direction",
+          "A well-maintained portfolio or natural photos",
+          "Confidence and screen/runway presence"
+        ]
+      },
+      bookingInfo: {
+        title: "Booking a Model",
+        description: "To book a RiFi model for your project, please provide:",
+        items: [
+          "Type of event or shoot",
+          "Date, time, and location",
+          "Specific model requirements",
+          "Budget and usage details"
+        ]
+      },
+      applicationForm: {
+        title: "Model Application",
+        success: "Thank you for your application! We will review your profile and contact you soon.",
+        fields: {
+          fullName: "Full Name",
+          email: "Email Address",
+          phone: "Phone Number",
+          height: "Height (cm)",
+          measurements: "Measurements (Bust/Waist/Hips)",
+          socialMedia: "Social Media Handle",
+          experience: "Modeling Experience"
+        },
+        submit: "Submit Application"
+      },
+      forms: {
+        application: { description: "Apply to join our modeling roster." },
+        booking: { description: "Request a model for your upcoming project." }
+      },
+      bookingForm: {
+        title: "Book a Model",
+        success: "Your booking request has been received. Our team will contact you shortly.",
+        fields: {
+          clientName: "Your Name",
+          email: "Email Address",
+          phone: "Phone Number",
+          eventDate: "Event/Shoot Date",
+          assignmentType: "Assignment Type",
+          requirements: "Specific Requirements"
+        },
+        submit: "Send Booking Request"
+      },
+      gallery: {
+        title: "Models Portfolio",
+        description: "Explore the diverse talent represented by RiFi Models."
+      }
+    },
+    dance: {
+      eyebrow: "Dance Entertainment",
+      title: "Vibrant Dance Performances for Every Occasion",
+      description: "From the rhythmic heartbeat of traditional Rwandan dance to the modern energy of contemporary styles, RiFi brings life to your stage.",
+      ctaButton: "Book a Performance",
+      danceStylesHeading: "Our Styles",
+      danceStylesText: "We specialize in a variety of dance forms to suit your event's atmosphere.",
+      danceTypes: [
+        { title: "Traditional Rwandan", icon: "Music", description: "Authentic 'Intore' and 'Umuhamirizo' performances.", features: ["Live drumming", "Traditional attire", "Cultural storytelling"] },
+        { title: "Modern & Contemporary", icon: "Zap", description: "High-energy choreography for modern events.", features: ["Afrobeat", "Hip-hop", "Fusion styles"] }
+      ],
+      servicesHeading: "What We Offer",
+      servicesText: "Tailored dance services for different needs.",
+      services: [
+        { title: "Wedding Performance", description: "Specialized choreography to welcome the couple and entertain guests.", details: ["Includes grand entrance and main stage performance."] },
+        { title: "Corporate Events", description: "Professional dance troupes for product launches and gala dinners.", details: ["Customized to brand themes."] }
+      ],
+      guidelinesHeading: "Booking Guidelines",
+      guidelinesText: "To ensure a great performance, please note the following:",
+      guidelines: [
+        { title: "Stage Requirements", items: ["Minimum 4x4m space", "Safe, non-slippery surface", "Changing room access"] },
+        { title: "Audio/Visual", items: ["Clear sound system", "Adequate stage lighting", "Microphone for live drums if needed"] }
+      ],
+      galleryTitle: "Performance Highlights",
+      galleryDescription: "A glimpse of the energy and grace our dancers bring to the stage.",
+      galleryItems: [
+        { title: "Traditional Showcase", description: "Celebrating Rwandan heritage." },
+        { title: "Modern Fusion", description: "Dynamic contemporary choreography." }
+      ],
+      bookingHeading: "Book a Troupe",
+      bookingTitle: "Bring the Energy",
+      bookingDescription: "Fill out the form below to request a dance performance for your event.",
+      bookingForm: {
+        styleLabel: "Dance Style",
+        eventDateLabel: "Event Date",
+        guestsLabel: "Estimated Guests",
+        nextButton: "Next Step",
+        nameLabel: "Your Name",
+        emailLabel: "Email Address",
+        messageLabel: "Message / Special Requirements",
+        backButton: "Back",
+        submitButton: "Submit Booking Request",
+        successTitle: "Booking Request Sent",
+        successMessage: "Thank you! We have received your request and will contact you shortly.",
+        newBookingButton: "New Booking"
+      }
+    },
+    tours: {
+      eyebrow: "Tours & Travel",
+      title: "Experience the Best of Rwanda",
+      description: "We provide seamless travel support and curated tour experiences to help you explore the land of a thousand hills.",
+      assistanceHeading: "Travel Assistance",
+      assistanceText: "Navigating your trip is easier with RiFi.",
+      assistanceItems: ["Airport pickup & drop-off", "Local transport coordination", "Itinerary planning"],
+      hotelHeading: "Hotel & Lodging",
+      hotelText: "We help you find the best stay for your budget and preference.",
+      hotelItems: ["Luxury resorts", "City hotels in Kigali", "Eco-lodges in the parks"],
+      guideHeading: "Professional Guides",
+      guideText: "Learn more with our experienced local guides.",
+      guideItems: ["Multilingual guides", "Cultural experts", "Wildlife specialists"],
+      packagesHeading: "Featured Packages",
+      packages: [
+        { title: "Kigali City Tour", description: "A day exploring the history, art, and vibrant markets of the capital." },
+        { title: "Gorilla Trekking", description: "A life-changing experience in the Volcanoes National Park." },
+        { title: "Nature & Culture", description: "Explore the scenic beauty and rich traditions of the countryside." }
+      ],
+      bookingHeading: "Plan Your Trip",
+      bookingTitle: "Start Your Adventure",
+      bookingDescription: "Let us know your travel dates and interests, and we will handle the rest.",
+      bookingForm: {
+        packageLabel: "Travel Package",
+        travelDateLabel: "Travel Date",
+        guestsLabel: "Number of Travelers",
+        nextButton: "Next Step",
+        nameLabel: "Your Name",
+        emailLabel: "Email Address",
+        messageLabel: "Message / Special Requests",
+        backButton: "Back",
+        submitButton: "Send Inquiry",
+        successTitle: "Inquiry Sent",
+        successMessage: "Thank you for your interest! Our travel specialist will contact you soon.",
+        newBookingButton: "New Inquiry"
+      }
+    },
+    contact: {
+      eyebrow: "Contact Us",
+      title: "Let's Talk About Your Next Event",
+      description: "We are here to help you bring your vision to life. Reach out via any of the channels below.",
+      secondaryDescription: "Visit our office in Kigali or send us a message anytime.",
+      location: "Kigali, Rwanda",
+      infoTitle: "Contact Information",
+      quickSupportTitle: "Quick Support",
+      quickSupportText: "For urgent inquiries, WhatsApp is the fastest way to reach our team.",
+      chatWhatsApp: "Chat on WhatsApp",
+      mapTitle: "Find Us",
+      formTitle: "Send us a Message",
+      formName: "Name",
+      formNamePlaceholder: "Enter your name",
+      formEmail: "Email",
+      formEmailPlaceholder: "Enter your email",
+      formSubject: "Subject",
+      formSubjectPlaceholder: "What is this about?",
+      formMessage: "Message",
+      formMessagePlaceholder: "How can we help you?",
+      formSubmit: "Send Message"
+    },
+    wedding: {
+      eyebrow: "Wedding Organization",
+      title: "Creating Your Perfect Day",
+      description: "From concept to coordination, RiFi ensures your wedding is a seamless celebration of love and style.",
+      booking: {
+        button: "Book Wedding Planning",
+        description: "Schedule a consultation with our wedding experts."
+      },
+      services: [
+        { title: "Full Planning", description: "We handle everything from venue selection to vendor management." },
+        { title: "On-the-Day Coordination", description: "We ensure everything runs smoothly so you can enjoy your day." },
+        { title: "Decoration & Styling", description: "Creating a beautiful atmosphere that reflects your personality." }
+      ],
+      bookingForm: {
+        title: "Wedding Inquiry",
+        success: "Congratulations! We have received your inquiry and will contact you for a consultation.",
+        fields: {
+          coupleNames: "Couple Names",
+          email: "Email Address",
+          phone: "Phone Number",
+          weddingDate: "Wedding Date",
+          location: "Location / Venue",
+          estimatedGuests: "Estimated Guests",
+          requestedServices: "Requested Services",
+          additionalDetails: "Additional Details"
+        },
+        services: {
+          planning: "Full Planning",
+          catering: "Catering",
+          decoration: "Decoration",
+          dance: "Dance Entertainment",
+          sax: "Saxophonist",
+          mc: "Master of Ceremonies"
+        },
+        submit: "Submit Inquiry"
+      }
+    },
   },
   rw: {
     nav: {
@@ -449,6 +689,246 @@ export const translations = {
         success: "Murakoze! Ubusabe bwanyu bwakiriwe neza.",
       },
     },
+    about: {
+      eyebrow: "Abo Turi Bo",
+      missionTitle: "Inshingano Zacu",
+      missionText: "Gutanga serivisi z'imyidagaduro n'imitegurire y'ibirori ku rwego mpuzamahanga, zirenze ibyo abakiliya bacyekaga kandi zibasigira urwibutso ruzahoraho.",
+      visionTitle: "Icyerekezo Cyacu",
+      visionText: "Kuba ikigo cy'indashyikirwa mu myidagaduro n'ibirori muri Afurika y'Iburasirazuba, kizwiho ubunyamwuga, guhanga udushya, n'ubuziranenge.",
+      valuesTitle: "Indangagaciro Zacu",
+      values: {
+        excellence: {
+          label: "Ubuziranenge",
+          description: "Tuba duharanira ireme ryo mu rwego rwo hejuru muri buri birori duteguye n'ibitaramo dutanga."
+        },
+        professionalism: {
+          label: "Ubunyamwuga",
+          description: "Itsinda ryacu rihorana ikinyabupfura, isuku, n'imyitwarire myiza igihe cyose."
+        },
+        reliability: {
+          label: "Kwizigirwa",
+          description: "Abakiliya batugirira icyizere cyo gutanga serivisi ku gihe n'uko twabyemanije."
+        },
+        vision: {
+          label: "Kureba Kure",
+          description: "Tureba imbere mu guhanga udushya kugira ngo ibitaramo byacu bihore bishya kandi bifite ingaruka nziza."
+        }
+      },
+      workWithUsTitle: "Korana natwe",
+      workWithUsText: "Waba ufite impano mu kubyina, mu kumodela, cyambo uri umunyamwuga mu gutegura ibirori? Sangira natwe mu itsinda rya RiFi ry'imyidagaduro i Kigali.",
+      getInTouch: "Twandikire",
+      philosophyTitle: "Imyemerere Yacu",
+      philosophyText: "Twemera ko buri birori ari inkuru yihariye. Inshingano yacu ni ukugira ngo iyo nkuru ivugwe mu buryo bwiza, bwuje imbaraga, kandi butagira amakosa."
+    },
+    models: {
+      eyebrow: "Abamodeli",
+      title: "Ikigo cy'Abamodeli b'Umwuga i Kigali",
+      description: "RiFi Models ihagararira abanyempano batandukanye mu byerekeye imideli, kwamamaza, n'ibirori. Twibanda ku bunyamwuga, isuku, n'ubushobozi bwinshi.",
+      services: [
+        { title: "Kwerekana Imideli", description: "Abamodeli bafite uburambe mu kwerekana imideli itandukanye." },
+        { title: "Kwamamaza", description: "Abamodeli bakoreshwa mu mafoto n'amashusho yo kwamamaza ibigo n'ibicuruzwa." },
+        { title: "Kwakira Abantu", description: "Abamodeli b'umwuga bakira abantu mu birori byo mu rwego rwo hejuru." },
+        { title: "Abamodeli b'Abana", description: "Igice cyihariye cy'abana bafite impano mu kumodela mu mishinga itandukanye." }
+      ],
+      requirements: {
+        title: "Kwinjira muri RiFi Models",
+        description: "Duhora dushaka abanyempano bashya. Ibi ni byo twibandaho:",
+        items: [
+          "Ubunyamwuga no kubahiriza igihe",
+          "Gushaka kwiga no kumvira amabwiriza",
+          "Portfolio nziza cyangwa amafoto y'umwimerere",
+          "Kwigirira icyizere n'ubushobozi bwo kugaragara neza"
+        ]
+      },
+      bookingInfo: {
+        title: "Guhata Booking y'Umu-modeli",
+        description: "Kugira ngo ubone umu-modeli wa RiFi mu mushinga wawe, utanga ibi bikurikira:",
+        items: [
+          "Ubwoko bwa event cyangwa shoot",
+          "Itariki, isaha, n'aho bizabera",
+          "Ibyo wifuza ku mu-modeli",
+          "Ingengo y'imari n'uko amafoto azakoreshwa"
+        ]
+      },
+      applicationForm: {
+        title: "Ubusabe bwo Kwinjira",
+        success: "Murakoze ku busabe bwanyu! Tuzasuzuma profile yanyu hanyuma tubavugishe vuba.",
+        fields: {
+          fullName: "Amazina Yuzuye",
+          email: "Imeli",
+          phone: "Telefoni",
+          height: "Uburebure (cm)",
+          measurements: "Ibipimo (Igituza/Mu mabyirushya/Amabuno)",
+          socialMedia: "Izina rya Social Media",
+          experience: "Uburambe mu kumodela"
+        },
+        submit: "Ohereza Ubusabe"
+      },
+      forms: {
+        application: { description: "Saba kwinjira mu itsinda ry'abamodeli bacu." },
+        booking: { description: "Saba umumodeli kuri event yawe itaha." }
+      },
+      bookingForm: {
+        title: "Fata Umumodeli",
+        success: "Ubusabe bwanyu bwakiriwe. Itsinda ryacu rirabavugisha vuba.",
+        fields: {
+          clientName: "Amazina Yanyu",
+          email: "Imeli",
+          phone: "Telefoni",
+          eventDate: "Itariki ya Event/Shoot",
+          assignmentType: "Ubwoko bwa Serivisi",
+          requirements: "Ibyo mwifuza byihariye"
+        },
+        submit: "Ohereza Ubusabe"
+      },
+      gallery: {
+        title: "Portfolio y'Abamodeli",
+        description: "Reba abanyempano batandukanye bahagarariwe na RiFi Models."
+      }
+    },
+    dance: {
+      eyebrow: "Imyidagaduro y'Imbyino",
+      title: "Imbyino zishimishije mu bihe byose",
+      description: "Kuva ku mudiho w'imbyino gakondo nyarwanda kugeza ku mbaraga z'imbyino za kijyambere, RiFi izana ubuzima ku rubyiniro rwawe.",
+      ctaButton: "Fata Booking y'Imbyino",
+      danceStylesHeading: "Ubwoko bw'Imbyino",
+      danceStylesText: "Twibanda ku mbyino zitandukanye zikwiranye n'ibirori byanyu.",
+      danceTypes: [
+        { title: "Gakondo Nyarwanda", icon: "Music", description: "Imbyino z'umwimerere nk'Intore n'Umuhamirizo.", features: ["Ingoma", "Imyambaro gakondo", "Inkuru z'umuco"] },
+        { title: "Kijyambere", icon: "Zap", description: "Imbyino zifite imbaraga nyinshi kuri event za kijyambere.", features: ["Afrobeat", "Hip-hop", "Fusion"] }
+      ],
+      servicesHeading: "Icyo Dutanga",
+      servicesText: "Serivisi z'imbyino ziteguwe bitewe n'ibyo mukeneye.",
+      services: [
+        { title: "Imbyino z'Ubukwe", description: "Gahunda yihariye yo kwakira abagenzi n'abashyitsi.", details: ["Harimo kwinjira neza n'imbyino ku rubyiniro."] },
+        { title: "Corporate Events", description: "Itsinda ry'ababyina b'umwuga mu kumurika ibicuruzwa n'ibirori by'ibigo.", details: ["Bitegurwa bitewe n'intego y'ikigo."] }
+      ],
+      guidelinesHeading: "Amabwiriza ya Booking",
+      guidelinesText: "Kugira ngo imbyino zigende neza, dore ibyo kwitaho:",
+      guidelines: [
+        { title: "Ibisabwa ku Rubyiniro", items: ["Umwanya muto wa 4x4m", "Hasi hatanyerera", "Aho kwambarira"] },
+        { title: "Ibyuma n'Amashusho", items: ["Ibyuma bisohora amajwi neza", "Amatara ahagije", "Indangururamajwi z'ingoma"] }
+      ],
+      galleryTitle: "Ibihe by'Ibitaramo",
+      galleryDescription: "Irebere imbaraga n'uburanga ababyinnyi bacu bazana ku rubyiniro.",
+      galleryItems: [
+        { title: "Imbyino Gakondo", description: "Kwihandagaza mu muco nyarwanda." },
+        { title: "Imbyino za Kijyambere", description: "Imbyino zigezweho kandi zishimishije." }
+      ],
+      bookingHeading: "Fata Itsinda",
+      bookingTitle: "Zana Imbaraga",
+      bookingDescription: "Uzuza ifishi ikurikira usabe itsinda ry'ababyina kuri event yawe.",
+      bookingForm: {
+        styleLabel: "Ubwoko bw'Imbyino",
+        eventDateLabel: "Itariki ya Event",
+        guestsLabel: "Umubare w'Abashyitsi",
+        nextButton: "Intambwe ikurikira",
+        nameLabel: "Amazina Yanyu",
+        emailLabel: "Imeli",
+        messageLabel: "Ubutumwa / Ibyo mwifuza",
+        backButton: "Subira inyuma",
+        submitButton: "Ohereza Ubusabe",
+        successTitle: "Ubusabe bwoherejwe",
+        successMessage: "Murakoze! Twakiriye ubusabe bwanyu kandi tuzabavugisha vuba.",
+        newBookingButton: "Ubusabe bushya"
+      }
+    },
+    tours: {
+      eyebrow: "Ingendo n'Ubukerarugendo",
+      title: "Sura ibyiza by'u Rwanda",
+      description: "Dutanga ubufasha mu ngendo n'ubukerarugendo buteguwe neza kugira ngo ubashe gusura igihugu cy'imisozi igihumbi.",
+      assistanceHeading: "Ubufasha mu Ngendo",
+      assistanceText: "Gupanga urugendo rwawe biroroha iyo uri kumwe na RiFi.",
+      assistanceItems: ["Kugukura no kugugeza ku kibuga cy'indege", "Gupanga imodoka zikuzengurutsa", "Gupanga gahunda y'urugendo"],
+      hotelHeading: "Hoteli n'Aho Kurara",
+      hotelText: "Tugufasha kubona aho kurara heza bitewe n'ubushobozi bwawe.",
+      hotelItems: ["Hoteli z'igitangaza", "Hoteli zo muri Kigali", "Hoteli zo muri pariki"],
+      guideHeading: "Abaguhorera mu Ngendo",
+      guideText: "Sobanukirwa byinshi hamwe n'abaguhorera bafite uburambe.",
+      guideItems: ["Abavuga indimi nyinshi", "Inararibonye mu muco", "Inararibonye mu nyamaswa"],
+      packagesHeading: "Gahunda Z'ingenzi",
+      packages: [
+        { title: "Sura Kigali", description: "Umunsi umwe wo gusura amateka, ubuhanzi, n'amasoko yo mu murwa mukuru." },
+        { title: "Gusura Ingagi", description: "Uburambe bw'ubuzima muri Pariki y'Ibirunga." },
+        { title: "Uburanga n'Umuco", description: "Sura uburanga bw'icyaro n'umuco gakondo w'u Rwanda." }
+      ],
+      bookingHeading: "Panga Urugendo",
+      bookingTitle: "Tangira Urugendo rwawe",
+      bookingDescription: "Tuwire igihe wifuza kugendera n'aho wifuza gusura, twebwe tuzapanga ibindi byose.",
+      bookingForm: {
+        packageLabel: "Gahunda y'Urugendo",
+        travelDateLabel: "Itariki y'Urugendo",
+        guestsLabel: "Umubare w'Abagenda",
+        nextButton: "Intambwe ikurikira",
+        nameLabel: "Amazina Yanyu",
+        emailLabel: "Imeli",
+        messageLabel: "Ubutumwa / Ibyo mwifuza",
+        backButton: "Subira inyuma",
+        submitButton: "Ohereza Ubusabe",
+        successTitle: "Ubusabe bwoherejwe",
+        successMessage: "Murakoze! Inararibonye yacu mu ngendo izakuvugisha vuba.",
+        newBookingButton: "Ubusabe bushya"
+      }
+    },
+    contact: {
+      eyebrow: "Twandikire",
+      title: "Tuganire kuri Event yawe itaha",
+      description: "Turi hano kugira ngo tugufashe kugeza ku ntego yawe. Twandikire ukoresheje inzira zikurikira.",
+      secondaryDescription: "Sura ibiro byacu i Kigali cyangwa utwoherereze ubutumwa igihe cyose.",
+      location: "Kigali, Rwanda",
+      infoTitle: "Amakuru y'Itumanaho",
+      quickSupportTitle: "Ubufasha bwihuse",
+      quickSupportText: "Ku bibazo byihuse, WhatsApp niyo nzira yihuta yo kutugeraho.",
+      chatWhatsApp: "Twandikire kuri WhatsApp",
+      mapTitle: "Aho Duherereye",
+      formTitle: "Twandikire",
+      formName: "Amazina",
+      formNamePlaceholder: "Andika amazina yawe",
+      formEmail: "Imeli",
+      formEmailPlaceholder: "Andika imeli yawe",
+      formSubject: "Icyo utwandikiye",
+      formSubjectPlaceholder: "Ibi bijyanye n'iki?",
+      formMessage: "Ubutumwa",
+      formMessagePlaceholder: "Twagufasha ute?",
+      formSubmit: "Ohereza Ubutumwa"
+    },
+    wedding: {
+      eyebrow: "Gutegura Ubukwe",
+      title: "Gutegura Umunsi wawe mwiza",
+      description: "Kuva ku gitekerezo kugeza ku mitegurire, RiFi izerekana ko ubukwe bwawe ari ibirori byiza by'urukundo na style.",
+      booking: {
+        button: "Fata Gahunda yo Gutegura Ubukwe",
+        description: "Saba inama n'inararibonye zacu mu gutegura ubukwe."
+      },
+      services: [
+        { title: "Itegure ryose", description: "Twita ku bintu byose kuva ku hantu hazabera ubukwe kugeza ku bashyira bose." },
+        { title: "Coordination ku munsi w'ubukwe", description: "Tugerageza ko buri kintu kigenda neza kugira ngo wishimire umunsi wawe." },
+        { title: "Decoration", description: "Gukora urubuga rwiza rugaragaza uwo muri bo." }
+      ],
+      bookingForm: {
+        title: "Ikibazo ku Bukwe",
+        success: "Impunge! Twakiriye ubusabe bwanyu kandi tuzabavugisha mu gutanga inama.",
+        fields: {
+          coupleNames: "Amazina y'Abageni",
+          email: "Imeli",
+          phone: "Telefoni",
+          weddingDate: "Itariki y'Ubukwe",
+          location: "Aho buzabera",
+          estimatedGuests: "Abashyitsi bateganyijwe",
+          requestedServices: "Serivisi mukeneye",
+          additionalDetails: "Ibindi bisobanuro"
+        },
+        services: {
+          planning: "Itegure ryose",
+          catering: "Catering",
+          decoration: "Decoration",
+          dance: "Imyidagaduro y'Imbyino",
+          sax: "Saxophonist",
+          mc: "MC"
+        },
+        submit: "Ohereza Ubusabe"
+      }
+    },
   },
   fr: {
     nav: {
@@ -669,6 +1149,246 @@ export const translations = {
         submit: "Envoyer la Demande de Réservation",
         success: "Merci ! Votre demande de réservation a été envoyée avec succès.",
       },
+    },
+    about: {
+      eyebrow: "À Propos de RiFi",
+      missionTitle: "Notre Mission",
+      missionText: "Fournir des services de divertissement et de gestion d'événements de classe mondiale qui dépassent les attentes et créent des souvenirs durables pour nos clients.",
+      visionTitle: "Notre Vision",
+      visionText: "Être la principale agence de divertissement et d'événements en Afrique de l'Est, reconnue pour son professionnalisme, sa créativité et son excellence.",
+      valuesTitle: "Nos Valeurs",
+      values: {
+        excellence: {
+          label: "Excellence",
+          description: "Nous visons la plus haute qualité dans chaque événement que nous gérons et chaque performance que nous livrons."
+        },
+        professionalism: {
+          label: "Professionnalisme",
+          description: "Notre équipe maintient un haut niveau de discipline, d'apparence et de conduite en tout temps."
+        },
+        reliability: {
+          label: "Fiabilité",
+          description: "Les clients nous font confiance pour livrer à temps et comme promis, garantissant la tranquillité d'esprit pour chaque réservation."
+        },
+        vision: {
+          label: "Visionnaire",
+          description: "Nous anticipons les tendances et innovons pour que nos expériences de divertissement restent fraîches et percutantes."
+        }
+      },
+      workWithUsTitle: "Travailler Avec Nous",
+      workWithUsText: "Êtes-vous un artiste, un mannequin ou un professionnel de l'événementiel talentueux ? Rejoignez l'équipe RiFi et faites partie de l'agence de divertissement la plus dynamique de Kigali.",
+      getInTouch: "Contactez-nous",
+      philosophyTitle: "Notre Philosophie",
+      philosophyText: "Nous pensons que chaque événement est une histoire unique. Notre rôle est de veiller à ce que cette histoire soit racontée avec élégance, énergie et une exécution impeccable."
+    },
+    models: {
+      eyebrow: "Gestion de Modèles",
+      title: "Agence de Mannequins Professionnelle à Kigali",
+      description: "RiFi Models représente une gamme diversifiée de talents pour la mode, la publicité et les événements. Nous nous concentrons sur le professionnalisme, la présentation et la polyvalence.",
+      services: [
+        { title: "Défilés de Mode", description: "Mannequins de podium expérimentés pour la haute couture et les défilés commerciaux." },
+        { title: "Séances Publicitaires", description: "Modèles pour la photographie, les publicités vidéo et les campagnes de marque." },
+        { title: "Hôtes d'Événements", description: "Mannequins professionnels pour l'accueil d'événements haut de gamme et la représentation de marque." },
+        { title: "Mannequins Enfants", description: "Une section dédiée aux enfants modèles talentueux pour divers projets." }
+      ],
+      requirements: {
+        title: "Rejoindre RiFi Models",
+        description: "Nous sommes toujours à la recherche de nouveaux talents. Voici ce que nous recherchons :",
+        items: [
+          "Attitude professionnelle et ponctualité",
+          "Volonté d'apprendre et de suivre les instructions",
+          "Un portfolio bien entretenu ou des photos naturelles",
+          "Confiance et présence sur scène/podium"
+        ]
+      },
+      bookingInfo: {
+        title: "Réserver un Mannequin",
+        description: "Pour réserver un mannequin RiFi pour votre projet, veuillez fournir :",
+        items: [
+          "Type d'événement ou de séance",
+          "Date, heure et lieu",
+          "Exigences spécifiques pour le mannequin",
+          "Budget et détails d'utilisation"
+        ]
+      },
+      applicationForm: {
+        title: "Candidature de Mannequin",
+        success: "Merci pour votre candidature ! Nous examinerons votre profil et vous contacterons bientôt.",
+        fields: {
+          fullName: "Nom Complet",
+          email: "Adresse Email",
+          phone: "Numéro de Téléphone",
+          height: "Taille (cm)",
+          measurements: "Mensurations (Poitrine/Taille/Hanches)",
+          socialMedia: "Réseaux Sociaux",
+          experience: "Expérience en Mannequinat"
+        },
+        submit: "Envoyer la Candidature"
+      },
+      forms: {
+        application: { description: "Postulez pour rejoindre notre liste de mannequins." },
+        booking: { description: "Demandez un mannequin pour votre prochain projet." }
+      },
+      bookingForm: {
+        title: "Réserver un Mannequin",
+        success: "Votre demande de réservation a été reçue. Notre équipe vous contactera sous peu.",
+        fields: {
+          clientName: "Votre Nom",
+          email: "Adresse Email",
+          phone: "Numéro de Téléphone",
+          eventDate: "Date de l'Événement/Séance",
+          assignmentType: "Type de Mission",
+          requirements: "Exigences Spécifiques"
+        },
+        submit: "Envoyer la Demande"
+      },
+      gallery: {
+        title: "Portfolio des Modèles",
+        description: "Explorez les divers talents représentés par RiFi Models."
+      }
+    },
+    dance: {
+      eyebrow: "Divertissement de Danse",
+      title: "Performances de Danse Vibrantes pour Chaque Occasion",
+      description: "Du battement de cœur rythmé de la danse traditionnelle rwandaise à l'énergie moderne des styles contemporains, RiFi donne vie à votre scène.",
+      ctaButton: "Réserver une Performance",
+      danceStylesHeading: "Nos Styles",
+      danceStylesText: "Nous nous spécialisons dans une variété de formes de danse pour s'adapter à l'atmosphère de votre événement.",
+      danceTypes: [
+        { title: "Traditionnelle Rwandaise", icon: "Music", description: "Performances authentiques 'Intore' and 'Umuhamirizo'.", features: ["Tambours en direct", "Tenue traditionnelle", "Récit culturel"] },
+        { title: "Moderne & Contemporaine", icon: "Zap", description: "Chorégraphie à haute énergie pour les événements modernes.", features: ["Afrobeat", "Hip-hop", "Styles fusion"] }
+      ],
+      servicesHeading: "Ce Que Nous Offrons",
+      servicesText: "Services de danse sur mesure pour différents besoins.",
+      services: [
+        { title: "Performance de Mariage", description: "Chorégraphie spécialisée pour accueillir le couple et divertir les invités.", details: ["Comprend l'entrée solennelle et la performance sur scène principale."] },
+        { title: "Événements d'Entreprise", description: "Troupes de danse professionnelles pour les lancements de produits et les dîners de gala.", details: ["Personnalisé selon les thèmes de la marque."] }
+      ],
+      guidelinesHeading: "Directives de Réservation",
+      guidelinesText: "Pour garantir une excellente performance, veuillez noter ce qui suit :",
+      guidelines: [
+        { title: "Exigences de Scène", items: ["Espace minimum de 4x4m", "Surface sûre et non glissante", "Accès aux vestiaires"] },
+        { title: "Audio/Visuel", items: ["Système sonore clair", "Éclairage de scène adéquat", "Microphone pour les tambours si nécessaire"] }
+      ],
+      galleryTitle: "Points Forts des Performances",
+      galleryDescription: "Un aperçu de l'énergie et de la grâce que nos danseurs apportent à la scène.",
+      galleryItems: [
+        { title: "Vitrine Traditionnelle", description: "Célébration du patrimoine rwandais." },
+        { title: "Fusion Moderne", description: "Chorégraphie contemporaine dynamique." }
+      ],
+      bookingHeading: "Réserver une Troupe",
+      bookingTitle: "Apportez l'Énergie",
+      bookingDescription: "Remplissez le formulaire ci-dessous pour demander une performance de danse pour votre événement.",
+      bookingForm: {
+        styleLabel: "Style de Danse",
+        eventDateLabel: "Date de l'Événement",
+        guestsLabel: "Nombre Estimé d'Invités",
+        nextButton: "Étape Suivante",
+        nameLabel: "Votre Nom",
+        emailLabel: "Adresse Email",
+        messageLabel: "Message / Exigences Particulières",
+        backButton: "Retour",
+        submitButton: "Envoyer la Demande",
+        successTitle: "Demande Envoyée",
+        successMessage: "Merci ! Nous avons reçu votre demande et vous contacterons sous peu.",
+        newBookingButton: "Nouvelle Demande"
+      }
+    },
+    tours: {
+      eyebrow: "Tours & Voyages",
+      title: "Découvrez le Meilleur du Rwanda",
+      description: "Nous fournissons un soutien de voyage fluide et des expériences de visite organisées pour vous aider à explorer le pays des mille collines.",
+      assistanceHeading: "Assistance Voyage",
+      assistanceText: "Naviguer dans votre voyage est plus facile avec RiFi.",
+      assistanceItems: ["Prise en charge et retour à l'aéroport", "Coordination du transport local", "Planification de l'itinéraire"],
+      hotelHeading: "Hôtel & Hébergement",
+      hotelText: "Nous vous aidons à trouver le meilleur séjour selon votre budget et vos préférences.",
+      hotelItems: ["Complexes hôteliers de luxe", "Hôtels en ville à Kigali", "Eco-lodges dans les parcs"],
+      guideHeading: "Guides Professionnels",
+      guideText: "Apprenez-en plus avec nos guides locaux expérimentés.",
+      guideItems: ["Guides multilingues", "Experts culturels", "Spécialistes de la faune"],
+      packagesHeading: "Forfaits Vedettes",
+      packages: [
+        { title: "Tour de la Ville de Kigali", description: "Une journée à explorer l'histoire, l'art et les marchés vibrants de la capitale." },
+        { title: "Trekking des Gorilles", description: "Une expérience qui change la vie dans le parc national des Volcans." },
+        { title: "Nature & Culture", description: "Explorez la beauté des paysages et les riches traditions de la campagne." }
+      ],
+      bookingHeading: "Planifiez Votre Voyage",
+      bookingTitle: "Commencez Votre Aventure",
+      bookingDescription: "Faites-nous part de vos dates de voyage et de vos intérêts, et nous nous occupons du reste.",
+      bookingForm: {
+        packageLabel: "Forfait Voyage",
+        travelDateLabel: "Date de Voyage",
+        guestsLabel: "Nombre de Voyageurs",
+        nextButton: "Étape Suivante",
+        nameLabel: "Votre Nom",
+        emailLabel: "Adresse Email",
+        messageLabel: "Message / Demandes Particulières",
+        backButton: "Retour",
+        submitButton: "Envoyer la Demande",
+        successTitle: "Demande Envoyée",
+        successMessage: "Merci de votre intérêt ! Notre spécialiste voyage vous contactera bientôt.",
+        newBookingButton: "Nouvelle Demande"
+      }
+    },
+    contact: {
+      eyebrow: "Contactez-nous",
+      title: "Parlons de Votre Prochain Événement",
+      description: "Nous sommes là pour vous aider à donner vie à votre vision. Contactez-nous via l'un des canaux ci-dessous.",
+      secondaryDescription: "Visitez notre bureau à Kigali ou envoyez-nous un message à tout moment.",
+      location: "Kigali, Rwanda",
+      infoTitle: "Coordonnées",
+      quickSupportTitle: "Support Rapide",
+      quickSupportText: "Pour les demandes urgentes, WhatsApp est le moyen le plus rapide de joindre notre équipe.",
+      chatWhatsApp: "Discuter sur WhatsApp",
+      mapTitle: "Où Nous Trouver",
+      formTitle: "Envoyez-nous un message",
+      formName: "Nom",
+      formNamePlaceholder: "Entrez votre nom",
+      formEmail: "Email",
+      formEmailPlaceholder: "Entrez votre email",
+      formSubject: "Sujet",
+      formSubjectPlaceholder: "De quoi s'agit-il ?",
+      formMessage: "Message",
+      formMessagePlaceholder: "Comment pouvons-nous vous aider ?",
+      formSubmit: "Envoyer le message"
+    },
+    wedding: {
+      eyebrow: "Organisation de Mariage",
+      title: "Créer Votre Journée Parfaite",
+      description: "Du concept à la coordination, RiFi veille à ce que votre mariage soit une célébration fluide de l'amour et du style.",
+      booking: {
+        button: "Réserver la Planification de Mariage",
+        description: "Prenez rendez-vous pour une consultation avec nos experts en mariage."
+      },
+      services: [
+        { title: "Planification Complète", description: "Nous nous occupons de tout, du choix du lieu à la gestion des prestataires." },
+        { title: "Coordination du Jour J", description: "Nous veillons à ce que tout se déroule sans accroc pour que vous puissiez profiter de votre journée." },
+        { title: "Décoration & Style", description: "Créer une belle atmosphère qui reflète votre personnalité." }
+      ],
+      bookingForm: {
+        title: "Demande de Mariage",
+        success: "Félicitations ! Nous avons reçu votre demande et vous contacterons pour une consultation.",
+        fields: {
+          coupleNames: "Noms du Couple",
+          email: "Adresse Email",
+          phone: "Numéro de Téléphone",
+          weddingDate: "Date du Mariage",
+          location: "Lieu / Salle",
+          estimatedGuests: "Invités Attendus",
+          requestedServices: "Services Demandés",
+          additionalDetails: "Détails Supplémentaires"
+        },
+        services: {
+          planning: "Planification Complète",
+          catering: "Traiteur",
+          decoration: "Décoration",
+          dance: "Divertissement de Danse",
+          sax: "Saxophonist",
+          mc: "Maître de Cérémonie"
+        },
+        submit: "Envoyer la Demande"
+      }
     },
   },
 } as const

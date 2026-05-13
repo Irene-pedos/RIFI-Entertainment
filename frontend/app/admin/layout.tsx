@@ -35,10 +35,10 @@ export default function AdminLayout({
       setIsMounted(true)
     })
     
-    // Simple mock auth check
+    // Real auth check
     if (!isLoginPage) {
-      const isLoggedIn = localStorage.getItem("rifi_admin_logged_in")
-      if (!isLoggedIn) {
+      const token = localStorage.getItem("rifi_auth_token")
+      if (!token) {
         router.push("/admin/login")
       }
     }

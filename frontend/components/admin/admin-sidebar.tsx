@@ -99,7 +99,8 @@ export function AdminSidebar({ ...props }: React.ComponentProps<typeof Sidebar>)
   const router = useRouter()
 
   const handleLogout = () => {
-    localStorage.removeItem("rifi_admin_logged_in")
+    localStorage.removeItem("rifi_auth_token")
+    localStorage.removeItem("rifi_admin_user")
     router.push("/admin/login")
   }
 

@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Save, User, Shield, Key } from "lucide-react"
+import { Save, User, Shield, Key, Loader2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -15,17 +15,42 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
+import { trpc } from "@/lib/trpc"
 
 export default function AccountPage() {
-  const [isLoading, setIsLoading] = React.useState(false)
+  const { data: user, isLoading: isUserLoading } = trpc.auth.me.useQuery()
+  const [currentPassword, setCurrentPassword] = React.useState("")
+  const [newPassword, setNewPassword] = React.useState("")
+  const [passError, setPassError] = React.useState("")
+  const [passSuccess, setPassSuccess] = React.useState("")
 
-  const handleSave = (e: React.FormEvent) => {
+  const changePasswordMutation = trpc.auth.changePassword.useMutation({
+    onSuccess: () => {
+      setPassSuccess("Password updated successfully!")
+      setPassError("")
+      setCurrentPassword("")
+      setNewPassword("")
+    },
+    onError: (err) => {
+      setPassError(err.message)
+      setPassSuccess("")
+    },
+  })
+
+  const handleUpdatePassword = (e: React.FormEvent) => {
     e.preventDefault()
-    setIsLoading(true)
-    setTimeout(() => {
-      setIsLoading(false)
-      alert("Settings saved successfully!")
-    }, 1000)
+    changePasswordMutation.mutate({
+      currentPassword,
+      newPassword,
+    })
+  }
+
+  if (isUserLoading) {
+    return (
+      <div className="flex h-[400px] items-center justify-center">
+        <Loader2 className="animate-spin size-8 text-primary" />
+      </div>
+    )
   }
 
   return (
@@ -47,37 +72,32 @@ export default function AccountPage() {
               <CardTitle className="text-lg">Profile Information</CardTitle>
             </div>
             <CardDescription>
-              Update your personal details and how others see you.
+              Your administrative identity details.
             </CardDescription>
           </CardHeader>
-          <form onSubmit={handleSave}>
-            <CardContent className="space-y-4">
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="grid gap-2">
-                  <Label htmlFor="firstName" className="text-xs font-semibold uppercase tracking-wider">First Name</Label>
-                  <Input id="firstName" defaultValue="Admin" className="rounded-none border-border/70" />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="lastName" className="text-xs font-semibold uppercase tracking-wider">Last Name</Label>
-                  <Input id="lastName" defaultValue="User" className="rounded-none border-border/70" />
-                </div>
+          <CardContent className="space-y-4">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-2">
+                <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">First Name</Label>
+                <div className="px-3 py-2 border border-border/70 bg-muted/20 text-sm">{user?.firstName || "N/A"}</div>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider">Email Address</Label>
-                <Input id="email" type="email" defaultValue="admin@rifi.rw" className="rounded-none border-border/70" />
+                <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Last Name</Label>
+                <div className="px-3 py-2 border border-border/70 bg-muted/20 text-sm">{user?.lastName || "N/A"}</div>
               </div>
-              <div className="grid gap-2">
-                <Label htmlFor="role" className="text-xs font-semibold uppercase tracking-wider">Role</Label>
-                <Input id="role" defaultValue="Super Administrator" disabled className="rounded-none border-border/70 bg-muted/50" />
-              </div>
-            </CardContent>
-            <CardFooter className="border-t border-border/70 bg-muted/10 pt-6">
-              <Button type="submit" className="rounded-none ml-auto" disabled={isLoading}>
-                <Save className="mr-2 size-4" />
-                {isLoading ? "Saving..." : "Save Changes"}
-              </Button>
-            </CardFooter>
-          </form>
+            </div>
+            <div className="grid gap-2">
+              <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Email Address</Label>
+              <div className="px-3 py-2 border border-border/70 bg-muted/20 text-sm">{user?.email}</div>
+            </div>
+            <div className="grid gap-2">
+              <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Role</Label>
+              <div className="px-3 py-2 border border-border/70 bg-muted/50 text-sm font-semibold">{user?.role}</div>
+            </div>
+          </CardContent>
+          <CardFooter className="border-t border-border/70 bg-muted/10 pt-6">
+            <p className="text-xs text-muted-foreground italic">Contact super admin to change profile details.</p>
+          </CardFooter>
         </Card>
 
         <div className="space-y-6">
@@ -88,39 +108,44 @@ export default function AccountPage() {
                 <CardTitle className="text-lg">Security</CardTitle>
               </div>
               <CardDescription>
-                Change your password and manage security.
+                Change your password to keep your account secure.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid gap-2">
-                <Label htmlFor="currentPass" className="text-xs font-semibold uppercase tracking-wider">Current Password</Label>
-                <Input id="currentPass" type="password" className="rounded-none border-border/70" />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="newPass" className="text-xs font-semibold uppercase tracking-wider">New Password</Label>
-                <Input id="newPass" type="password" className="rounded-none border-border/70" />
-              </div>
-            </CardContent>
-            <CardFooter className="border-t border-border/70 bg-muted/10 pt-6">
-              <Button variant="outline" className="w-full rounded-none">
-                <Key className="mr-2 size-4" />
-                Update Password
-              </Button>
-            </CardFooter>
-          </Card>
-
-          <Card className="rounded-none border-border/70 bg-destructive/5 shadow-sm">
-            <CardHeader>
-              <CardTitle className="text-lg text-destructive">Danger Zone</CardTitle>
-              <CardDescription>
-                Irreversible actions for your account.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button variant="destructive" className="w-full rounded-none">
-                Deactivate Account
-              </Button>
-            </CardContent>
+            <form onSubmit={handleUpdatePassword}>
+              <CardContent className="space-y-4">
+                {passError && <p className="text-xs text-destructive">{passError}</p>}
+                {passSuccess && <p className="text-xs text-emerald-600">{passSuccess}</p>}
+                <div className="grid gap-2">
+                  <Label htmlFor="currentPass" className="text-xs font-semibold uppercase tracking-wider">Current Password</Label>
+                  <Input 
+                    id="currentPass" 
+                    type="password" 
+                    required
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    className="rounded-none border-border/70" 
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="newPass" className="text-xs font-semibold uppercase tracking-wider">New Password</Label>
+                  <Input 
+                    id="newPass" 
+                    type="password" 
+                    required
+                    minLength={8}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    className="rounded-none border-border/70" 
+                  />
+                </div>
+              </CardContent>
+              <CardFooter className="border-t border-border/70 bg-muted/10 pt-6">
+                <Button type="submit" variant="outline" className="w-full rounded-none" disabled={changePasswordMutation.isPending}>
+                  {changePasswordMutation.isPending ? <Loader2 className="animate-spin size-4" /> : <Key className="mr-2 size-4" />}
+                  Update Password
+                </Button>
+              </CardFooter>
+            </form>
           </Card>
         </div>
       </div>

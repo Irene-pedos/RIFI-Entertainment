@@ -5,9 +5,11 @@ import { Eye, Star, Target, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { PageIntro } from "@/components/marketing/page-intro"
 import { useTranslations } from "@/lib/i18n"
+import { useSiteSettings } from "@/hooks/use-site-settings"
 
 export default function AboutPage() {
   const t = useTranslations()
+  const { businessTagline, businessDescription } = useSiteSettings()
 
   const values = [
     {
@@ -36,8 +38,8 @@ export default function AboutPage() {
     <div className="container mx-auto px-4 pb-12">
       <PageIntro
         eyebrow={t.about.eyebrow}
-        title={t.home.tagline}
-        description={t.home.overview}
+        title={businessTagline}
+        description={businessDescription}
       />
 
       <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-12">

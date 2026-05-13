@@ -18,39 +18,30 @@ import Marquee from "@/components/ui/cards"
 import { CtaCard } from "@/components/ui/cta-card"
 import { Gallery4 } from "@/components/ui/gallery4"
 import HeroSection from "@/components/ui/hero-section-9"
+import { trpc } from "@/lib/trpc"
+import { useSiteSettings } from "@/hooks/use-site-settings"
 
 export default function HomePage() {
   const t = useTranslations()
-  const testimonialCards = [
+  const { businessEmail, businessPhone, businessLocation, businessTagline } = useSiteSettings()
+  
+  const { data: testimonials } = trpc.testimonial.listPublic.useQuery()
+  const { data: services } = trpc.service.listPublic.useQuery()
+
+  const testimonialCards = testimonials?.map((test) => ({
+    image: `https://avatar.iran.liara.run/public/${test.clientName.length % 50}`, // Reliable placeholder
+    name: test.clientName,
+    handle: `@${test.clientRole?.toLowerCase().replace(/\s+/g, '.') || 'rifi.client'}`,
+    quote: test.quote,
+  })) || [
     {
-      image:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=60",
+      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=60",
       name: t.home.testimonials[0].author,
       handle: "@rifi.weddings",
       quote: t.home.testimonials[0].quote,
-    },
-    {
-      image:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&auto=format&fit=crop&q=60",
-      name: t.home.testimonials[1].author,
-      handle: "@rifi.events",
-      quote: t.home.testimonials[1].quote,
-    },
-    {
-      image:
-        "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200&auto=format&fit=crop&q=60",
-      name: t.home.testimonials[2].author,
-      handle: "@rifi.entertainment",
-      quote: t.home.testimonials[2].quote,
-    },
-    {
-      image:
-        "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&auto=format&fit=crop&q=60",
-      name: t.home.testimonials[0].author,
-      handle: "@rifi.protocol",
-      quote: t.home.testimonials[0].quote,
-    },
+    }
   ]
+
   const galleryItems = [
     {
       id: "wedding-moments",
@@ -107,7 +98,7 @@ export default function HomePage() {
       <HeroSection
         className="-mt-28 sm:-mt-32"
         title={t.home.heroTitle}
-        subtitle={t.home.tagline}
+        subtitle={businessTagline}
         actions={[
           {
             text: t.home.bookService,
@@ -116,7 +107,7 @@ export default function HomePage() {
           },
           {
             text: t.home.callUs,
-            href: `tel:${siteConfig.phone}`,
+            href: `tel:${businessPhone}`,
             variant: "outline",
           },
         ]}
@@ -160,7 +151,32 @@ export default function HomePage() {
         </div>
 
         <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {t.home.services.map((service, index) => (
+          {services?.map((service) => (
+            <article
+              key={service.id}
+              className="border border-border/70 bg-card/85 p-7 shadow-sm"
+            >
+              <div className="text-xs font-semibold tracking-[0.24em] text-primary uppercase">
+                {service.category}
+              </div>
+              <h3 className="mt-4 font-heading text-2xl font-semibold tracking-tight">
+                {service.title}
+              </h3>
+              <p className="mt-3 text-sm leading-7 text-muted-foreground line-clamp-3">
+                {service.shortDescription}
+              </p>
+              <Button
+                asChild
+                variant="ghost"
+                className="mt-5 px-0 text-primary hover:bg-transparent"
+              >
+                <Link href={`/${service.slug}`}>
+                  {t.home.exploreService}
+                  <ArrowRight />
+                </Link>
+              </Button>
+            </article>
+          )) || t.home.services.map((service, index) => (
             <article
               key={service.title}
               className="border border-border/70 bg-card/85 p-7 shadow-sm"
@@ -216,7 +232,7 @@ export default function HomePage() {
           <div className="mt-8">
             <Marquee
               row1={testimonialCards.slice(0, 3)}
-              row2={testimonialCards.slice(1)}
+              row2={testimonialCards.length > 3 ? testimonialCards.slice(3) : testimonialCards}
             />
           </div>
         </div>
@@ -241,10 +257,10 @@ export default function HomePage() {
                   {t.common.phone}
                 </div>
                 <a
-                  href={`tel:${siteConfig.phone}`}
+                  href={`tel:${businessPhone}`}
                   className="mt-3 block text-sm leading-7 text-muted-foreground hover:text-foreground"
                 >
-                  {siteConfig.phone}
+                  {businessPhone}
                 </a>
               </div>
               <div className="border border-border/70 bg-card/85 p-5">
@@ -253,10 +269,10 @@ export default function HomePage() {
                   {t.common.email}
                 </div>
                 <a
-                  href={`mailto:${siteConfig.email}`}
+                  href={`mailto:${businessEmail}`}
                   className="mt-3 block text-sm leading-7 text-muted-foreground hover:text-foreground"
                 >
-                  {siteConfig.email}
+                  {businessEmail}
                 </a>
               </div>
               <div className="border border-border/70 bg-card/85 p-5 sm:col-span-2 lg:col-span-1">
@@ -265,7 +281,7 @@ export default function HomePage() {
                   {t.common.location}
                 </div>
                 <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                  {siteConfig.location}
+                  {businessLocation}
                 </p>
               </div>
             </div>

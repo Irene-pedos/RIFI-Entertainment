@@ -1,9 +1,13 @@
+"use client"
+
+import * as React from "react"
 import {
   CalendarDays,
   Filter,
   MoreHorizontal,
   Plus,
   Search,
+  Loader2,
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -47,56 +51,51 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-
-const bookings = [
-  {
-    id: "BOK-001",
-    client: "Jean Paul",
-    email: "jp@example.rw",
-    service: "Wedding Organization",
-    date: "2026-05-24",
-    status: "Confirmed",
-    amount: "RWF 1,500,000",
-  },
-  {
-    id: "BOK-002",
-    client: "Marie Claire",
-    email: "marie@example.com",
-    service: "Model Booking",
-    date: "2026-05-18",
-    status: "Pending",
-    amount: "RWF 350,000",
-  },
-  {
-    id: "BOK-003",
-    client: "Kigali Marriott",
-    email: "events@marriott.rw",
-    service: "Protocol Services",
-    date: "2026-06-02",
-    status: "Confirmed",
-    amount: "RWF 800,000",
-  },
-  {
-    id: "BOK-004",
-    client: "Inyange Industries",
-    email: "marketing@inyange.rw",
-    service: "Dance Performance",
-    date: "2026-06-15",
-    status: "Processing",
-    amount: "RWF 600,000",
-  },
-  {
-    id: "BOK-005",
-    client: "Solange Umutoni",
-    email: "solange@test.com",
-    service: "Wedding Saxophonist",
-    date: "2026-07-10",
-    status: "Cancelled",
-    amount: "RWF 200,000",
-  },
-]
+import { trpc } from "@/lib/trpc"
 
 export default function BookingsPage() {
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false)
+  const [searchQuery, setSearchQuery] = React.useState("")
+  const utils = trpc.useUtils()
+
+  const { data: bookings, isLoading: isBookingsLoading } = trpc.booking.list.useQuery()
+  const { data: summary, isLoading: isSummaryLoading } = trpc.booking.dashboardSummary.useQuery()
+
+  const createMutation = trpc.booking.create.useMutation({
+    onSuccess: () => {
+      utils.booking.list.invalidate()
+      utils.booking.dashboardSummary.invalidate()
+      setIsCreateDialogOpen(false)
+    },
+  })
+
+  const updateStatusMutation = trpc.booking.updateStatus.useMutation({
+    onSuccess: () => {
+      utils.booking.list.invalidate()
+      utils.booking.dashboardSummary.invalidate()
+    },
+  })
+
+  const handleCreateBooking = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    
+    createMutation.mutate({
+      clientName: formData.get("client") as string,
+      email: formData.get("email") as string,
+      phone: formData.get("phone") as string,
+      serviceType: formData.get("service") as any,
+      eventDate: formData.get("date") as string,
+      sourcePage: "admin-dashboard",
+    })
+  }
+
+  const filteredBookings = bookings?.filter(b => 
+    b.clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    b.serviceType.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    b.bookingCode.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
   return (
     <div className="space-y-6 pt-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -106,7 +105,7 @@ export default function BookingsPage() {
             View and manage all service bookings and event schedules.
           </p>
         </div>
-        <Dialog>
+        <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
             <Button className="rounded-none">
               <Plus className="mr-2 size-4" />
@@ -114,43 +113,53 @@ export default function BookingsPage() {
             </Button>
           </DialogTrigger>
           <DialogContent className="rounded-none border-border/70 sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Create New Booking</DialogTitle>
-              <DialogDescription>
-                Enter the client details and service requirements for the new booking.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid gap-2">
-                <Label htmlFor="client" className="text-xs font-semibold uppercase tracking-wider">Client Name</Label>
-                <Input id="client" placeholder="e.g. Jean Paul" className="rounded-none border-border/70" />
+            <form onSubmit={handleCreateBooking}>
+              <DialogHeader>
+                <DialogTitle>Create New Booking</DialogTitle>
+                <DialogDescription>
+                  Enter the client details and service requirements for the new booking.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="client" className="text-xs font-semibold uppercase tracking-wider">Client Name</Label>
+                  <Input id="client" name="client" required placeholder="e.g. Jean Paul" className="rounded-none border-border/70" />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider">Email Address</Label>
+                  <Input id="email" name="email" type="email" required placeholder="client@example.rw" className="rounded-none border-border/70" />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="phone" className="text-xs font-semibold uppercase tracking-wider">Phone Number</Label>
+                  <Input id="phone" name="phone" required placeholder="+250 788 000 000" className="rounded-none border-border/70" />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="service" className="text-xs font-semibold uppercase tracking-wider">Service Type</Label>
+                  <Select name="service" required defaultValue="WEDDING">
+                    <SelectTrigger id="service" className="rounded-none border-border/70">
+                      <SelectValue placeholder="Select a service" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-none border-border/70">
+                      <SelectItem value="WEDDING">Wedding Organization</SelectItem>
+                      <SelectItem value="DANCE">Dance Performance</SelectItem>
+                      <SelectItem value="MODELS">Model Booking</SelectItem>
+                      <SelectItem value="PROTOCOL">Protocol Services</SelectItem>
+                      <SelectItem value="TOURS">Tours & Travel</SelectItem>
+                      <SelectItem value="MEDIA">Media Production</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="date" className="text-xs font-semibold uppercase tracking-wider">Event Date</Label>
+                  <Input id="date" name="date" type="date" className="rounded-none border-border/70" />
+                </div>
               </div>
-              <div className="grid gap-2">
-                <Label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider">Email Address</Label>
-                <Input id="email" type="email" placeholder="client@example.rw" className="rounded-none border-border/70" />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="service" className="text-xs font-semibold uppercase tracking-wider">Service Type</Label>
-                <Select>
-                  <SelectTrigger id="service" className="rounded-none border-border/70">
-                    <SelectValue placeholder="Select a service" />
-                  </SelectTrigger>
-                  <SelectContent className="rounded-none border-border/70">
-                    <SelectItem value="wedding">Wedding Organization</SelectItem>
-                    <SelectItem value="models">Model Booking</SelectItem>
-                    <SelectItem value="protocol">Protocol Services</SelectItem>
-                    <SelectItem value="dance">Dance Performance</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="date" className="text-xs font-semibold uppercase tracking-wider">Event Date</Label>
-                <Input id="date" type="date" className="rounded-none border-border/70" />
-              </div>
-            </div>
-            <DialogFooter>
-              <Button type="submit" className="rounded-none w-full">Confirm Booking</Button>
-            </DialogFooter>
+              <DialogFooter>
+                <Button type="submit" className="rounded-none w-full" disabled={createMutation.isPending}>
+                  {createMutation.isPending ? "Creating..." : "Confirm Booking"}
+                </Button>
+              </DialogFooter>
+            </form>
           </DialogContent>
         </Dialog>
       </div>
@@ -159,12 +168,16 @@ export default function BookingsPage() {
         <Card className="rounded-none border-border/70 shadow-sm">
           <CardHeader className="pb-2">
             <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              This Month
+              Total Bookings
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">32</div>
-            <p className="text-[10px] text-emerald-500 font-medium">+8% from last month</p>
+            {isSummaryLoading ? <Loader2 className="animate-spin size-4" /> : (
+              <>
+                <div className="text-2xl font-bold">{summary?.total || 0}</div>
+                <p className="text-[10px] text-muted-foreground font-medium">Across all categories</p>
+              </>
+            )}
           </CardContent>
         </Card>
         <Card className="rounded-none border-border/70 shadow-sm">
@@ -174,19 +187,27 @@ export default function BookingsPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">14</div>
-            <p className="text-[10px] text-amber-500 font-medium">Requires attention</p>
+            {isSummaryLoading ? <Loader2 className="animate-spin size-4" /> : (
+              <>
+                <div className="text-2xl font-bold">{summary?.pending || 0}</div>
+                <p className="text-[10px] text-amber-500 font-medium">Requires attention</p>
+              </>
+            )}
           </CardContent>
         </Card>
         <Card className="rounded-none border-border/70 shadow-sm">
           <CardHeader className="pb-2">
             <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Total Revenue
+              Confirmed
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">RWF 4.2M</div>
-            <p className="text-[10px] text-muted-foreground">Confirmed bookings value</p>
+            {isSummaryLoading ? <Loader2 className="animate-spin size-4" /> : (
+              <>
+                <div className="text-2xl font-bold">{summary?.confirmed || 0}</div>
+                <p className="text-[10px] text-emerald-500 font-medium">Secured bookings</p>
+              </>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -199,6 +220,8 @@ export default function BookingsPage() {
               <Input
                 placeholder="Search clients or services..."
                 className="rounded-none pl-9 border-border/70 bg-background"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
             <div className="flex items-center gap-2">
@@ -217,7 +240,7 @@ export default function BookingsPage() {
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent border-b border-border/70">
-                <TableHead className="w-[100px] text-xs font-semibold uppercase tracking-wider">ID</TableHead>
+                <TableHead className="w-[100px] text-xs font-semibold uppercase tracking-wider">Code</TableHead>
                 <TableHead className="text-xs font-semibold uppercase tracking-wider">Client</TableHead>
                 <TableHead className="text-xs font-semibold uppercase tracking-wider">Service</TableHead>
                 <TableHead className="text-xs font-semibold uppercase tracking-wider">Date</TableHead>
@@ -227,28 +250,45 @@ export default function BookingsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {bookings.map((booking) => (
+              {isBookingsLoading ? (
+                <TableRow>
+                  <TableCell colSpan={7} className="h-24 text-center">
+                    <Loader2 className="animate-spin size-6 mx-auto" />
+                  </TableCell>
+                </TableRow>
+              ) : filteredBookings?.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={7} className="h-24 text-center text-muted-foreground">
+                    No bookings found.
+                  </TableCell>
+                </TableRow>
+              ) : filteredBookings?.map((booking) => (
                 <TableRow key={booking.id} className="hover:bg-muted/30 border-b border-border/70">
-                  <TableCell className="font-mono text-xs text-muted-foreground">{booking.id}</TableCell>
+                  <TableCell className="font-mono text-xs text-muted-foreground">{booking.bookingCode}</TableCell>
                   <TableCell>
                     <div className="flex flex-col">
-                      <span className="font-medium text-sm">{booking.client}</span>
+                      <span className="font-medium text-sm">{booking.clientName}</span>
                       <span className="text-[10px] text-muted-foreground">{booking.email}</span>
                     </div>
                   </TableCell>
-                  <TableCell className="text-sm">{booking.service}</TableCell>
-                  <TableCell className="text-sm">{booking.date}</TableCell>
+                  <TableCell className="text-sm">{booking.serviceType}</TableCell>
+                  <TableCell className="text-sm">
+                    {booking.eventDate ? new Date(booking.eventDate).toLocaleDateString() : "TBD"}
+                  </TableCell>
                   <TableCell>
                     <span className={`inline-flex items-center border px-2 py-0.5 text-[10px] font-medium ${
-                      booking.status === 'Confirmed' ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-600' :
-                      booking.status === 'Pending' ? 'border-amber-500/20 bg-amber-500/10 text-amber-600' :
-                      booking.status === 'Cancelled' ? 'border-destructive/20 bg-destructive/10 text-destructive' :
-                      'border-blue-500/20 bg-blue-500/10 text-blue-600'
+                      booking.status === 'CONFIRMED' ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-600' :
+                      booking.status === 'PENDING' ? 'border-amber-500/20 bg-amber-500/10 text-amber-600' :
+                      booking.status === 'CANCELLED' ? 'border-destructive/20 bg-destructive/10 text-destructive' :
+                      booking.status === 'COMPLETED' ? 'border-blue-500/20 bg-blue-500/10 text-blue-600' :
+                      'border-muted-foreground/20 bg-muted/10 text-muted-foreground'
                     }`}>
                       {booking.status}
                     </span>
                   </TableCell>
-                  <TableCell className="text-right text-sm font-medium">{booking.amount}</TableCell>
+                  <TableCell className="text-right text-sm font-medium">
+                    {booking.amountQuoted ? `RWF ${booking.amountQuoted.toLocaleString()}` : "Not set"}
+                  </TableCell>
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -261,8 +301,24 @@ export default function BookingsPage() {
                         <DropdownMenuItem>View Details</DropdownMenuItem>
                         <DropdownMenuItem>Edit Booking</DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem className="text-emerald-600">Mark as Confirmed</DropdownMenuItem>
-                        <DropdownMenuItem className="text-destructive">Cancel Booking</DropdownMenuItem>
+                        <DropdownMenuItem 
+                          className="text-emerald-600"
+                          onClick={() => updateStatusMutation.mutate({ id: booking.id, status: "CONFIRMED" })}
+                        >
+                          Mark as Confirmed
+                        </DropdownMenuItem>
+                        <DropdownMenuItem 
+                          className="text-blue-600"
+                          onClick={() => updateStatusMutation.mutate({ id: booking.id, status: "COMPLETED" })}
+                        >
+                          Mark as Completed
+                        </DropdownMenuItem>
+                        <DropdownMenuItem 
+                          className="text-destructive"
+                          onClick={() => updateStatusMutation.mutate({ id: booking.id, status: "CANCELLED" })}
+                        >
+                          Cancel Booking
+                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>

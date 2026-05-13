@@ -1,9 +1,17 @@
+"use client"
+
+import * as React from "react"
 import {
   MoreHorizontal,
   Plus,
   Quote,
   Search,
   Star,
+  Loader2,
+  Trash2,
+  Edit,
+  CheckCircle,
+  XCircle,
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -29,7 +37,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
   Dialog,
   DialogContent,
@@ -37,7 +45,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import {
@@ -48,38 +55,88 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-
-const testimonials = [
-  {
-    id: "TEST-001",
-    author: "Alice Umutoni",
-    role: "Bride",
-    quote: "RiFi made our wedding planning stress-free and absolutely beautiful. Their team is professional and creative.",
-    rating: 5,
-    status: "Published",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
-  },
-  {
-    id: "TEST-002",
-    author: "Robert Kabera",
-    role: "Event Manager",
-    quote: "The protocol services provided by RiFi were top-notch. Our corporate guests were impressed with the hospitality.",
-    rating: 5,
-    status: "Published",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop",
-  },
-  {
-    id: "TEST-003",
-    author: "Sandrine Iradukunda",
-    role: "Private Host",
-    quote: "The dance performance was the highlight of our party. Energy, culture, and pure entertainment!",
-    rating: 4,
-    status: "Draft",
-    image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop",
-  },
-]
+import { trpc } from "@/lib/trpc"
 
 export default function AdminTestimonialsManager() {
+  const [searchQuery, setSearchQuery] = React.useState("")
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false)
+  const [editingTestimonial, setEditingTestimonial] = React.useState<any>(null)
+
+  const utils = trpc.useUtils()
+  const { data: testimonials, isLoading } = trpc.testimonial.listAdmin.useQuery()
+
+  const createMutation = trpc.testimonial.create.useMutation({
+    onSuccess: () => {
+      utils.testimonial.listAdmin.invalidate()
+      setIsDialogOpen(false)
+      resetForm()
+    }
+  })
+
+  const updateMutation = trpc.testimonial.update.useMutation({
+    onSuccess: () => {
+      utils.testimonial.listAdmin.invalidate()
+      setIsDialogOpen(false)
+      resetForm()
+    }
+  })
+
+  const deleteMutation = trpc.testimonial.delete.useMutation({
+    onSuccess: () => utils.testimonial.listAdmin.invalidate()
+  })
+
+  const publishToggleMutation = trpc.testimonial.publishToggle.useMutation({
+    onSuccess: () => utils.testimonial.listAdmin.invalidate()
+  })
+
+  const [formData, setFormData] = React.useState({
+    clientName: "",
+    clientRole: "",
+    quote: "",
+    rating: 5,
+    isPublished: false,
+  })
+
+  const resetForm = () => {
+    setFormData({
+      clientName: "",
+      clientRole: "",
+      quote: "",
+      rating: 5,
+      isPublished: false,
+    })
+    setEditingTestimonial(null)
+  }
+
+  const handleEdit = (test: any) => {
+    setEditingTestimonial(test)
+    setFormData({
+      clientName: test.clientName,
+      clientRole: test.clientRole || "",
+      quote: test.quote,
+      rating: test.rating,
+      isPublished: test.isPublished,
+    })
+    setIsDialogOpen(true)
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (editingTestimonial) {
+      updateMutation.mutate({
+        id: editingTestimonial.id,
+        data: formData
+      })
+    } else {
+      createMutation.mutate(formData)
+    }
+  }
+
+  const filteredTestimonials = testimonials?.filter(test => 
+    test.clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    test.quote.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
   return (
     <div className="space-y-6 pt-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -89,32 +146,49 @@ export default function AdminTestimonialsManager() {
             Manage customer feedback and success stories displayed on the website.
           </p>
         </div>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button className="rounded-none">
-              <Plus className="mr-2 size-4" />
-              Add Testimonial
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="rounded-none border-border/70 sm:max-w-[425px]">
+        <Button className="rounded-none" onClick={() => { resetForm(); setIsDialogOpen(true); }}>
+          <Plus className="mr-2 size-4" />
+          Add Testimonial
+        </Button>
+      </div>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="rounded-none border-border/70 sm:max-w-[425px]">
+          <form onSubmit={handleSubmit}>
             <DialogHeader>
-              <DialogTitle>Add New Testimonial</DialogTitle>
+              <DialogTitle>{editingTestimonial ? "Edit Testimonial" : "Add New Testimonial"}</DialogTitle>
               <DialogDescription>
-                Submit a new client success story for the website gallery.
+                {editingTestimonial ? "Update the testimonial details." : "Submit a new client success story for the website gallery."}
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid gap-2">
                 <Label htmlFor="author" className="text-xs font-semibold uppercase tracking-wider">Client Name</Label>
-                <Input id="author" placeholder="e.g. Alice Umutoni" className="rounded-none border-border/70" />
+                <Input 
+                  id="author" 
+                  value={formData.clientName}
+                  onChange={(e) => setFormData({ ...formData, clientName: e.target.value })}
+                  placeholder="e.g. Alice Umutoni" 
+                  className="rounded-none border-border/70" 
+                  required
+                />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="role" className="text-xs font-semibold uppercase tracking-wider">Client Role</Label>
-                <Input id="role" placeholder="e.g. Bride, Event Manager" className="rounded-none border-border/70" />
+                <Input 
+                  id="role" 
+                  value={formData.clientRole}
+                  onChange={(e) => setFormData({ ...formData, clientRole: e.target.value })}
+                  placeholder="e.g. Bride, Event Manager" 
+                  className="rounded-none border-border/70" 
+                />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="rating" className="text-xs font-semibold uppercase tracking-wider">Rating</Label>
-                <Select>
+                <Select 
+                  value={formData.rating.toString()} 
+                  onValueChange={(value) => setFormData({ ...formData, rating: parseInt(value) })}
+                >
                   <SelectTrigger id="rating" className="rounded-none border-border/70">
                     <SelectValue placeholder="Select rating" />
                   </SelectTrigger>
@@ -129,15 +203,29 @@ export default function AdminTestimonialsManager() {
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="quote" className="text-xs font-semibold uppercase tracking-wider">Testimonial Quote</Label>
-                <Textarea id="quote" placeholder="Enter the client's feedback..." className="rounded-none border-border/70 min-h-[100px]" />
+                <Textarea 
+                  id="quote" 
+                  value={formData.quote}
+                  onChange={(e) => setFormData({ ...formData, quote: e.target.value })}
+                  placeholder="Enter the client's feedback..." 
+                  className="rounded-none border-border/70 min-h-[100px]" 
+                  required
+                />
               </div>
             </div>
             <DialogFooter>
-              <Button type="submit" className="rounded-none w-full">Publish Testimonial</Button>
+              <Button 
+                type="submit" 
+                className="rounded-none w-full"
+                disabled={createMutation.isPending || updateMutation.isPending}
+              >
+                {(createMutation.isPending || updateMutation.isPending) && <Loader2 className="mr-2 size-4 animate-spin" />}
+                {editingTestimonial ? "Update Testimonial" : "Publish Testimonial"}
+              </Button>
             </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </div>
+          </form>
+        </DialogContent>
+      </Dialog>
 
       <Card className="rounded-none border-border/70 shadow-sm">
         <CardHeader className="border-b border-border/70 bg-muted/10">
@@ -146,6 +234,8 @@ export default function AdminTestimonialsManager() {
             <Input
               placeholder="Search testimonials..."
               className="rounded-none pl-9 border-border/70 bg-background"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
         </CardHeader>
@@ -161,17 +251,28 @@ export default function AdminTestimonialsManager() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {testimonials.map((test) => (
+              {isLoading ? (
+                <TableRow>
+                  <TableCell colSpan={5} className="h-24 text-center">
+                    <Loader2 className="animate-spin size-6 mx-auto" />
+                  </TableCell>
+                </TableRow>
+              ) : filteredTestimonials?.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
+                    No testimonials found.
+                  </TableCell>
+                </TableRow>
+              ) : filteredTestimonials?.map((test) => (
                 <TableRow key={test.id} className="hover:bg-muted/30 border-b border-border/70">
                   <TableCell className="w-[200px]">
                     <div className="flex items-center gap-3">
                       <Avatar className="rounded-none border border-border/70 size-10">
-                        <AvatarImage src={test.image} className="object-cover" />
-                        <AvatarFallback className="rounded-none">{test.author[0]}</AvatarFallback>
+                        <AvatarFallback className="rounded-none">{test.clientName[0]}</AvatarFallback>
                       </Avatar>
                       <div className="flex flex-col">
-                        <span className="text-sm font-medium">{test.author}</span>
-                        <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">{test.role}</span>
+                        <span className="text-sm font-medium">{test.clientName}</span>
+                        <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">{test.clientRole}</span>
                       </div>
                     </div>
                   </TableCell>
@@ -195,9 +296,9 @@ export default function AdminTestimonialsManager() {
                   </TableCell>
                   <TableCell>
                     <span className={`inline-flex items-center border px-2 py-0.5 text-[10px] font-medium ${
-                      test.status === 'Published' ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-600' : 'border-border/70 bg-muted/50 text-muted-foreground'
+                      test.isPublished ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-600' : 'border-border/70 bg-muted/50 text-muted-foreground'
                     }`}>
-                      {test.status}
+                      {test.isPublished ? 'Published' : 'Draft'}
                     </span>
                   </TableCell>
                   <TableCell>
@@ -209,10 +310,26 @@ export default function AdminTestimonialsManager() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="rounded-none">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem>Edit Testimonial</DropdownMenuItem>
-                        <DropdownMenuItem>Mark as Published</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleEdit(test)}>
+                          <Edit className="mr-2 size-4" />
+                          Edit Testimonial
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => publishToggleMutation.mutate({ id: test.id, isPublished: !test.isPublished })}>
+                          {test.isPublished ? <XCircle className="mr-2 size-4" /> : <CheckCircle className="mr-2 size-4" />}
+                          {test.isPublished ? "Mark as Draft" : "Mark as Published"}
+                        </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
+                        <DropdownMenuItem 
+                          className="text-destructive"
+                          onClick={() => {
+                            if (confirm("Are you sure you want to delete this testimonial?")) {
+                              deleteMutation.mutate(test.id)
+                            }
+                          }}
+                        >
+                          <Trash2 className="mr-2 size-4" />
+                          Delete
+                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>

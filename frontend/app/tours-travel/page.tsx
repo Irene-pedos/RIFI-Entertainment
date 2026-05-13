@@ -10,6 +10,7 @@ import { Gallery4 } from "@/components/ui/gallery4"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { PageIntro } from "@/components/marketing/page-intro"
+import { trpc } from "@/lib/trpc"
 
 export default function ToursTravelPage() {
   const t = useTranslations()
@@ -21,6 +22,11 @@ export default function ToursTravelPage() {
     package: t.tours.packages[0].title,
     guests: "1",
     message: "",
+    phone: "",
+  })
+
+  const mutation = trpc.booking.create.useMutation({
+    onSuccess: () => setStep(3),
   })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -33,11 +39,21 @@ export default function ToursTravelPage() {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    setStep(3)
+    mutation.mutate({
+      serviceType: "TOURS",
+      clientName: formData.name,
+      email: formData.email,
+      phone: formData.phone || "Not provided",
+      eventDate: formData.date,
+      guestCount: parseInt(formData.guests) || 1,
+      message: `Package: ${formData.package}\nMessage: ${formData.message}`,
+      sourcePage: "tours-travel",
+    })
   }
 
   const resetForm = () => {
     setStep(1)
+    mutation.reset()
     setFormData({
       name: "",
       email: "",
@@ -45,6 +61,7 @@ export default function ToursTravelPage() {
       package: t.tours.packages[0].title,
       guests: "1",
       message: "",
+      phone: "",
     })
   }
 
@@ -74,7 +91,6 @@ export default function ToursTravelPage() {
 
   return (
     <div className="flex flex-col">
-      {/* Replaced Hero with PageIntro */}
       <PageIntro
         eyebrow={t.tours.eyebrow}
         title={t.tours.title}
@@ -304,19 +320,35 @@ export default function ToursTravelPage() {
                           className="rounded-none border-x-0 border-t-0 border-b-2 px-0 focus-visible:ring-0"
                         />
                       </div>
-                      <div className="grid gap-2">
-                        <label htmlFor="email" className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                          {t.tours.bookingForm.emailLabel}
-                        </label>
-                        <Input
-                          id="email"
-                          type="email"
-                          required
-                          value={formData.email}
-                          onChange={handleInputChange}
-                          placeholder="your@email.com"
-                          className="rounded-none border-x-0 border-t-0 border-b-2 px-0 focus-visible:ring-0"
-                        />
+                      <div className="grid gap-8 sm:grid-cols-2">
+                        <div className="grid gap-2">
+                          <label htmlFor="email" className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                            {t.tours.bookingForm.emailLabel}
+                          </label>
+                          <Input
+                            id="email"
+                            type="email"
+                            required
+                            value={formData.email}
+                            onChange={handleInputChange}
+                            placeholder="your@email.com"
+                            className="rounded-none border-x-0 border-t-0 border-b-2 px-0 focus-visible:ring-0"
+                          />
+                        </div>
+                        <div className="grid gap-2">
+                          <label htmlFor="phone" className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                            Phone Number
+                          </label>
+                          <Input
+                            id="phone"
+                            type="tel"
+                            required
+                            value={formData.phone}
+                            onChange={handleInputChange}
+                            placeholder="+250..."
+                            className="rounded-none border-x-0 border-t-0 border-b-2 px-0 focus-visible:ring-0"
+                          />
+                        </div>
                       </div>
                       <div className="grid gap-2">
                         <label htmlFor="message" className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
@@ -333,13 +365,14 @@ export default function ToursTravelPage() {
                       </div>
                     </div>
 
+                    {mutation.error && <p className="text-sm text-destructive">{mutation.error.message}</p>}
                     <div className="flex gap-4">
-                      <Button variant="outline" onClick={handleBack} size="lg" className="h-14 flex-1 uppercase tracking-widest">
+                      <Button variant="outline" onClick={handleBack} size="lg" className="h-14 flex-1 uppercase tracking-widest" disabled={mutation.isPending}>
                         <ChevronLeft className="mr-2 h-4 w-4" />
                         {t.tours.bookingForm.backButton}
                       </Button>
-                      <Button type="submit" size="lg" className="h-14 flex-[2] uppercase tracking-widest">
-                        {t.tours.bookingForm.submitButton}
+                      <Button type="submit" size="lg" className="h-14 flex-[2] uppercase tracking-widest" disabled={mutation.isPending}>
+                        {mutation.isPending ? "Sending..." : t.tours.bookingForm.submitButton}
                       </Button>
                     </div>
                   </motion.form>

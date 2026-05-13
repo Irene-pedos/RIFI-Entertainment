@@ -34,6 +34,8 @@ export const metadata: Metadata = {
   ],
 }
 
+import { TRPCProvider } from "@/components/providers/trpc-provider"
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -52,11 +54,13 @@ export default function RootLayout({
       )}
     >
       <body>
-        <ThemeProvider>
-          <Suspense fallback={null}>
-            <SiteShell>{children}</SiteShell>
-          </Suspense>
-        </ThemeProvider>
+        <TRPCProvider>
+          <ThemeProvider>
+            <Suspense fallback={null}>
+              <SiteShell>{children}</SiteShell>
+            </Suspense>
+          </ThemeProvider>
+        </TRPCProvider>
       </body>
     </html>
   )

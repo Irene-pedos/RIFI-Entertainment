@@ -8,34 +8,36 @@ import { PageIntro } from "@/components/marketing/page-intro"
 import { ContactForm } from "@/components/marketing/contact-form"
 import { useTranslations } from "@/lib/i18n"
 import { siteConfig } from "@/lib/site"
+import { useSiteSettings } from "@/hooks/use-site-settings"
 
 export default function ContactPage() {
   const t = useTranslations()
+  const { businessEmail, businessPhone, businessWhatsapp, businessLocation } = useSiteSettings()
 
   const contactInfo = [
     {
       icon: Phone,
       label: t.common.phone,
-      value: siteConfig.phone,
-      href: `tel:${siteConfig.phone}`,
+      value: businessPhone,
+      href: `tel:${businessPhone}`,
     },
     {
       icon: Mail,
       label: t.common.email,
-      value: siteConfig.email,
-      href: `mailto:${siteConfig.email}`,
+      value: businessEmail,
+      href: `mailto:${businessEmail}`,
     },
     {
       icon: MapPin,
       label: t.common.location,
-      value: t.contact.location,
-      href: `https://maps.google.com/?q=${encodeURIComponent(t.contact.location)}`,
+      value: businessLocation,
+      href: `https://maps.google.com/?q=${encodeURIComponent(businessLocation)}`,
     },
     {
       icon: MessageSquare,
       label: t.common.whatsapp,
-      value: siteConfig.whatsapp,
-      href: `https://wa.me/250${siteConfig.whatsapp}`,
+      value: businessWhatsapp,
+      href: `https://wa.me/250${businessWhatsapp}`,
     },
   ]
 
@@ -82,7 +84,7 @@ export default function ContactPage() {
               {t.contact.quickSupportText}
             </p>
             <Button asChild className="w-full sm:w-auto">
-              <a href={`https://wa.me/250${siteConfig.whatsapp}`} target="_blank" rel="noopener noreferrer">
+              <a href={`https://wa.me/250${businessWhatsapp}`} target="_blank" rel="noopener noreferrer">
                 {t.contact.chatWhatsApp}
               </a>
             </Button>

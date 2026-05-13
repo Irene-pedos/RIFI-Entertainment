@@ -91,11 +91,7 @@ const HeroSection = ({
   return (
     <section
       className={cn(
-<<<<<<< HEAD
-        "relative w-full overflow-hidden bg-background py-16 sm:py-24 lg:py-32",
-=======
         "relative flex min-h-screen w-full items-center overflow-hidden bg-background py-12 lg:py-20",
->>>>>>> Irene
         className
       )}
     >
@@ -208,12 +204,8 @@ const HeroSection = ({
               src={images[0]}
               alt="Hero image 1"
               fill
-<<<<<<< HEAD
-              className="object-cover"
-=======
               className="object-cover p-2"
               sizes="(max-width: 640px) 240px, (max-width: 1024px) 320px, 400px"
->>>>>>> Irene
             />
           </motion.div>
           <motion.div
@@ -225,24 +217,8 @@ const HeroSection = ({
               src={images[1]}
               alt="Hero image 2"
               fill
-<<<<<<< HEAD
-              className="object-cover"
-            />
-          </motion.div>
-          <motion.div
-            className="absolute bottom-0 left-0 h-32 w-32 border border-border/70 bg-muted p-2 shadow-sm sm:h-48 sm:w-48 lg:h-64 lg:w-64"
-            style={{ transformOrigin: "top right" }}
-            variants={imageVariants}
-          >
-            <Image
-              src={images[2]}
-              alt="Hero image 3"
-              fill
-              className="object-cover"
-=======
               className="object-cover p-2"
               sizes="(max-width: 640px) 200px, (max-width: 1024px) 280px, 360px"
->>>>>>> Irene
             />
           </motion.div>
         </motion.div>

@@ -15,21 +15,31 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useTranslations } from "@/lib/i18n"
+import { trpc } from "@/lib/trpc"
 
 export function ProtocolBookingForm() {
   const t = useTranslations()
   const [isSubmitted, setIsSubmitted] = React.useState(false)
-  const [isLoading, setIsLoading] = React.useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    
-    // Mock form submission
-    setTimeout(() => {
-      setIsLoading(false)
+  const mutation = trpc.booking.create.useMutation({
+    onSuccess: () => {
       setIsSubmitted(true)
-    }, 1500)
+    },
+  })
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    
+    mutation.mutate({
+      clientName: formData.get("name") as string,
+      email: formData.get("email") as string,
+      phone: formData.get("phone") as string,
+      serviceType: "PROTOCOL" as any, // Cast to ServiceCategory
+      eventDate: formData.get("date") as string,
+      message: `Event Type: ${formData.get("eventType")}. Message: ${formData.get("message")}`,
+      sourcePage: "protocol-services",
+    })
   }
 
   if (isSubmitted) {
@@ -68,21 +78,21 @@ export function ProtocolBookingForm() {
           <Label htmlFor="name" className="text-xs font-semibold uppercase tracking-wider">
             {t.protocol.bookingForm.name}
           </Label>
-          <Input id="name" placeholder="Jean Paul" required className="rounded-none border-border/70" />
+          <Input id="name" name="name" placeholder="Jean Paul" required className="rounded-none border-border/70" />
         </div>
 
         <div className="grid gap-2">
           <Label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider">
             {t.protocol.bookingForm.email}
           </Label>
-          <Input id="email" type="email" placeholder="jp@example.rw" required className="rounded-none border-border/70" />
+          <Input id="email" name="email" type="email" placeholder="jp@example.rw" required className="rounded-none border-border/70" />
         </div>
 
         <div className="grid gap-2">
           <Label htmlFor="phone" className="text-xs font-semibold uppercase tracking-wider">
             {t.protocol.bookingForm.phone}
           </Label>
-          <Input id="phone" type="tel" placeholder="+250 788 000 000" required className="rounded-none border-border/70" />
+          <Input id="phone" name="phone" type="tel" placeholder="+250 788 000 000" required className="rounded-none border-border/70" />
         </div>
 
         <div className="grid gap-2">
@@ -91,7 +101,7 @@ export function ProtocolBookingForm() {
           </Label>
           <div className="relative">
             <CalendarIcon className="absolute left-3 top-3 size-4 text-muted-foreground" />
-            <Input id="date" type="date" required className="rounded-none border-border/70 pl-10" />
+            <Input id="date" name="date" type="date" required className="rounded-none border-border/70 pl-10" />
           </div>
         </div>
 
@@ -99,7 +109,7 @@ export function ProtocolBookingForm() {
           <Label htmlFor="eventType" className="text-xs font-semibold uppercase tracking-wider">
             {t.protocol.bookingForm.eventType}
           </Label>
-          <Select required>
+          <Select name="eventType" required>
             <SelectTrigger id="eventType" className="rounded-none border-border/70">
               <SelectValue placeholder="Select event type" />
             </SelectTrigger>
@@ -119,15 +129,20 @@ export function ProtocolBookingForm() {
           </Label>
           <Textarea
             id="message"
+            name="message"
             placeholder="Tell us about your event and specific requirements..."
             className="min-h-[120px] rounded-none border-border/70"
           />
         </div>
 
+        {mutation.error && (
+          <p className="sm:col-span-2 text-sm text-destructive">{mutation.error.message}</p>
+        )}
+
         <div className="sm:col-span-2">
-          <Button type="submit" className="w-full rounded-none py-6 text-base font-semibold" disabled={isLoading}>
+          <Button type="submit" className="w-full rounded-none py-6 text-base font-semibold" disabled={mutation.isPending}>
             <Send className="mr-2 size-4" />
-            {isLoading ? "Sending..." : t.protocol.bookingForm.submit}
+            {mutation.isPending ? "Sending..." : t.protocol.bookingForm.submit}
           </Button>
         </div>
       </form>

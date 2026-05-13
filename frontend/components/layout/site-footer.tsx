@@ -5,9 +5,11 @@ import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa"
 import { useTranslations } from "@/lib/i18n"
 import { siteConfig } from "@/lib/site"
 import { Footer7 } from "@/components/ui/footer-7"
+import { useSiteSettings } from "@/hooks/use-site-settings"
 
 export function SiteFooter() {
   const t = useTranslations()
+  const { businessEmail, businessPhone, businessLocation } = useSiteSettings()
 
   const sections = [
     {
@@ -30,9 +32,9 @@ export function SiteFooter() {
     {
       title: t.common.contact,
       links: [
-        { name: siteConfig.location, href: "/contact" },
-        { name: siteConfig.phone, href: `tel:${siteConfig.phone}` },
-        { name: siteConfig.email, href: `mailto:${siteConfig.email}` },
+        { name: businessLocation, href: "/contact" },
+        { name: businessPhone, href: `tel:${businessPhone}` },
+        { name: businessEmail, href: `mailto:${businessEmail}` },
       ],
     },
   ]

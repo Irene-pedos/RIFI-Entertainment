@@ -10,6 +10,7 @@ import { PageIntro } from "@/components/marketing/page-intro"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { trpc } from "@/lib/trpc"
 
 const galleryImages = [
   "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&q=60&w=1080",
@@ -28,6 +29,11 @@ export default function DancePage() {
     style: t.dance.danceTypes[0].title,
     guests: "",
     message: "",
+    phone: "",
+  })
+
+  const mutation = trpc.booking.create.useMutation({
+    onSuccess: () => setStep(3),
   })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -40,11 +46,20 @@ export default function DancePage() {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    setStep(3)
+    mutation.mutate({
+      serviceType: "DANCE",
+      clientName: formData.name,
+      email: formData.email,
+      phone: formData.phone || "Not provided",
+      eventDate: formData.date,
+      message: `Style: ${formData.style}\nGuests: ${formData.guests}\nMessage: ${formData.message}`,
+      sourcePage: "dance",
+    })
   }
 
   const resetForm = () => {
     setStep(1)
+    mutation.reset()
     setFormData({
       name: "",
       email: "",
@@ -52,6 +67,7 @@ export default function DancePage() {
       style: t.dance.danceTypes[0].title,
       guests: "",
       message: "",
+      phone: "",
     })
   }
 
@@ -338,19 +354,35 @@ export default function DancePage() {
                           className="rounded-none border-x-0 border-t-0 border-b-2 px-0 focus-visible:ring-0"
                         />
                       </div>
-                      <div className="grid gap-2">
-                        <label htmlFor="email" className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                          {t.dance.bookingForm.emailLabel}
-                        </label>
-                        <Input
-                          id="email"
-                          type="email"
-                          required
-                          value={formData.email}
-                          onChange={handleInputChange}
-                          placeholder="your@email.com"
-                          className="rounded-none border-x-0 border-t-0 border-b-2 px-0 focus-visible:ring-0"
-                        />
+                      <div className="grid gap-8 sm:grid-cols-2">
+                        <div className="grid gap-2">
+                          <label htmlFor="email" className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                            {t.dance.bookingForm.emailLabel}
+                          </label>
+                          <Input
+                            id="email"
+                            type="email"
+                            required
+                            value={formData.email}
+                            onChange={handleInputChange}
+                            placeholder="your@email.com"
+                            className="rounded-none border-x-0 border-t-0 border-b-2 px-0 focus-visible:ring-0"
+                          />
+                        </div>
+                        <div className="grid gap-2">
+                          <label htmlFor="phone" className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                            Phone Number
+                          </label>
+                          <Input
+                            id="phone"
+                            type="tel"
+                            required
+                            value={formData.phone}
+                            onChange={handleInputChange}
+                            placeholder="+250..."
+                            className="rounded-none border-x-0 border-t-0 border-b-2 px-0 focus-visible:ring-0"
+                          />
+                        </div>
                       </div>
                       <div className="grid gap-2">
                         <label htmlFor="message" className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
@@ -367,13 +399,14 @@ export default function DancePage() {
                       </div>
                     </div>
 
+                    {mutation.error && <p className="text-sm text-destructive">{mutation.error.message}</p>}
                     <div className="flex gap-4">
-                      <Button variant="outline" onClick={handleBack} size="lg" className="h-14 flex-1 uppercase tracking-widest">
+                      <Button variant="outline" onClick={handleBack} size="lg" className="h-14 flex-1 uppercase tracking-widest" disabled={mutation.isPending}>
                         <ChevronLeft className="mr-2 h-4 w-4" />
                         {t.dance.bookingForm.backButton}
                       </Button>
-                      <Button type="submit" size="lg" className="h-14 flex-[2] uppercase tracking-widest">
-                        {t.dance.bookingForm.submitButton}
+                      <Button type="submit" size="lg" className="h-14 flex-[2] uppercase tracking-widest" disabled={mutation.isPending}>
+                        {mutation.isPending ? "Sending..." : t.dance.bookingForm.submitButton}
                       </Button>
                     </div>
                   </motion.form>

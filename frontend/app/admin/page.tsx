@@ -1,9 +1,12 @@
+"use client"
+
 import {
   CalendarDays,
   MessageSquare,
   TrendingUp,
   UserCheck,
   Users,
+  Loader2,
 } from "lucide-react"
 
 import {
@@ -21,8 +24,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { trpc } from "@/lib/trpc"
 
 export default function AdminDashboardPage() {
+  const { data: summary, isLoading: isSummaryLoading } = trpc.booking.dashboardSummary.useQuery()
+  const { data: bookings, isLoading: isBookingsLoading } = trpc.booking.list.useQuery()
+  const { data: inquiries } = trpc.inquiry.list.useQuery()
+  const { data: modelApps } = trpc.model.listApplications.useQuery()
+  const { data: media } = trpc.media.list.useQuery()
+  const { data: testimonials } = trpc.testimonial.listAdmin.useQuery()
+
+  const recentBookings = bookings?.slice(0, 5)
+
   return (
     <div className="space-y-6 pt-6">
       <div className="flex flex-col gap-2">
@@ -41,10 +54,14 @@ export default function AdminDashboardPage() {
             <CalendarDays className="size-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">128</div>
-            <p className="text-[10px] text-muted-foreground mt-1">
-              <span className="text-emerald-500 font-medium">+12%</span> from last month
-            </p>
+            {isSummaryLoading ? <Loader2 className="animate-spin size-4" /> : (
+              <>
+                <div className="text-2xl font-bold">{summary?.total || 0}</div>
+                <p className="text-[10px] text-muted-foreground mt-1">
+                  Lifetime bookings
+                </p>
+              </>
+            )}
           </CardContent>
         </Card>
         <Card className="rounded-none border-border/70 shadow-sm">
@@ -55,9 +72,9 @@ export default function AdminDashboardPage() {
             <MessageSquare className="size-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">24</div>
+            <div className="text-2xl font-bold">{inquiries?.length || 0}</div>
             <p className="text-[10px] text-muted-foreground mt-1">
-              <span className="text-emerald-500 font-medium">+4</span> since yesterday
+              Total received
             </p>
           </CardContent>
         </Card>
@@ -69,23 +86,54 @@ export default function AdminDashboardPage() {
             <UserCheck className="size-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">12</div>
+            <div className="text-2xl font-bold">{modelApps?.length || 0}</div>
             <p className="text-[10px] text-muted-foreground mt-1">
-              <span className="text-amber-500 font-medium">Pending review</span>
+              Total applications
             </p>
           </CardContent>
         </Card>
         <Card className="rounded-none border-border/70 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-xs font-semibold uppercase tracking-wider">
-              Active Talent
+              Media Assets
+            </CardTitle>
+            <TrendingUp className="size-4 text-primary" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{media?.length || 0}</div>
+            <p className="text-[10px] text-muted-foreground mt-1">
+              Images & videos
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <Card className="rounded-none border-border/70 shadow-sm">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-xs font-semibold uppercase tracking-wider">
+              Testimonials
             </CardTitle>
             <Users className="size-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">45</div>
+            <div className="text-2xl font-bold">{testimonials?.length || 0}</div>
             <p className="text-[10px] text-muted-foreground mt-1">
-              Models and Performers
+              Client reviews
+            </p>
+          </CardContent>
+        </Card>
+        <Card className="rounded-none border-border/70 shadow-sm">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-xs font-semibold uppercase tracking-wider">
+              Pending Bookings
+            </CardTitle>
+            <CalendarDays className="size-4 text-amber-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-amber-500">{summary?.pending || 0}</div>
+            <p className="text-[10px] text-muted-foreground mt-1">
+              Awaiting confirmation
             </p>
           </CardContent>
         </Card>
@@ -110,36 +158,37 @@ export default function AdminDashboardPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow className="hover:bg-muted/30">
-                  <TableCell className="font-medium">Jean Paul</TableCell>
-                  <TableCell>Wedding Organization</TableCell>
-                  <TableCell>May 24, 2026</TableCell>
-                  <TableCell className="text-right">
-                    <span className="inline-flex items-center border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-600">
-                      Confirmed
-                    </span>
-                  </TableCell>
-                </TableRow>
-                <TableRow className="hover:bg-muted/30">
-                  <TableCell className="font-medium">Marie Claire</TableCell>
-                  <TableCell>Model Booking</TableCell>
-                  <TableCell>May 18, 2026</TableCell>
-                  <TableCell className="text-right">
-                    <span className="inline-flex items-center border border-amber-500/20 bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium text-amber-600">
-                      Pending
-                    </span>
-                  </TableCell>
-                </TableRow>
-                <TableRow className="hover:bg-muted/30">
-                  <TableCell className="font-medium">Kigali Marriott</TableCell>
-                  <TableCell>Protocol Services</TableCell>
-                  <TableCell>June 02, 2026</TableCell>
-                  <TableCell className="text-right">
-                    <span className="inline-flex items-center border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-600">
-                      Confirmed
-                    </span>
-                  </TableCell>
-                </TableRow>
+                {isBookingsLoading ? (
+                  <TableRow>
+                    <TableCell colSpan={4} className="h-24 text-center">
+                      <Loader2 className="animate-spin size-6 mx-auto" />
+                    </TableCell>
+                  </TableRow>
+                ) : recentBookings?.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={4} className="h-24 text-center text-muted-foreground">
+                      No bookings found.
+                    </TableCell>
+                  </TableRow>
+                ) : recentBookings?.map((booking) => (
+                  <TableRow key={booking.id} className="hover:bg-muted/30">
+                    <TableCell className="font-medium">{booking.clientName}</TableCell>
+                    <TableCell>{booking.serviceType}</TableCell>
+                    <TableCell>
+                      {booking.eventDate ? new Date(booking.eventDate).toLocaleDateString() : "TBD"}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <span className={`inline-flex items-center border px-2 py-0.5 text-[10px] font-medium ${
+                        booking.status === 'CONFIRMED' ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-600' :
+                        booking.status === 'PENDING' ? 'border-amber-500/20 bg-amber-500/10 text-amber-600' :
+                        booking.status === 'CANCELLED' ? 'border-destructive/20 bg-destructive/10 text-destructive' :
+                        'border-blue-500/20 bg-blue-500/10 text-blue-600'
+                      }`}>
+                        {booking.status}
+                      </span>
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </CardContent>

@@ -1,0 +1,167 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  EDITOR
+  VIEWER
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum InquiryStatus {
+  NEW
+  IN_PROGRESS
+  RESOLVED
+  ARCHIVED
+}
+
+enum ModelApplicationStatus {
+  PENDING
+  REVIEWING
+  ACCEPTED
+  REJECTED
+}
+
+enum ServiceCategory {
+  WEDDING
+  DANCE
+  MODELS
+  PROTOCOL
+  TOURS
+  MEDIA
+}
+
+enum MediaCategory {
+  HERO
+  GALLERY
+  SERVICE
+  TEAM
+  OTHER
+}
+
+model AdminUser {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  firstName    String?
+  lastName     String?
+  role         AdminRole @default(EDITOR)
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  MediaAsset   MediaAsset[]
+}
+
+model Booking {
+  id           String        @id @default(cuid())
+  bookingCode  String        @unique
+  serviceType  ServiceCategory
+  clientName   String
+  email        String
+  phone        String
+  eventDate    DateTime?
+  location     String?
+  guestCount   Int?
+  amountQuoted Float?
+  status       BookingStatus @default(PENDING)
+  notes        String?       @db.Text
+  message      String?       @db.Text
+  sourcePage   String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Inquiry {
+  id          String        @id @default(cuid())
+  inquiryCode String        @unique
+  name        String
+  email       String
+  phone       String?
+  subject     String?
+  message     String        @db.Text
+  status      InquiryStatus @default(NEW)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model ModelApplication {
+  id              String                 @id @default(cuid())
+  applicationCode String                 @unique
+  fullName        String
+  email           String
+  phone           String
+  age             Int?
+  heightCm        Float?
+  measurements    String?
+  category        String?
+  socialMedia     String?
+  experience      String?                @db.Text
+  portfolioUrl    String?
+  status          ModelApplicationStatus @default(PENDING)
+  createdAt       DateTime               @default(now())
+  updatedAt       DateTime               @updatedAt
+}
+
+model Service {
+  id               String          @id @default(cuid())
+  slug             String          @unique
+  title            String
+  category         ServiceCategory
+  shortDescription String?         @db.Text
+  fullDescription  String?         @db.Text
+  pricingLabel     String?
+  isActive         Boolean         @default(true)
+  displayOrder     Int             @default(0)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+}
+
+model Testimonial {
+  id           String   @id @default(cuid())
+  clientName   String
+  clientRole   String?
+  quote        String   @db.Text
+  rating       Int      @default(5)
+  isPublished  Boolean  @default(false)
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model MediaAsset {
+  id           String        @id @default(cuid())
+  fileName     String
+  originalName String
+  mimeType     String
+  fileSize     Int
+  publicUrl    String
+  storagePath  String
+  altText      String?
+  category     MediaCategory @default(OTHER)
+  uploadedBy   AdminUser?    @relation(fields: [uploadedById], references: [id])
+  uploadedById String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model SiteSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   @db.Text
+  type      String   @default("string")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

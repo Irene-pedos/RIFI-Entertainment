@@ -17,23 +17,29 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { siteConfig } from "@/lib/site"
 import Image from "next/image"
+import { trpc } from "@/lib/trpc"
 
 export default function LoginPage() {
   const [email, setEmail] = React.useState("")
   const [password, setPassword] = React.useState("")
-  const [isLoading, setIsLoading] = React.useState(false)
+  const [error, setError] = React.useState("")
   const router = useRouter()
+
+  const mutation = trpc.auth.login.useMutation({
+    onSuccess: (data) => {
+      localStorage.setItem("rifi_auth_token", data.token)
+      localStorage.setItem("rifi_admin_user", JSON.stringify(data.user))
+      router.push("/admin")
+    },
+    onError: (err) => {
+      setError(err.message)
+    },
+  })
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
-    setIsLoading(true)
-
-    // Mock authentication
-    setTimeout(() => {
-      localStorage.setItem("rifi_admin_logged_in", "true")
-      router.push("/admin")
-      setIsLoading(false)
-    }, 1000)
+    setError("")
+    mutation.mutate({ email, password })
   }
 
   return (
@@ -63,6 +69,11 @@ export default function LoginPage() {
         </CardHeader>
         <form onSubmit={handleLogin}>
           <CardContent className="grid gap-4">
+            {error && (
+              <div className="bg-destructive/10 p-3 text-xs text-destructive border border-destructive/20">
+                {error}
+              </div>
+            )}
             <div className="grid gap-2">
               <Label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider">
                 Email
@@ -100,14 +111,13 @@ export default function LoginPage() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button
-              type="submit"
-              className="w-full rounded-none"
-              disabled={isLoading}
+            <Button 
+              type="submit" 
+              className="w-full rounded-none" 
+              disabled={mutation.isPending}
             >
-              {isLoading ? "Signing in..." : "Sign In"}
-            </Button>
-          </CardFooter>
+              {mutation.isPending ? "Signing in..." : "Sign In"}
+            </Button>          </CardFooter>
         </form>
       </Card>
 
