@@ -51,6 +51,7 @@ const NavigationMenuTrigger = React.forwardRef<
   <NavigationMenuPrimitive.Trigger
     ref={ref}
     className={cn(navigationMenuTriggerStyle(), className)}
+    suppressHydrationWarning
     {...props}
   >
     {children}

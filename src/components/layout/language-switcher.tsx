@@ -78,6 +78,7 @@ export function LanguageSwitcher() {
               type="button"
               onClick={() => onLanguageChange(language.code)}
               className="flex w-full px-3 py-2 text-left text-xs font-medium tracking-[0.18em] text-muted-foreground uppercase transition-colors hover:bg-muted hover:text-foreground"
+              suppressHydrationWarning
             >
               {language.label}
             </button>

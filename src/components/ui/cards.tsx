@@ -1,10 +1,8 @@
 "use client"
 
-import Image from "next/image"
 import { useMemo } from "react"
 
 export type TestimonialCardItem = {
-  image: string
   name: string
   handle: string
   quote: string
@@ -31,21 +29,12 @@ const VerifyIcon = () => (
 
 const Card = ({ card }: { card: TestimonialCardItem }) => (
   <div className="mx-3 w-64 shrink-0 border border-border/70 bg-card p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
-    <div className="flex gap-3">
-      <Image
-        className="size-11 object-cover"
-        src={card.image}
-        alt={card.name}
-        width={44}
-        height={44}
-      />
-      <div className="flex flex-col">
-        <div className="flex items-center gap-1">
-          <p className="font-medium">{card.name}</p>
-          <VerifyIcon />
-        </div>
-        <span className="text-xs text-muted-foreground">{card.handle}</span>
+    <div className="flex flex-col">
+      <div className="flex items-center gap-1">
+        <p className="font-medium">{card.name}</p>
+        <VerifyIcon />
       </div>
+      <span className="text-xs text-muted-foreground">{card.handle}</span>
     </div>
     <p className="pt-4 text-sm leading-7 text-foreground/85">{card.quote}</p>
   </div>

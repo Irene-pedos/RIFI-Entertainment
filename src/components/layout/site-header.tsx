@@ -26,30 +26,35 @@ export function SiteHeader() {
   const lastScrollY = useRef(0)
 
   const menu: MenuItem[] = [
-    { title: t.nav["/"], url: "/" },
+    { id: "home", title: t.nav["/"], url: "/" },
     {
+      id: "services",
       title: t.home.featuredEyebrow,
       url: "#",
       items: [
         {
+          id: "models",
           title: t.nav["/models"],
           description: t.home.services[0].description,
           icon: <Users className="size-5 shrink-0" />,
           url: "/models",
         },
         {
+          id: "wedding",
           title: t.nav["/wedding"],
           description: t.home.services[1].description,
           icon: <HeartHandshake className="size-5 shrink-0" />,
           url: "/wedding",
         },
         {
+          id: "protocol",
           title: t.nav["/protocol-services"],
           description: t.home.services[2].description,
           icon: <ShieldCheck className="size-5 shrink-0" />,
           url: "/protocol-services",
         },
         {
+          id: "dance",
           title: t.nav["/dance"],
           description: t.home.services[3].description,
           icon: <Sparkles className="size-5 shrink-0" />,
@@ -58,22 +63,26 @@ export function SiteHeader() {
       ],
     },
     {
+      id: "explore",
       title: t.common.explore,
       url: "#",
       items: [
         {
+          id: "gallery",
           title: t.nav["/gallery"],
           description: t.home.galleryDescription,
           icon: <ImageIcon className="size-5 shrink-0" />,
           url: "/gallery",
         },
         {
+          id: "about",
           title: t.nav["/about"],
           description: t.home.overview,
           icon: <MapPinned className="size-5 shrink-0" />,
           url: "/about",
         },
         {
+          id: "tours",
           title: t.nav["/tours-travel"],
           description: t.home.services[4].description,
           icon: <Languages className="size-5 shrink-0" />,
@@ -81,7 +90,7 @@ export function SiteHeader() {
         },
       ],
     },
-    { title: t.nav["/contact"], url: "/contact" },
+    { id: "contact", title: t.nav["/contact"], url: "/contact" },
   ]
 
   useEffect(() => {

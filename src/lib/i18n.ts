@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo } from "react"
+import { useEffect, useMemo, useSyncExternalStore } from "react"
 import { useSearchParams, type ReadonlyURLSearchParams } from "next/navigation"
 
 import { siteConfig } from "@/lib/site"
@@ -1028,7 +1028,7 @@ export const translations = {
         {
           title: "Experiences Evenementielles",
           description:
-            "Hospitalite, gestion du protocole et moments memorables pour les invites.",
+            "Hospitalite, gestion du protocole and moments memorables pour les invites.",
         },
         {
           title: "Modeles & Performances",
@@ -1308,7 +1308,7 @@ export const translations = {
       assistanceText: "Naviguer dans votre voyage est plus facile avec RiFi.",
       assistanceItems: ["Prise en charge et retour à l'aéroport", "Coordination du transport local", "Planification de l'itinéraire"],
       hotelHeading: "Hôtel & Hébergement",
-      hotelText: "Nous vous aidons à trouver le meilleur séjour selon votre budget et vos préférences.",
+      hotelText: "Nous vous addons à trouver le meilleur séjour selon votre budget et vos préférences.",
       hotelItems: ["Complexes hôteliers de luxe", "Hôtels en ville à Kigali", "Eco-lodges dans les parcs"],
       guideHeading: "Guides Professionnels",
       guideText: "Apprenez-en plus avec nos guides locaux expérimentés.",
@@ -1403,6 +1403,26 @@ export const translations = {
 
 const LANGUAGE_STORAGE_KEY = "rifi-language"
 
+// External store for language preference in localStorage
+const languageStore = {
+  subscribe(callback: () => void) {
+    if (typeof window === "undefined") return () => {}
+    window.addEventListener("storage", callback)
+    window.addEventListener("rifi-language-change", callback)
+    return () => {
+      window.removeEventListener("storage", callback)
+      window.removeEventListener("rifi-language-change", callback)
+    }
+  },
+  getSnapshot() {
+    if (typeof window === "undefined") return null
+    return localStorage.getItem(LANGUAGE_STORAGE_KEY)
+  },
+  getServerSnapshot() {
+    return null
+  },
+}
+
 export function getLanguageFromSearchParams(
   searchParams: URLSearchParams | ReadonlyURLSearchParams
 ): LanguageCode | null {
@@ -1415,29 +1435,40 @@ export function getLanguageFromSearchParams(
 
 export function useCurrentLanguage() {
   const searchParams = useSearchParams()
+  const paramLang = useMemo(
+    () => getLanguageFromSearchParams(searchParams),
+    [searchParams]
+  )
 
-  return useMemo(() => {
-    const paramLang = getLanguageFromSearchParams(searchParams)
+  const storedLang = useSyncExternalStore(
+    languageStore.subscribe,
+    languageStore.getSnapshot,
+    languageStore.getServerSnapshot
+  )
 
-    if (typeof window !== "undefined") {
-      if (paramLang) {
+  useEffect(() => {
+    if (paramLang && typeof window !== "undefined") {
+      const currentStored = localStorage.getItem(LANGUAGE_STORAGE_KEY)
+      if (currentStored !== paramLang) {
         localStorage.setItem(LANGUAGE_STORAGE_KEY, paramLang)
-        return paramLang
-      }
-
-      const storedLang = localStorage.getItem(LANGUAGE_STORAGE_KEY)
-      if (
-        storedLang &&
-        siteConfig.languages.some((l) => l.code === storedLang)
-      ) {
-        return storedLang as LanguageCode
+        window.dispatchEvent(new Event("rifi-language-change"))
       }
     }
+  }, [paramLang])
 
-    return paramLang || defaultLanguage
-  }, [searchParams])
+  const language = useMemo(() => {
+    if (paramLang) return paramLang
+    if (
+      storedLang &&
+      siteConfig.languages.some((l) => l.code === storedLang)
+    ) {
+      return storedLang as LanguageCode
+    }
+    return defaultLanguage
+  }, [paramLang, storedLang])
+
+  return language
 }
-
 
 export function useTranslations() {
   const language = useCurrentLanguage()

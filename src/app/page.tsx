@@ -29,13 +29,11 @@ export default function HomePage() {
   const { data: services } = trpc.service.listPublic.useQuery()
 
   const testimonialCards = testimonials?.map((test) => ({
-    image: `https://avatar.iran.liara.run/public/${test.clientName.length % 50}`, // Reliable placeholder
     name: test.clientName,
     handle: `@${test.clientRole?.toLowerCase().replace(/\s+/g, '.') || 'rifi.client'}`,
     quote: test.quote,
   })) || [
     {
-      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=60",
       name: t.home.testimonials[0].author,
       handle: "@rifi.weddings",
       quote: t.home.testimonials[0].quote,
