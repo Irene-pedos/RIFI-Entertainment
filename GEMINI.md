@@ -14,13 +14,15 @@ This is a modern web application built with a focus on performance and developer
 
 ## Project Structure
 
-The project follows a standard Next.js App Router structure, primarily contained within the `frontend` directory:
+The application is unified within the `frontend` directory (handling both client and server logic):
 
-- `frontend/app/`: Contains the application's routes, layouts, and global styles.
+- `frontend/app/`: Application routes, layouts, global styles, and API handlers.
+- `frontend/lib/server/`: Backend logic (Prisma, tRPC routers, server-side libs).
+- `frontend/prisma/`: Database schema and migrations.
 - `frontend/components/`: Reusable React components.
   - `ui/`: Standard UI components added via shadcn/ui.
 - `frontend/hooks/`: Custom React hooks.
-- `frontend/lib/`: Utility functions and shared logic (e.g., `cn` helper).
+- `frontend/lib/`: Shared utilities and tRPC client.
 - `frontend/public/`: Static assets.
 
 ## Building and Running
