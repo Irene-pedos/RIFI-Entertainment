@@ -10,6 +10,7 @@ export const siteConfig = {
   email: "rifientertainment7@gmail.com",
   phone: "0788878824",
   whatsapp: "0788878824",
+  instagram: "https://www.instagram.com/rifi_entertainment?igsh=Y2hoMnFhc2hzeHY1",
   location: "Kigali, Rwanda",
   languages: [
     { code: "en", label: "ENG" },

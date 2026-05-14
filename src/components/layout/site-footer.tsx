@@ -9,7 +9,7 @@ import { useSiteSettings } from "@/hooks/use-site-settings"
 
 export function SiteFooter() {
   const t = useTranslations()
-  const { businessEmail, businessPhone, businessLocation } = useSiteSettings()
+  const { businessEmail, businessPhone, businessLocation, businessInstagram } = useSiteSettings()
 
   const sections = [
     {
@@ -42,7 +42,7 @@ export function SiteFooter() {
   const socialLinks = [
     {
       icon: <FaInstagram className="size-5" />,
-      href: "#",
+      href: businessInstagram,
       label: "Instagram",
     },
     {

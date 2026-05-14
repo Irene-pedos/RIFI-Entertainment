@@ -104,7 +104,6 @@ export function AdminSidebar({ ...props }: React.ComponentProps<typeof Sidebar>)
     } catch (error) {
       console.error("Logout failed:", error)
     }
-    localStorage.removeItem("rifi_auth_token")
     localStorage.removeItem("rifi_admin_user")
     router.push("/admin/login")
     router.refresh()

@@ -1,6 +1,6 @@
 "use client"
 
-import { Mail, MapPin, MessageSquare, Phone } from "lucide-react"
+import { Instagram, Mail, MapPin, MessageSquare, Phone } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -11,7 +11,7 @@ import { useSiteSettings } from "@/hooks/use-site-settings"
 
 export default function ContactPage() {
   const t = useTranslations()
-  const { businessEmail, businessPhone, businessWhatsapp, businessLocation } = useSiteSettings()
+  const { businessEmail, businessPhone, businessWhatsapp, businessLocation, businessInstagram } = useSiteSettings()
 
   const contactInfo = [
     {
@@ -37,6 +37,12 @@ export default function ContactPage() {
       label: t.common.whatsapp,
       value: businessWhatsapp,
       href: `https://wa.me/250${businessWhatsapp}`,
+    },
+    {
+      icon: Instagram,
+      label: "Instagram",
+      value: "@rifi_entertainment",
+      href: businessInstagram,
     },
   ]
 

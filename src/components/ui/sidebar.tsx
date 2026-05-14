@@ -509,10 +509,12 @@ function SidebarMenuButton({
       data-sidebar="menu-button"
       data-size={size}
       data-active={isActive}
-      className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
+      className={cn(sidebarMenuButtonVariants({ variant, size, className }), className)}
+      suppressHydrationWarning
       {...props}
     />
   )
+
 
   if (!tooltip) {
     return button

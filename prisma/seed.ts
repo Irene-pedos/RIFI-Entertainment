@@ -112,6 +112,7 @@ async function main() {
     { key: "business_email", value: "rifientertainment7@gmail.com", type: "email" },
     { key: "business_phone", value: "0788878824", type: "phone" },
     { key: "business_whatsapp", value: "0788878824", type: "phone" },
+    { key: "business_instagram", value: "https://www.instagram.com/rifi_entertainment?igsh=Y2hoMnFhc2hzeHY1", type: "url" },
     { key: "business_tagline", value: "Creating unforgettable experiences with style and professionalism.", type: "string" },
     { key: "business_location", value: "Kigali, Rwanda", type: "string" },
     { key: "business_description", value: "RiFi Entertainment is a Kigali-based entertainment and event company delivering weddings, model management, protocol services, dance performances, and travel support.", type: "text" },
