@@ -23,12 +23,7 @@ export default function LoginPage() {
   const [password, setPassword] = React.useState("")
   const [error, setError] = React.useState("")
   const [isLoading, setIsLoading] = React.useState(false)
-  const [mounted, setMounted] = React.useState(false)
   const router = useRouter()
-
-  React.useEffect(() => {
-    setMounted(true)
-  }, [])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -148,8 +143,8 @@ export default function LoginPage() {
         </form>
       </Card>
 
-      <p className="mt-8 text-center text-xs text-muted-foreground">
-        &copy; {mounted ? new Date().getFullYear() : ""} {siteConfig.name}. All rights reserved.
+      <p className="mt-8 text-center text-xs text-muted-foreground" suppressHydrationWarning>
+        &copy; {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
       </p>
     </div>
   )

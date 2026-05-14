@@ -52,7 +52,7 @@ import { cn } from "@/lib/utils"
 import { env } from "@/env"
 import type { AppRouter } from "@/server/api/root"
 import type { inferRouterOutputs } from "@trpc/server"
-import { MediaAsset, MediaCategory as PrismaMediaCategory, ServiceCategory } from "@prisma/client"
+import { MediaCategory as PrismaMediaCategory, ServiceCategory } from "@prisma/client"
 
 type RouterOutputs = inferRouterOutputs<AppRouter>;
 type MediaItem = RouterOutputs["media"]["list"][number];

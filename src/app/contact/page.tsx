@@ -1,6 +1,7 @@
 "use client"
 
-import { Instagram, Mail, MapPin, MessageSquare, Phone } from "lucide-react"
+import { Mail, MapPin, MessageSquare, Phone } from "lucide-react" 
+import { FaInstagram } from "react-icons/fa6"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -39,7 +40,7 @@ export default function ContactPage() {
       href: `https://wa.me/250${businessWhatsapp}`,
     },
     {
-      icon: Instagram,
+      icon: FaInstagram,
       label: "Instagram",
       value: "@rifi_entertainment",
       href: businessInstagram,
