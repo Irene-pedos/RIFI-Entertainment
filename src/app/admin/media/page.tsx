@@ -204,7 +204,7 @@ export default function AdminMediaLibrary() {
       {/* Feedback Message */}
       {feedback && (
         <div className={cn(
-          "fixed top-4 right-4 z-50 flex items-center gap-3 p-4 shadow-lg border rounded-none transition-all duration-300 animate-in fade-in slide-in-from-top-4",
+          "fixed top-4 right-4 z-50 flex items-center gap-3 p-4  border rounded-none transition-all duration-300 animate-in fade-in slide-in-from-top-4",
           feedback.type === 'success' ? "bg-emerald-50 border-emerald-200 text-emerald-800" : "bg-destructive/5 border-destructive/20 text-destructive"
         )}>
           {feedback.type === 'success' ? <CheckCircle className="size-5" /> : <AlertCircle className="size-5" />}
@@ -476,7 +476,7 @@ export default function AdminMediaLibrary() {
             <div className="absolute top-1 right-1 opacity-0 transition-opacity group-hover:opacity-100">
                <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="secondary" size="icon-xs" className="rounded-none size-6 shadow-md border border-border/70">
+                    <Button variant="secondary" size="icon-xs" className="rounded-none size-6  border border-border/70">
                         <MoreHorizontal className="size-3" />
                     </Button>
                   </DropdownMenuTrigger>

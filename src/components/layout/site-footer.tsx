@@ -41,22 +41,22 @@ export function SiteFooter() {
 
   const socialLinks = [
     {
-      icon: <FaInstagram className="size-5" />,
+      icon: <FaInstagram className="size-4" />,
       href: businessInstagram,
       label: "Instagram",
     },
     {
-      icon: <FaFacebook className="size-5" />,
+      icon: <FaFacebook className="size-4" />,
       href: "#",
       label: "Facebook",
     },
     {
-      icon: <FaTwitter className="size-5" />,
+      icon: <FaTwitter className="size-4" />,
       href: "#",
       label: "Twitter",
     },
     {
-      icon: <FaLinkedin className="size-5" />,
+      icon: <FaLinkedin className="size-4" />,
       href: "#",
       label: "LinkedIn",
     },

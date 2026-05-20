@@ -7,8 +7,9 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useCurrentLanguage } from "@/lib/i18n"
 import { siteConfig } from "@/lib/site"
 import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
-export function LanguageSwitcher() {
+export function LanguageSwitcher({ isDark }: { isDark?: boolean }) {
   const pathname = usePathname()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -56,10 +57,15 @@ export function LanguageSwitcher() {
     <div ref={containerRef} className="relative">
       <Button
         type="button"
-        variant="outline"
+        variant="ghost"
         size="sm"
         onClick={() => setOpen((current) => !current)}
-        className="gap-2 px-3 text-[11px] tracking-[0.22em] uppercase"
+        className={cn(
+          "gap-2 px-3 text-[11px] tracking-[0.22em] uppercase font-bold transition-colors",
+          isDark 
+            ? "text-white hover:bg-white/10 hover:text-white" 
+            : "text-[#2D4873] hover:text-[#D9515F] hover:bg-[#D9515F]/5"
+        )}
         aria-haspopup="menu"
         aria-expanded={open}
       >
@@ -71,13 +77,13 @@ export function LanguageSwitcher() {
       </Button>
 
       {open ? (
-        <div className="absolute right-0 z-20 mt-2 min-w-32 border border-border/80 bg-popover p-2 shadow-lg">
+        <div className="absolute right-0 z-20 mt-2 min-w-32 border border-border/80 bg-white p-2 rounded-md shadow-xl">
           {siteConfig.languages.map((language) => (
             <button
               key={language.code}
               type="button"
               onClick={() => onLanguageChange(language.code)}
-              className="flex w-full px-3 py-2 text-left text-xs font-medium tracking-[0.18em] text-muted-foreground uppercase transition-colors hover:bg-muted hover:text-foreground"
+              className="flex w-full px-3 py-2 text-left text-[10px] font-bold tracking-[0.18em] text-[#2D4873]/60 uppercase transition-colors hover:bg-muted hover:text-[#2D4873]"
               suppressHydrationWarning
             >
               {language.label}

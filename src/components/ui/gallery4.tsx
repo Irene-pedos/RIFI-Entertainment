@@ -52,34 +52,34 @@ const Gallery4 = ({ title, description, items }: Gallery4Props) => {
   }, [carouselApi])
 
   return (
-    <section className="py-6">
-      <div className="mb-8 flex items-end justify-between md:mb-10">
-        <div className="flex max-w-xl flex-col gap-4">
-          <h2 className="font-heading text-xl font-semibold tracking-tight md:text-2xl">
+    <section className="py-4">
+      <div className="mb-6 flex items-end justify-between md:mb-8">
+        <div className="flex max-w-xl flex-col gap-3">
+          <h2 className="font-heading text-lg font-semibold tracking-tight md:text-xl">
             {title}
           </h2>
-          <p className="text-xs leading-6 text-muted-foreground md:text-sm">
+          <p className="text-[11px] leading-5 text-muted-foreground md:text-xs">
             {description}
           </p>
         </div>
         <div className="hidden shrink-0 gap-2 md:flex">
           <Button
-            size="icon"
+            size="icon-sm"
             variant="ghost"
             onClick={() => carouselApi?.scrollPrev()}
             disabled={!canScrollPrev}
             className="disabled:pointer-events-auto"
           >
-            <ArrowLeft className="size-5" />
+            <ArrowLeft className="size-4" />
           </Button>
           <Button
-            size="icon"
+            size="icon-sm"
             variant="ghost"
             onClick={() => carouselApi?.scrollNext()}
             disabled={!canScrollNext}
             className="disabled:pointer-events-auto"
           >
-            <ArrowRight className="size-5" />
+            <ArrowRight className="size-4" />
           </Button>
         </div>
       </div>
@@ -99,27 +99,27 @@ const Gallery4 = ({ title, description, items }: Gallery4Props) => {
           {items.map((item) => (
             <CarouselItem
               key={item.id}
-              className="max-w-[260px] pl-3 sm:max-w-[290px] lg:max-w-[310px]"
+              className="max-w-[240px] pl-3 sm:max-w-[260px] lg:max-w-[280px]"
             >
               <a href={item.href} className="group block">
-                <div className="relative min-h-[22rem] overflow-hidden border border-border/70 bg-card shadow-sm md:aspect-[5/4] lg:aspect-[4/5]">
+                <div className="relative min-h-[18rem] overflow-hidden rounded-md border border-border/60 bg-card md:aspect-[5/4] lg:aspect-[4/5]">
                   <Image
                     src={item.image}
                     alt={item.title}
                     fill
                     className="absolute h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-[linear-gradient(hsl(var(--primary)/0),hsl(var(--primary)/0.32),hsl(var(--primary)/0.85)_100%)] mix-blend-multiply" />
-                  <div className="absolute inset-x-0 bottom-0 flex flex-col items-start p-5 text-primary-foreground md:p-6">
-                    <div className="mb-2 pt-4 text-lg font-semibold">
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
+                  <div className="absolute inset-x-0 bottom-0 flex flex-col items-start p-4 text-white md:p-5">
+                    <div className="mb-1 text-base font-semibold">
                       {item.title}
                     </div>
-                    <div className="mb-6 line-clamp-2 text-sm leading-6">
+                    <div className="mb-4 line-clamp-2 text-[10px] leading-5 text-white/90">
                       {item.description}
                     </div>
-                    <div className="flex items-center text-sm">
+                    <div className="flex items-center text-[10px] font-medium uppercase tracking-wider">
                       Read more
-                      <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
+                      <ArrowRight className="ml-1.5 size-3 transition-transform group-hover:translate-x-1" />
                     </div>
                   </div>
                 </div>

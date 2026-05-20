@@ -36,39 +36,41 @@ export const Footer7 = ({
   copyright,
   legalLinks = [],
 }: Footer7Props) => {
+  const brandColor = "#2D4873"
+  
   return (
-    <footer className="border-t border-border/70 bg-card py-8 lg:py-12">
+    <footer className="border-t border-border/60 bg-white py-12 lg:py-16">
       <div className="mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-8">
-        <div className="flex w-full flex-col justify-between gap-10 lg:flex-row lg:items-start lg:text-left">
-          <div className="flex w-full flex-col justify-between gap-6 lg:items-start">
+        <div className="flex w-full flex-col justify-between gap-12 lg:flex-row lg:items-start lg:text-left">
+          <div className="flex w-full flex-col justify-between gap-8 lg:items-start">
             {/* Logo */}
             {logo && (
               <div className="flex items-center gap-4 lg:justify-start">
-                <Link href={logo.url} className="flex items-center gap-4">
-                  <div className="overflow-hidden border border-border/70 bg-background">
+                <Link href={logo.url} className="flex items-center gap-3 group">
+                  <div className="overflow-hidden transition-transform group-hover:scale-105">
                     <Image
                       src={logo.src}
                       alt={logo.alt}
-                      width={48}
-                      height={48}
-                      className="h-12 w-12 object-cover"
+                      width={40}
+                      height={40}
+                      className="h-10 w-10 object-cover"
                     />
                   </div>
-                  <h2 className="text-xl font-semibold tracking-tight">
+                  <h2 className="text-xl font-bold tracking-tight text-[#2D4873]">
                     {logo.title}
                   </h2>
                 </Link>
               </div>
             )}
             {description && (
-              <p className="max-w-md text-sm leading-7 text-muted-foreground">
+              <p className="max-w-md text-sm leading-7 text-muted-foreground uppercase tracking-tight font-medium">
                 {description}
               </p>
             )}
             {socialLinks.length > 0 && (
-              <ul className="flex items-center space-x-6 text-muted-foreground">
+              <ul className="flex items-center space-x-6 text-[#2D4873]/40">
                 {socialLinks.map((social, idx) => (
-                  <li key={idx} className="transition-colors hover:text-primary">
+                  <li key={idx} className="transition-all hover:text-[#2D4873] hover:scale-110">
                     <a
                       href={social.href}
                       aria-label={social.label}
@@ -82,17 +84,17 @@ export const Footer7 = ({
               </ul>
             )}
           </div>
-          <div className="grid w-full gap-10 md:grid-cols-3 lg:gap-20">
+          <div className="grid w-full gap-10 md:grid-cols-3 lg:gap-24">
             {sections.map((section, sectionIdx) => (
               <div key={sectionIdx}>
-                <h3 className="mb-6 text-sm font-semibold tracking-[0.2em] text-foreground uppercase">
+                <h3 className="mb-6 text-[10px] font-bold tracking-[0.25em] text-[#2D4873] uppercase">
                   {section.title}
                 </h3>
-                <ul className="space-y-4 text-sm text-muted-foreground">
+                <ul className="space-y-4 text-xs font-semibold text-muted-foreground uppercase tracking-tight">
                   {section.links.map((link, linkIdx) => (
                     <li
                       key={linkIdx}
-                      className="transition-colors hover:text-primary"
+                      className="transition-colors hover:text-[#D9515F]"
                     >
                       <Link href={link.href}>{link.name}</Link>
                     </li>
@@ -102,12 +104,12 @@ export const Footer7 = ({
             ))}
           </div>
         </div>
-        <div className="mt-16 flex flex-col justify-between gap-6 border-t border-border/70 pt-10 text-xs font-medium text-muted-foreground md:flex-row md:items-center">
+        <div className="mt-16 flex flex-col justify-between gap-6 border-t border-border/60 pt-10 text-[10px] font-bold uppercase tracking-widest text-[#2D4873]/40 md:flex-row md:items-center">
           <p className="order-2 md:order-1">{copyright}</p>
           {legalLinks.length > 0 && (
             <ul className="order-1 flex flex-col gap-4 md:order-2 md:flex-row md:gap-8">
               {legalLinks.map((link, idx) => (
-                <li key={idx} className="transition-colors hover:text-primary">
+                <li key={idx} className="transition-colors hover:text-[#2D4873]">
                   <Link href={link.href}>{link.name}</Link>
                 </li>
               ))}

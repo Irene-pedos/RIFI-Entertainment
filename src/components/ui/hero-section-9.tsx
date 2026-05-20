@@ -120,13 +120,13 @@ const HeroSection = ({
           animate="visible"
         >
           <motion.h1
-            className="font-heading text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl"
+            className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl"
             variants={itemVariants}
           >
             {title}
           </motion.h1>
           <motion.p
-            className="mt-6 max-w-md text-base leading-7 text-muted-foreground sm:text-lg"
+            className="mt-6 max-w-md text-sm leading-7 text-muted-foreground sm:text-base"
             variants={itemVariants}
           >
             {subtitle}
@@ -153,19 +153,19 @@ const HeroSection = ({
             ))}
           </motion.div>
           <motion.div
-            className="mt-12 flex flex-wrap justify-center gap-8 lg:justify-start"
+            className="mt-10 flex flex-wrap justify-center gap-6 lg:justify-start"
             variants={itemVariants}
           >
             {stats.map((stat, index) => (
-              <div key={index} className="flex items-center gap-4">
-                <div className="flex h-10 w-10 items-center justify-center border border-border/70 bg-muted/50">
-                  {stat.icon}
+              <div key={index} className="flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center border border-border/60 bg-muted/30">
+                  {React.cloneElement(stat.icon as React.ReactElement<React.HTMLAttributes<HTMLElement>>, { className: 'size-3.5 text-primary' })}
                 </div>
                 <div>
-                  <p className="text-xl font-bold tracking-tight text-foreground">
+                  <p className="text-lg font-bold tracking-tight text-foreground">
                     {stat.value}
                   </p>
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">
                     {stat.label}
                   </p>
                 </div>

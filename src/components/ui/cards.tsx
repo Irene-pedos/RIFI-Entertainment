@@ -28,22 +28,22 @@ const VerifyIcon = () => (
 )
 
 const Card = ({ card }: { card: TestimonialCardItem }) => (
-  <div className="mx-3 w-64 shrink-0 border border-border/70 bg-card p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+  <div className="mx-2 w-72 shrink-0 rounded-lg border border-border/60 bg-card p-5 transition-all duration-200 hover:bg-muted/30">
     <div className="flex flex-col">
-      <div className="flex items-center gap-1">
-        <p className="font-medium">{card.name}</p>
+      <div className="flex items-center gap-1.5">
+        <p className="text-sm font-semibold">{card.name}</p>
         <VerifyIcon />
       </div>
       <span className="text-xs text-muted-foreground">{card.handle}</span>
     </div>
-    <p className="pt-4 text-sm leading-7 text-foreground/85">{card.quote}</p>
+    <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{card.quote}</p>
   </div>
 )
 
 function MarqueeRow({
   data,
   reverse = false,
-  speed = 28,
+  speed = 35,
 }: {
   data: TestimonialCardItem[]
   reverse?: boolean
@@ -53,10 +53,10 @@ function MarqueeRow({
 
   return (
     <div className="isolation-isolate relative mx-auto w-full max-w-6xl overflow-hidden">
-      <div className="pointer-events-none absolute top-0 left-0 z-10 h-full w-16 bg-gradient-to-r from-[var(--color-background)] to-transparent md:w-24" />
+      <div className="pointer-events-none absolute top-0 left-0 z-10 h-full w-12 bg-gradient-to-r from-background to-transparent md:w-16" />
       <div
         className={`flex min-w-[200%] transform-gpu ${
-          reverse ? "py-2" : "py-1"
+          reverse ? "py-1.5" : "py-1"
         }`}
         style={{
           animation: `marqueeScroll ${speed}s linear infinite`,

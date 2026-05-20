@@ -2,8 +2,10 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { Menu } from "lucide-react"
 import type { ReactNode } from "react"
+import { cn } from "@/lib/utils"
 
 import {
   Accordion,
@@ -60,6 +62,8 @@ interface Navbar1Props {
     }
   }
   utilitySlot?: ReactNode
+  isHome?: boolean
+  isPastHero?: boolean
 }
 
 const Navbar1 = ({
@@ -68,36 +72,54 @@ const Navbar1 = ({
   mobileExtraLinks = [],
   auth,
   utilitySlot,
+  isHome = false,
+  isPastHero = false,
 }: Navbar1Props) => {
+  const pathname = usePathname()
+  const isDark = isHome && !isPastHero
+
   return (
-    <section className="pt-2 pb-4 lg:pt-3">
+    <section className={cn("w-full pt-3 pb-6 lg:pt-4 transition-all duration-300", !isHome && "relative !pt-0 pb-0")}>
       <div className="mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-8">
-        <nav className="hidden items-center justify-between border border-border/70 bg-background/92 px-5 py-3 shadow-sm lg:flex">
-          <div className="flex items-center gap-6">
-            <Link href={logo.url} className="flex items-center gap-3">
+        <nav className={cn(
+          "hidden items-center justify-between rounded-md border px-8 py-3.5 backdrop-blur-[32px] transition-all duration-300 lg:flex",
+          isDark 
+            ? "border-white/10 bg-black/15 hover:bg-black/20 " 
+            : "border-border/60 bg-white/80 hover:bg-white/95 "
+        )}>
+          <div className="flex items-center gap-8">
+            <Link href={logo.url} className="flex items-center gap-3 group">
               <Image
                 src={logo.src}
-                width={40}
-                height={40}
-                className="size-10 object-cover"
+                width={32}
+                height={32}
+                className="size-8 object-cover transition-transform group-hover:scale-110"
                 alt={logo.alt}
               />
-              <span className="text-lg font-semibold">{logo.title}</span>
+              <span className={cn("text-base font-bold tracking-tight transition-colors", isDark ? "text-white" : "text-primary")}>{logo.title}</span>
             </Link>
-            <NavigationMenu>
+            <NavigationMenu className="transition-colors">
               <NavigationMenuList>
-                {menu.map((item) => renderMenuItem(item))}
+                {menu.map((item) => renderMenuItem(item, isDark, pathname))}
               </NavigationMenuList>
             </NavigationMenu>
           </div>
-          <div className="flex items-center gap-2">
+          <div className={cn("flex items-center gap-3", isDark ? "text-white" : "text-primary")}>
             {utilitySlot}
             {auth ? (
               <>
-                <Button asChild variant="outline" size="sm">
+                <Button asChild variant="ghost" size="sm" className={cn(
+                  "h-9 px-5 text-[10px] font-bold uppercase tracking-widest transition-colors",
+                  isDark 
+                    ? "text-white/90 hover:text-white" 
+                    : "text-primary hover:text-primary hover:bg-primary/5"
+                )}>
                   <Link href={auth.login.url}>{auth.login.text}</Link>
                 </Button>
-                <Button asChild size="sm">
+                <Button asChild size="sm" className={cn(
+                  "h-9 rounded-md px-6 text-[10px] font-bold uppercase tracking-widest transition-all",
+                  isDark ? "bg-white text-black hover:bg-white/90" : "bg-primary text-white hover:bg-primary/90 "
+                )}>
                   <Link href={auth.signup.url}>{auth.signup.text}</Link>
                 </Button>
               </>
@@ -106,26 +128,31 @@ const Navbar1 = ({
         </nav>
 
         <div className="block lg:hidden">
-          <div className="flex items-center justify-between border border-border/70 bg-background/92 px-4 py-3 shadow-sm">
-            <Link href={logo.url} className="flex items-center gap-3">
+          <div className={cn(
+            "flex items-center justify-between rounded-md border px-4 py-2.5 backdrop-blur-[32px] transition-all",
+            isDark 
+              ? "border-white/10 bg-black/20 " 
+              : "border-border/60 bg-white/80 "
+          )}>
+            <Link href={logo.url} className="flex items-center gap-2">
               <Image
                 src={logo.src}
-                width={40}
-                height={40}
-                className="size-10 object-cover"
+                width={28}
+                height={28}
+                className="size-7 object-cover"
                 alt={logo.alt}
               />
-              <span className="text-lg font-semibold">{logo.title}</span>
+              <span className={cn("text-sm font-bold tracking-tight", isDark ? "text-white" : "text-primary")}>{logo.title}</span>
             </Link>
             <div className="flex items-center gap-2">
               {utilitySlot}
               <Sheet>
                 <SheetTrigger asChild>
-                  <Button variant="outline" size="icon">
-                    <Menu className="size-4" />
+                  <Button variant="ghost" size="icon" className={isDark ? "text-white hover:bg-white/10" : "text-primary hover:bg-muted"}>
+                    <Menu className="size-5" />
                   </Button>
                 </SheetTrigger>
-                <SheetContent className="overflow-y-auto">
+                <SheetContent className="overflow-y-auto bg-background/98 backdrop-blur-3xl border-l-white/10">
                   <SheetHeader>
                     <SheetTitle>
                       <Link href={logo.url} className="flex items-center gap-3">
@@ -133,7 +160,7 @@ const Navbar1 = ({
                           src={logo.src}
                           width={40}
                           height={40}
-                          className="size-10 object-cover"
+                          className="size-10 object-cover rounded-md"
                           alt={logo.alt}
                         />
                         <span className="text-lg font-semibold">
@@ -142,13 +169,13 @@ const Navbar1 = ({
                       </Link>
                     </SheetTitle>
                   </SheetHeader>
-                  <div className="my-6 flex flex-col gap-6">
+                  <div className="my-6 flex flex-col gap-6 text-primary">
                     <Accordion
                       type="single"
                       collapsible
                       className="flex w-full flex-col gap-4"
                     >
-                      {menu.map((item) => renderMobileMenuItem(item))}
+                      {menu.map((item) => renderMobileMenuItem(item, pathname))}
                     </Accordion>
                     {mobileExtraLinks.length ? (
                       <div className="border-t border-border/70 py-4">
@@ -167,10 +194,10 @@ const Navbar1 = ({
                     ) : null}
                     {auth ? (
                       <div className="flex flex-col gap-3">
-                        <Button asChild variant="outline">
+                        <Button asChild variant="outline" className="rounded-md">
                           <Link href={auth.login.url}>{auth.login.text}</Link>
                         </Button>
-                        <Button asChild>
+                        <Button asChild className="rounded-md bg-primary text-white">
                           <Link href={auth.signup.url}>{auth.signup.text}</Link>
                         </Button>
                       </div>
@@ -186,26 +213,31 @@ const Navbar1 = ({
   )
 }
 
-const renderMenuItem = (item: MenuItem) => {
+const renderMenuItem = (item: MenuItem, isDark: boolean, pathname: string) => {
   if (item.items) {
+    const isActive = item.items.some(subItem => subItem.url === pathname)
     return (
       <NavigationMenuItem
         key={item.id || item.title}
-        className="text-muted-foreground"
+        className={cn("transition-colors")}
       >
-        <NavigationMenuTrigger>{item.title}</NavigationMenuTrigger>
+        <NavigationMenuTrigger className={cn(
+          "bg-transparent transition-colors", 
+          isActive ? "text-secondary" : (isDark ? "text-white" : "text-primary"),
+          "hover:text-secondary data-[state=open]:text-secondary hover:bg-transparent data-[state=open]:bg-transparent"
+        )}>{item.title}</NavigationMenuTrigger>
         <NavigationMenuContent>
           <ul className="w-[26rem] p-3">
             {item.items.map((subItem) => (
               <li key={subItem.id || subItem.title}>
                 <NavigationMenuLink asChild>
                   <Link
-                    className="flex gap-4 p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground"
+                    className="flex gap-4 p-3 leading-none no-underline transition-colors outline-none select-none rounded-md hover:bg-muted hover:text-secondary"
                     href={subItem.url}
                   >
                     {subItem.icon}
                     <div>
-                      <div className="text-sm font-semibold">
+                      <div className="text-sm font-semibold text-primary">
                         {subItem.title}
                       </div>
                       {subItem.description ? (
@@ -224,11 +256,16 @@ const renderMenuItem = (item: MenuItem) => {
     )
   }
 
+  const isActive = item.url === pathname
   return (
     <NavigationMenuItem key={item.id || item.title}>
       <NavigationMenuLink asChild>
         <Link
-          className="group inline-flex h-10 w-max items-center justify-center bg-background/80 px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-accent-foreground"
+          className={cn(
+            "group inline-flex h-10 w-max items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-all outline-none",
+            isActive ? "text-secondary" : (isDark ? "text-white" : "text-primary"),
+            "hover:text-secondary hover:bg-transparent"
+          )}
           href={item.url}
         >
           {item.title}
@@ -238,22 +275,26 @@ const renderMenuItem = (item: MenuItem) => {
   )
 }
 
-const renderMobileMenuItem = (item: MenuItem) => {
+const renderMobileMenuItem = (item: MenuItem, pathname: string) => {
   if (item.items) {
+    const isActive = item.items.some(subItem => subItem.url === pathname)
     return (
       <AccordionItem
         key={item.id || item.title}
         value={item.id || item.title}
         className="border-b-0"
       >
-        <AccordionTrigger className="py-0 font-semibold hover:no-underline">
+        <AccordionTrigger className={cn("py-0 font-semibold hover:no-underline", isActive ? "text-secondary" : "text-inherit")}>
           {item.title}
         </AccordionTrigger>
         <AccordionContent className="mt-2">
           {item.items.map((subItem) => (
             <Link
               key={subItem.id || subItem.title}
-              className="flex gap-4 p-3 leading-none transition-colors outline-none select-none hover:bg-muted hover:text-accent-foreground"
+              className={cn(
+                "flex gap-4 p-3 leading-none transition-colors outline-none select-none rounded-lg hover:text-secondary",
+                subItem.url === pathname ? "text-secondary" : ""
+              )}
               href={subItem.url}
             >
               {subItem.icon}
@@ -272,11 +313,12 @@ const renderMobileMenuItem = (item: MenuItem) => {
     )
   }
 
+  const isActive = item.url === pathname
   return (
     <Link
       key={item.id || item.title}
       href={item.url}
-      className="font-semibold"
+      className={cn("font-semibold hover:text-secondary", isActive ? "text-secondary" : "text-inherit")}
     >
       {item.title}
     </Link>

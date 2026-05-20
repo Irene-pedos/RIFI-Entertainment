@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Geist_Mono, Inter, Noto_Sans } from "next/font/google"
+import { Geist_Mono, Inter, Noto_Sans, Geist, Roboto } from "next/font/google"
 import { Suspense } from "react"
 
 import "./globals.css"
@@ -8,9 +8,9 @@ import { SiteShell } from "@/components/layout/site-shell"
 import { siteConfig } from "@/lib/site"
 import { cn } from "@/lib/utils"
 
-const interHeading = Inter({ subsets: ["latin"], variable: "--font-heading" })
+const robotoHeading = Roboto({subsets:['latin'],variable:'--font-heading'})
 
-const notoSans = Noto_Sans({ subsets: ["latin"], variable: "--font-sans" })
+const geist = Geist({subsets:['latin'],variable:'--font-sans'})
 
 const fontMono = Geist_Mono({
   subsets: ["latin"],
@@ -46,11 +46,9 @@ export default function RootLayout({
       lang="en"
       suppressHydrationWarning
       className={cn(
-        "antialiased",
-        fontMono.variable,
-        notoSans.variable,
-        interHeading.variable
-      )}
+              "antialiased",
+              fontMono.variable
+            , "font-sans", geist.variable, robotoHeading.variable)}
     >
       <body suppressHydrationWarning>
         <TRPCProvider>

@@ -11,15 +11,10 @@ export function useIsMobile() {
       setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
     }
     mql.addEventListener("change", onChange)
-    
-    // Set initial state outside of synchronous execution to avoid cascading renders
-    const frame = requestAnimationFrame(() => {
-      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
-    })
-
+    const id = requestAnimationFrame(() => setIsMobile(window.innerWidth < MOBILE_BREAKPOINT))
     return () => {
+      cancelAnimationFrame(id)
       mql.removeEventListener("change", onChange)
-      cancelAnimationFrame(frame)
     }
   }, [])
 

@@ -8,25 +8,31 @@ import {
   MapPin,
   Phone,
   Users,
+  Sparkles,
+  HeartHandshake,
+  ShieldCheck,
+  Languages,
 } from "lucide-react"
 import Link from "next/link"
 
 import { useTranslations } from "@/lib/i18n"
 import { siteConfig } from "@/lib/site"
 import { Button } from "@/components/ui/button"
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
 import Marquee from "@/components/ui/cards"
 import { CtaCard } from "@/components/ui/cta-card"
 import { Gallery4 } from "@/components/ui/gallery4"
-import HeroSection from "@/components/ui/hero-section-9"
+import { HeroSection4 } from "@/components/ui/hero-section-4"
 import { trpc } from "@/lib/trpc"
 import { useSiteSettings } from "@/hooks/use-site-settings"
+import { InfiniteSlider } from "@/components/ui/infinite-slider"
 
 export default function HomePage() {
   const t = useTranslations()
   const { businessEmail, businessPhone, businessLocation, businessTagline } = useSiteSettings()
   
-  const { data: testimonials } = trpc.testimonial.listPublic.useQuery()
-  const { data: services } = trpc.service.listPublic.useQuery()
+  const { data: testimonials, isLoading: testimonialsLoading } = trpc.testimonial.listPublic.useQuery()
+  const { data: services, isLoading: servicesLoading } = trpc.service.listPublic.useQuery()
 
   const testimonialCards = testimonials?.map((test) => ({
     name: test.clientName,
@@ -91,114 +97,161 @@ export default function HomePage() {
     },
   ]
 
+  const heroSlides = [
+    {
+      id: 1,
+      title: t.home.heroTitle,
+      subtitle: businessTagline,
+      image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=1920",
+      primaryAction: { text: t.home.bookService, href: "/contact" },
+      secondaryAction: { text: t.home.callUs, href: `tel:${businessPhone}` },
+    },
+    {
+      id: 2,
+      title: t.home.services[1].title,
+      subtitle: t.home.services[1].description,
+      image: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=1920",
+      primaryAction: { text: t.home.exploreService, href: "/wedding" },
+      secondaryAction: { text: t.common.whatsapp, href: `https://wa.me/25${businessPhone}` },
+    },
+    {
+      id: 3,
+      title: t.home.services[0].title,
+      subtitle: t.home.services[0].description,
+      image: "https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&q=80&w=1920",
+      primaryAction: { text: t.home.exploreService, href: "/models" },
+      secondaryAction: { text: t.home.callUs, href: `tel:${businessPhone}` },
+    },
+  ]
+
   return (
     <>
-      <HeroSection
-        className="-mt-28 sm:-mt-32"
-        title={t.home.heroTitle}
-        subtitle={businessTagline}
-        actions={[
-          {
-            text: t.home.bookService,
-            href: "/contact",
-            variant: "default",
-          },
-          {
-            text: t.home.callUs,
-            href: `tel:${businessPhone}`,
-            variant: "outline",
-          },
-        ]}
-        stats={[
-          {
-            value: "100+",
-            label: "Events",
-            icon: <Calendar className="h-4 w-4 text-primary" />,
-          },
-          {
-            value: "50+",
-            label: "Models",
-            icon: <Users className="h-4 w-4 text-primary" />,
-          },
-          {
-            value: "24/7",
-            label: "Service",
-            icon: <Briefcase className="h-4 w-4 text-primary" />,
-          },
-        ]}
-        images={[
-          "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=60&w=1080",
-          "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=60&w=1080",
-          "https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&q=60&w=1080",
-        ]}
-      />
+      <HeroSection4 slides={heroSlides} />
 
-      <section className="mx-auto w-full max-w-[1600px] px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8">
+      {/* Trusted By Section */}
+      <section className="w-full border-b border-border/60 bg-white/5 py-8 backdrop-blur-sm">
+        <div className="mx-auto max-w-[1600px] px-6 lg:px-8">
+          <div className="flex flex-col items-center gap-8 md:flex-row">
+            <div className="md:border-r md:border-border/60 md:pr-10">
+              <p className="text-center text-[10px] font-bold uppercase tracking-[0.25em] text-[primary]/60 md:text-end whitespace-nowrap">
+                {t.home.basedIn}
+              </p>
+            </div>
+            <div className="relative flex-1 overflow-hidden">
+              <InfiniteSlider duration={40} gap={100}>
+                {[
+                  "KIGALI CONVENTION CENTRE",
+                  "BK ARENA RWANDA",
+                  "RDB RWANDA",
+                  "MTN FOUNDATION",
+                  "AIRTEL RWANDA",
+                  "RWANDAIR",
+                ].map((partner) => (
+                  <span
+                    key={partner}
+                    className="text-[12px] font-black tracking-tight text-[#294974]/30 whitespace-nowrap transition-colors hover:text-[#294974]/60 cursor-default"
+                  >
+                    {partner}
+                  </span>
+                ))}
+              </InfiniteSlider>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto w-full max-w-[1600px] px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
         <div className="flex items-end justify-between gap-6">
-          <div className="max-w-2xl space-y-4">
-            <div className="text-xs font-semibold tracking-[0.32em] text-primary uppercase">
+          <div className="max-w-2xl space-y-3">
+            <div className="text-[10px] font-semibold tracking-[0.32em] text-primary uppercase">
               {t.home.featuredEyebrow}
             </div>
-            <h2 className="font-heading text-3xl font-semibold tracking-tight">
+            <h2 className="font-heading text-xl sm:text-2xl font-bold tracking-tight text-primary">
               {t.home.featuredTitle}
             </h2>
-            <p className="text-base leading-8 text-muted-foreground">
-              {t.home.featuredDescription}
+            <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
+              RiFi Entertainment combines event planning, talent coordination, hospitality support, and travel services under one professional brand.
             </p>
           </div>
         </div>
 
-        <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {services?.map((service) => (
-            <article
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {servicesLoading ? (
+            Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="h-64 rounded-md bg-muted animate-pulse" />
+            ))
+          ) : services?.map((service) => (
+            <Card
               key={service.id}
-              className="border border-border/70 bg-card/85 p-7 shadow-sm"
+              className="group rounded-md border border-border/60 shadow-none flex flex-col transition-all hover:border-primary/30 bg-white dark:bg-card/40"
             >
-              <div className="text-xs font-semibold tracking-[0.24em] text-primary uppercase">
-                {service.category}
-              </div>
-              <h3 className="mt-4 font-heading text-2xl font-semibold tracking-tight">
-                {service.title}
-              </h3>
-              <p className="mt-3 text-sm leading-7 text-muted-foreground line-clamp-3">
-                {service.shortDescription}
-              </p>
-              <Button
-                asChild
-                variant="ghost"
-                className="mt-5 px-0 text-primary hover:bg-transparent"
-              >
-                <Link href={`/${service.slug}`}>
-                  {t.home.exploreService}
-                  <ArrowRight />
-                </Link>
-              </Button>
-            </article>
+              <CardHeader className="p-4 pb-2">
+                <div className="flex items-center justify-between">
+                   <div className="h-8 w-8 rounded-lg bg-primary/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                      <Sparkles className="size-3.5" />
+                   </div>
+                   <div className="text-[8px] font-bold tracking-[0.2em] text-muted-foreground uppercase">
+                    {service.category}
+                  </div>
+                </div>
+                <CardTitle className="mt-2 font-heading text-sm font-bold tracking-tight text-primary">
+                  {service.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="px-4 py-0 flex-grow">
+                <p className="text-[11px] leading-relaxed text-muted-foreground line-clamp-2">
+                  {service.shortDescription}
+                </p>
+              </CardContent>
+              <CardFooter className="p-4 pt-3">
+                <Button
+                  asChild
+                  variant="link"
+                  className="p-0 h-auto text-[9px] font-bold uppercase tracking-widest text-primary hover:text-secondary group-hover:translate-x-1 transition-all"
+                >
+                  <Link href={`/${service.slug}`} className="gap-1.5 items-center">
+                    {t.home.exploreService}
+                    <ArrowRight className="size-2.5" />
+                  </Link>
+                </Button>
+              </CardFooter>
+            </Card>
           )) || t.home.services.map((service, index) => (
-            <article
+            <Card
               key={service.title}
-              className="border border-border/70 bg-card/85 p-7 shadow-sm"
+              className="group rounded-md border border-border/60 shadow-none flex flex-col transition-all hover:border-primary/30 bg-white dark:bg-card/40"
             >
-              <div className="text-xs font-semibold tracking-[0.24em] text-primary uppercase">
-                {t.home.serviceLabel}
-              </div>
-              <h3 className="mt-4 font-heading text-2xl font-semibold tracking-tight">
-                {service.title}
-              </h3>
-              <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                {service.description}
-              </p>
-              <Button
-                asChild
-                variant="ghost"
-                className="mt-5 px-0 text-primary hover:bg-transparent"
-              >
-                <Link href={siteConfig.featuredServices[index].href}>
-                  {t.home.exploreService}
-                  <ArrowRight />
-                </Link>
-              </Button>
-            </article>
+              <CardHeader className="p-4 pb-2">
+                <div className="flex items-center justify-between">
+                   <div className="h-8 w-8 rounded-lg bg-primary/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                      <Sparkles className="size-3.5" />
+                   </div>
+                   <div className="text-[8px] font-bold tracking-[0.2em] text-muted-foreground uppercase">
+                    {t.home.serviceLabel}
+                  </div>
+                </div>
+                <CardTitle className="mt-2 font-heading text-sm font-bold tracking-tight text-primary">
+                  {service.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="px-4 py-0 flex-grow">
+                <p className="text-[11px] leading-relaxed text-muted-foreground line-clamp-2">
+                  {service.description}
+                </p>
+              </CardContent>
+              <CardFooter className="p-4 pt-3">
+                <Button
+                  asChild
+                  variant="link"
+                  className="p-0 h-auto text-[9px] font-bold uppercase tracking-widest text-primary hover:text-secondary group-hover:translate-x-1 transition-all"
+                >
+                  <Link href={siteConfig.featuredServices[index].href} className="gap-1.5 items-center">
+                    {t.home.exploreService}
+                    <ArrowRight className="size-2.5" />
+                  </Link>
+                </Button>
+              </CardFooter>
+            </Card>
           ))}
         </div>
       </section>
@@ -209,76 +262,85 @@ export default function HomePage() {
           description={t.home.galleryDescription}
           items={galleryItems}
         />
-        <div className="mt-6">
-          <Button asChild variant="outline" className="px-5">
+        <div className="mt-4">
+          <Button asChild variant="outline" size="sm" className="px-5 text-[11px] uppercase tracking-wider">
             <Link href="/gallery">{t.home.openGallery}</Link>
           </Button>
         </div>
       </section>
 
       <section className="mx-auto w-full max-w-[1600px] px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8">
-        <div className="border border-border/70 bg-card/85 p-8 shadow-sm sm:p-10">
-          <div className="max-w-2xl space-y-4">
-            <div className="text-xs font-semibold tracking-[0.32em] text-primary uppercase">
+        <div className="border border-border/60 bg-card/40 p-6 sm:p-8">
+          <div className="max-w-2xl space-y-3">
+            <div className="text-[10px] font-semibold tracking-[0.32em] text-primary uppercase">
               {t.home.testimonialsEyebrow}
             </div>
-            <h2 className="font-heading text-3xl font-semibold tracking-tight">
+            <h2 className="font-heading text-2xl font-semibold tracking-tight flex items-center gap-3">
+              <Users className="size-6 text-primary" />
               {t.home.testimonialsTitle}
             </h2>
           </div>
 
           <div className="mt-8">
-            <Marquee
-              row1={testimonialCards.slice(0, 3)}
-              row2={testimonialCards.length > 3 ? testimonialCards.slice(3) : testimonialCards}
-            />
+            {testimonialsLoading ? (
+              <div className="flex gap-4 overflow-hidden py-4">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <div key={i} className="h-32 w-56 shrink-0 rounded-lg bg-muted animate-pulse" />
+                ))}
+              </div>
+            ) : (
+              <Marquee
+                row1={testimonialCards.slice(0, 3)}
+                row2={testimonialCards.length > 3 ? testimonialCards.slice(3) : testimonialCards}
+              />
+            )}
           </div>
         </div>
       </section>
 
       <section className="mx-auto w-full max-w-[1600px] px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8">
-        <div className="flex flex-col gap-10">
-          <div className="border border-border/70 bg-background/90 p-8">
-            <div className="text-xs font-semibold tracking-[0.32em] text-primary uppercase">
+        <div className="flex flex-col gap-8">
+          <div className="border border-border/60 bg-background/50 p-6 sm:p-8">
+            <div className="text-[10px] font-semibold tracking-[0.32em] text-primary uppercase">
               {t.home.contactEyebrow}
             </div>
-            <h2 className="mt-4 font-heading text-3xl font-semibold tracking-tight">
+            <h2 className="mt-3 font-heading text-2xl font-semibold tracking-tight">
               {t.home.contactTitle}
             </h2>
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-muted-foreground">
+            <p className="mt-3 max-w-2xl text-xs leading-6 text-muted-foreground">
               {t.home.contactDescription}
             </p>
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              <div className="border border-border/70 bg-card/85 p-5">
-                <div className="flex items-center gap-3 text-sm font-semibold text-foreground">
+              <div className="border border-border/60 bg-card/40 p-5 rounded-md transition-all hover:border-primary/20">
+                <div className="flex items-center gap-3 text-xs font-semibold text-foreground uppercase tracking-wider">
                   <Phone className="size-4 text-primary" />
                   {t.common.phone}
                 </div>
                 <a
                   href={`tel:${businessPhone}`}
-                  className="mt-3 block text-sm leading-7 text-muted-foreground hover:text-foreground"
+                  className="mt-3 block text-sm text-muted-foreground hover:text-primary transition-colors"
                 >
                   {businessPhone}
                 </a>
               </div>
-              <div className="border border-border/70 bg-card/85 p-5">
-                <div className="flex items-center gap-3 text-sm font-semibold text-foreground">
+              <div className="border border-border/60 bg-card/40 p-5 rounded-md transition-all hover:border-primary/20">
+                <div className="flex items-center gap-3 text-xs font-semibold text-foreground uppercase tracking-wider">
                   <Mail className="size-4 text-primary" />
                   {t.common.email}
                 </div>
                 <a
                   href={`mailto:${businessEmail}`}
-                  className="mt-3 block text-sm leading-7 text-muted-foreground hover:text-foreground"
+                  className="mt-3 block text-sm text-muted-foreground hover:text-primary transition-colors"
                 >
                   {businessEmail}
                 </a>
               </div>
-              <div className="border border-border/70 bg-card/85 p-5 sm:col-span-2 lg:col-span-1">
-                <div className="flex items-center gap-3 text-sm font-semibold text-foreground">
+              <div className="border border-border/60 bg-card/40 p-5 sm:col-span-2 lg:col-span-1 rounded-md transition-all hover:border-primary/20">
+                <div className="flex items-center gap-3 text-xs font-semibold text-foreground uppercase tracking-wider">
                   <MapPin className="size-4 text-primary" />
                   {t.common.location}
                 </div>
-                <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                <p className="mt-3 text-sm text-muted-foreground">
                   {businessLocation}
                 </p>
               </div>
@@ -293,6 +355,7 @@ export default function HomePage() {
             buttonHref="/contact"
             imageSrc="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80"
             imageAlt="RiFi Entertainment Event Celebration"
+            className="border-border/60"
           />
         </div>
       </section>

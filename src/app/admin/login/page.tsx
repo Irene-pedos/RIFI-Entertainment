@@ -78,7 +78,7 @@ export default function LoginPage() {
         </div>
       </div>
 
-      <Card className="w-full max-w-[400px] rounded-none border-border/70 shadow-lg">
+      <Card className="w-full max-w-[400px] rounded-none border-border/70 ">
         <CardHeader className="space-y-1">
           <CardTitle className="text-xl">Login</CardTitle>
           <CardDescription>

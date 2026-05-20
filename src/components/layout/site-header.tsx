@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { usePathname } from "next/navigation"
 import {
   HeartHandshake,
   ImageIcon,
@@ -22,7 +23,10 @@ import {
 
 export function SiteHeader() {
   const t = useTranslations()
+  const pathname = usePathname()
+  const isHome = pathname === "/"
   const [isVisible, setIsVisible] = useState(true)
+  const [isPastHero, setIsPastHero] = useState(false)
   const lastScrollY = useRef(0)
 
   const menu: MenuItem[] = [
@@ -96,6 +100,10 @@ export function SiteHeader() {
   useEffect(() => {
     function onScroll() {
       const currentScrollY = window.scrollY
+      const heroHeight = window.innerHeight
+
+      // Track if we're past the 100vh hero
+      setIsPastHero(currentScrollY > heroHeight - 100)
 
       if (currentScrollY < 16) {
         setIsVisible(true)
@@ -148,7 +156,9 @@ export function SiteHeader() {
             url: `https://wa.me/25${siteConfig.whatsapp}`,
           },
         }}
-        utilitySlot={<LanguageSwitcher />}
+        utilitySlot={<LanguageSwitcher isDark={isHome && !isPastHero} />}
+        isHome={isHome}
+        isPastHero={isPastHero}
       />
     </div>
   )

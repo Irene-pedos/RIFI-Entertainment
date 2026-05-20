@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: "RiFi Entertainment",
   shortName: "RiFi",
-  logo: "/logo/RIFI logo.jpeg",
+  logo: "/logo/RIFI-Entertainment-logo No BG.png",
   description:
     "RiFi Entertainment is a Kigali-based entertainment and event company delivering weddings, model management, protocol services, dance performances, and travel support.",
   projectOverview:

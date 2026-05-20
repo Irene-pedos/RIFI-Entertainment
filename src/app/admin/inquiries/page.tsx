@@ -145,7 +145,7 @@ export default function InquiriesPage() {
       {/* Feedback Message */}
       {feedback && (
         <div className={cn(
-          "fixed top-4 right-4 z-50 flex items-center gap-3 p-4 shadow-lg border rounded-none transition-all duration-300 animate-in fade-in slide-in-from-top-4",
+          "fixed top-4 right-4 z-50 flex items-center gap-3 p-4  border rounded-none transition-all duration-300 animate-in fade-in slide-in-from-top-4",
           feedback.type === 'success' ? "bg-emerald-50 border-emerald-200 text-emerald-800" : "bg-destructive/5 border-destructive/20 text-destructive"
         )}>
           {feedback.type === 'success' ? <CheckCircle2 className="size-5" /> : <AlertCircle className="size-5" />}

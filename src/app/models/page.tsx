@@ -104,11 +104,11 @@ export default function ModelsPage() {
       >
         <div className="flex flex-wrap gap-3">
           <Button
-            className="rounded-none h-10 px-6 text-sm"
+            className="rounded-md h-10 px-6 text-[11px] font-bold uppercase tracking-widest bg-primary hover:bg-primary/90"
             onClick={() => scrollToForm(bookingFormRef)}
           >
             Book a Model
-            <ArrowRight className="ml-2 size-4" />
+            <ArrowRight className="ml-2 size-3" />
           </Button>
         </div>
       </PageIntro>
@@ -122,18 +122,20 @@ export default function ModelsPage() {
               return (
                 <article
                   key={service.title}
-                  className="border border-border/70 bg-card/50 p-6 shadow-sm transition-all hover:border-primary/50 rounded-none"
+                  className="border border-border/60 bg-card/40 p-6 shadow-sm transition-all hover:border-primary/30 rounded-md group"
                 >
-                  <div className="flex items-center gap-3 text-primary">
-                    <Icon className="size-4" />
-                    <span className="text-[10px] font-semibold tracking-widest uppercase">
+                  <div className="flex items-center gap-3 text-[#d68c90]">
+                    <div className="h-8 w-8 rounded-lg bg-[#d68c90]/5 flex items-center justify-center group-hover:bg-[#d68c90]/10 transition-colors">
+                      <Icon className="size-4" />
+                    </div>
+                    <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-muted-foreground">
                       Service
                     </span>
                   </div>
-                  <h2 className="mt-4 font-heading text-lg font-semibold tracking-tight">
+                  <h2 className="mt-4 font-heading text-base font-bold tracking-tight text-primary">
                     {service.title}
                   </h2>
-                  <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                  <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
                     {service.description}
                   </p>
                 </article>
@@ -146,20 +148,20 @@ export default function ModelsPage() {
         <section className="mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-8">
           <div className="grid gap-6 lg:grid-cols-2">
             {/* Application Requirements */}
-            <div className="border border-border/70 bg-muted/20 p-6 md:p-8 rounded-none">
-              <h3 className="font-heading text-xl font-semibold tracking-tight">
+            <div className="border border-border/60 bg-white/50 p-6 md:p-8 rounded-md shadow-sm">
+              <h3 className="font-heading text-lg font-bold tracking-tight text-primary">
                 {models.requirements.title}
               </h3>
-              <p className="mt-2 text-xs text-muted-foreground">
+              <p className="mt-2 text-[11px] text-muted-foreground uppercase tracking-wider font-medium">
                 {models.requirements.description}
               </p>
               <ul className="mt-6 space-y-3">
                 {models.requirements.items.map((item, index) => (
                   <li
                     key={index}
-                    className="flex items-start gap-3 text-xs leading-relaxed"
+                    className="flex items-start gap-3 text-xs leading-relaxed text-muted-foreground"
                   >
-                    <BadgeCheck className="mt-0.5 size-3.5 shrink-0 text-primary" />
+                    <BadgeCheck className="mt-0.5 size-4 shrink-0 text-[#d68c90]" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -167,20 +169,20 @@ export default function ModelsPage() {
             </div>
 
             {/* Booking Info */}
-            <div className="border border-border/70 bg-muted/20 p-6 md:p-8 rounded-none">
-              <h3 className="font-heading text-xl font-semibold tracking-tight">
+            <div className="border border-border/60 bg-white/50 p-6 md:p-8 rounded-md shadow-sm">
+              <h3 className="font-heading text-lg font-bold tracking-tight text-primary">
                 {models.bookingInfo.title}
               </h3>
-              <p className="mt-2 text-xs text-muted-foreground">
+              <p className="mt-2 text-[11px] text-muted-foreground uppercase tracking-wider font-medium">
                 {models.bookingInfo.description}
               </p>
               <ul className="mt-6 space-y-3">
                 {models.bookingInfo.items.map((item, index) => (
                   <li
                     key={index}
-                    className="flex items-start gap-3 text-xs leading-relaxed"
+                    className="flex items-start gap-3 text-xs leading-relaxed text-muted-foreground"
                   >
-                    <BadgeCheck className="mt-0.5 size-3.5 shrink-0 text-primary" />
+                    <BadgeCheck className="mt-0.5 size-4 shrink-0 text-[#d68c90]" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -193,49 +195,49 @@ export default function ModelsPage() {
         <section className="mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-8">
           <div
             ref={bookingFormRef}
-            className="scroll-mt-24 border border-border bg-card p-6 md:p-10 lg:p-16 rounded-none shadow-sm"
+            className="scroll-mt-24 border border-border/60 bg-white/60 p-6 md:p-10 lg:p-16 rounded-md shadow-sm backdrop-blur-md"
           >
             <div className="grid gap-12 lg:grid-cols-5 items-start">
               <div className="lg:col-span-2 lg:sticky lg:top-32">
-                <h2 className="font-heading text-2xl font-semibold tracking-tight lg:text-4xl">
+                <h2 className="font-heading text-3xl font-bold tracking-tight text-primary leading-tight">
                   {models.bookingForm.title}
                 </h2>
-                <p className="mt-4 text-xs leading-relaxed text-muted-foreground sm:text-sm lg:max-w-md">
+                <p className="mt-4 text-sm leading-relaxed text-muted-foreground lg:max-w-md">
                   {models.forms.booking.description}
                 </p>
                 
                 <div className="mt-8 hidden lg:block space-y-4">
-                  <div className="flex items-center gap-3 text-primary">
+                  <div className="flex items-center gap-3 text-[#d68c90]">
                     <BadgeCheck className="size-4" />
-                    <span className="text-[10px] font-semibold uppercase tracking-widest">Professional Talent</span>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-primary/80">Professional Talent</span>
                   </div>
-                  <div className="flex items-center gap-3 text-primary">
+                  <div className="flex items-center gap-3 text-[#d68c90]">
                     <BadgeCheck className="size-4" />
-                    <span className="text-[10px] font-semibold uppercase tracking-widest">Global Standards</span>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-primary/80">Global Standards</span>
                   </div>
                 </div>
               </div>
 
               <div className="lg:col-span-3">
                 {bookingSubmitted ? (
-                  <div className="flex flex-col items-center justify-center border border-dashed border-primary/30 bg-primary/5 p-10 text-center rounded-none h-full">
-                    <CheckCircle2 className="size-12 text-primary" />
-                    <p className="mt-4 text-sm font-medium text-foreground">
+                  <div className="flex flex-col items-center justify-center border border-dashed border-[#d68c90]/30 bg-[#d68c90]/5 p-10 text-center rounded-md h-full">
+                    <CheckCircle2 className="size-12 text-[#d68c90]" />
+                    <p className="mt-4 text-sm font-bold text-primary">
                       {models.bookingForm.success}
                     </p>
                     <Button
                       variant="outline"
-                      className="mt-6 rounded-none h-9 text-xs"
+                      className="mt-6 rounded-md h-9 text-[10px] font-bold uppercase tracking-widest border-primary/20"
                       onClick={() => setBookingSubmitted(false)}
                     >
                       Send another request
                     </Button>
                   </div>
                 ) : (
-                  <form onSubmit={handleBookingSubmit} className="space-y-6">
+                  <form onSubmit={handleBookingSubmit} className="space-y-5">
                     <div className="grid gap-5 sm:grid-cols-2">
                       <div className="space-y-2">
-                        <Label htmlFor="clientName" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">
+                        <Label htmlFor="clientName" className="text-[10px] uppercase tracking-[0.15em] font-bold text-primary">
                           {models.bookingForm.fields.clientName}
                         </Label>
                         <Input
@@ -243,11 +245,11 @@ export default function ModelsPage() {
                           name="clientName"
                           placeholder="Your company or name"
                           required
-                          className="rounded-none h-9"
+                          className="rounded-md h-10 border-border/60 bg-white/50"
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="email" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">
+                        <Label htmlFor="email" className="text-[10px] uppercase tracking-[0.15em] font-bold text-primary">
                           {models.bookingForm.fields.email}
                         </Label>
                         <Input
@@ -256,14 +258,14 @@ export default function ModelsPage() {
                           type="email"
                           placeholder="email@example.com"
                           required
-                          className="rounded-none h-9"
+                          className="rounded-md h-10 border-border/60 bg-white/50"
                         />
                       </div>
                     </div>
 
                     <div className="grid gap-5 sm:grid-cols-2">
                       <div className="space-y-2">
-                        <Label htmlFor="phone" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">
+                        <Label htmlFor="phone" className="text-[10px] uppercase tracking-[0.15em] font-bold text-primary">
                           {models.bookingForm.fields.phone}
                         </Label>
                         <Input
@@ -271,31 +273,31 @@ export default function ModelsPage() {
                           name="phone"
                           placeholder="+250..."
                           required
-                          className="rounded-none h-9"
+                          className="rounded-md h-10 border-border/60 bg-white/50"
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="eventDate" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">
+                        <Label htmlFor="eventDate" className="text-[10px] uppercase tracking-[0.15em] font-bold text-primary">
                           {models.bookingForm.fields.eventDate}
                         </Label>
                         <Input
                           id="eventDate"
                           name="eventDate"
                           type="date"
-                          className="rounded-none h-9"
+                          className="rounded-md h-10 border-border/60 bg-white/50"
                         />
                       </div>
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="assignmentType" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">
+                      <Label htmlFor="assignmentType" className="text-[10px] uppercase tracking-[0.15em] font-bold text-primary">
                         {models.bookingForm.fields.assignmentType}
                       </Label>
                       <Select name="assignmentType">
-                        <SelectTrigger className="w-full rounded-none h-9 text-xs">
+                        <SelectTrigger className="w-full rounded-md h-10 text-[11px] border-border/60 bg-white/50">
                           <SelectValue placeholder="Select type..." />
                         </SelectTrigger>
-                        <SelectContent className="rounded-none">
+                        <SelectContent className="rounded-md border-border/60">
                           <SelectItem value="fashion">Fashion</SelectItem>
                           <SelectItem value="commercial">Commercial</SelectItem>
                           <SelectItem value="event">Event</SelectItem>
@@ -305,18 +307,18 @@ export default function ModelsPage() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="requirements" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">
+                      <Label htmlFor="requirements" className="text-[10px] uppercase tracking-[0.15em] font-bold text-primary">
                         {models.bookingForm.fields.requirements}
                       </Label>
                       <Textarea 
                         id="requirements"
                         name="requirements"
                         placeholder="Tell us about your requirements..."
-                        className="rounded-none min-h-[100px]" 
+                        className="rounded-md min-h-[120px] border-border/60 bg-white/50" 
                       />
                     </div>
 
-                    <Button type="submit" className="w-full h-11 text-sm rounded-none tracking-widest uppercase font-semibold" disabled={bookingMutation.isPending}>
+                    <Button type="submit" className="w-full h-12 text-[11px] rounded-md tracking-[0.2em] uppercase font-bold bg-primary hover:bg-primary/90" disabled={bookingMutation.isPending}>
                       {bookingMutation.isPending ? "Submitting..." : models.bookingForm.submit}
                     </Button>
                   </form>

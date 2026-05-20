@@ -33,17 +33,17 @@ export function ContactForm() {
 
   if (isSubmitted) {
     return (
-      <div className="bg-card/50 backdrop-blur-sm p-8 rounded-none border border-border/70 shadow-sm text-center flex flex-col items-center justify-center min-h-[400px]">
+      <div className="bg-white/60 backdrop-blur-md p-8 rounded-md border border-border/60  text-center flex flex-col items-center justify-center min-h-[400px]">
         <div className="flex justify-center mb-6">
-          <div className="size-16 rounded-full bg-emerald-500/10 flex items-center justify-center">
-            <CheckCircle2 className="size-10 text-emerald-500" />
+          <div className="size-16 rounded-full bg-[#d68c90]/10 flex items-center justify-center shadow-inner">
+            <CheckCircle2 className="size-10 text-[#d68c90]" />
           </div>
         </div>
-        <h2 className="text-xl font-semibold mb-2 tracking-tight">{t.contact.successTitle || "Message Sent!"}</h2>
-        <p className="text-sm text-muted-foreground mb-8 max-w-xs mx-auto">
+        <h2 className="text-lg font-bold mb-2 tracking-tight text-[#2D4873] uppercase">{t.contact.successTitle || "Message Sent!"}</h2>
+        <p className="text-xs font-medium text-muted-foreground mb-8 max-w-xs mx-auto uppercase tracking-tight">
           {t.contact.successMessage || "Thank you for contacting us. We will get back to you shortly."}
         </p>
-        <Button onClick={() => setIsSubmitted(false)} className="rounded-none px-8">
+        <Button onClick={() => setIsSubmitted(false)} className="rounded-md px-10 h-10 text-[10px] font-bold uppercase tracking-widest bg-[#2D4873] hover:bg-[#2D4873]/90">
           Send another message
         </Button>
       </div>
@@ -51,49 +51,49 @@ export function ContactForm() {
   }
 
   return (
-    <div className="bg-card/50 backdrop-blur-sm p-6 sm:p-8 rounded-none border border-border/70 shadow-sm">
-      <h2 className="text-xl font-semibold mb-6 tracking-tight">{t.contact.formTitle}</h2>
-      <form className="space-y-5" onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+    <div className="bg-white/60 backdrop-blur-md p-6 sm:p-10 rounded-md border border-border/60 ">
+      <h2 className="text-base font-bold mb-8 tracking-tight text-[#2D4873] uppercase tracking-[0.1em]">{t.contact.formTitle}</h2>
+      <form className="space-y-6" onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <Label htmlFor="name" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">{t.contact.formName}</Label>
+            <Label htmlFor="name" className="text-[10px] uppercase tracking-[0.15em] font-bold text-[#2D4873]">{t.contact.formName}</Label>
             <Input
               id="name"
               name="name"
-              className="rounded-none border-border/70 bg-background/50 h-10"
+              className="rounded-md border-border/60 bg-white/50 h-11 px-4 focus-visible:ring-1 focus-visible:ring-[#2D4873]/20"
               placeholder={t.contact.formNamePlaceholder}
               required
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">{t.contact.formEmail}</Label>
+            <Label htmlFor="email" className="text-[10px] uppercase tracking-[0.15em] font-bold text-[#2D4873]">{t.contact.formEmail}</Label>
             <Input
               id="email"
               name="email"
               type="email"
-              className="rounded-none border-border/70 bg-background/50 h-10"
+              className="rounded-md border-border/60 bg-white/50 h-11 px-4 focus-visible:ring-1 focus-visible:ring-[#2D4873]/20"
               placeholder={t.contact.formEmailPlaceholder}
               required
             />
           </div>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="subject" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">{t.contact.formSubject}</Label>
+          <Label htmlFor="subject" className="text-[10px] uppercase tracking-[0.15em] font-bold text-[#2D4873]">{t.contact.formSubject}</Label>
           <Input
             id="subject"
             name="subject"
-            className="rounded-none border-border/70 bg-background/50 h-10"
+            className="rounded-md border-border/60 bg-white/50 h-11 px-4 focus-visible:ring-1 focus-visible:ring-[#2D4873]/20"
             placeholder={t.contact.formSubjectPlaceholder}
             required
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="message" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">{t.contact.formMessage}</Label>
+          <Label htmlFor="message" className="text-[10px] uppercase tracking-[0.15em] font-bold text-[#2D4873]">{t.contact.formMessage}</Label>
           <Textarea
             id="message"
             name="message"
             rows={5}
-            className="rounded-none border-border/70 bg-background/50 resize-none min-h-[120px]"
+            className="rounded-md border-border/60 bg-white/50 resize-none min-h-[140px] p-4 focus-visible:ring-1 focus-visible:ring-[#2D4873]/20"
             placeholder={t.contact.formMessagePlaceholder}
             required
             minLength={10}
@@ -101,14 +101,14 @@ export function ContactForm() {
         </div>
         
         {mutation.error && (
-          <div className="p-3 bg-destructive/10 border border-destructive/20 text-destructive text-xs">
+          <div className="p-3 bg-red-50 border border-red-100 text-red-600 text-[10px] font-bold uppercase tracking-widest rounded-md">
             {mutation.error.message}
           </div>
         )}
         
         <Button 
           type="submit" 
-          className="w-full h-11 rounded-none uppercase tracking-widest font-semibold text-xs transition-all" 
+          className="w-full h-12 rounded-md uppercase tracking-[0.2em] font-bold text-[11px] bg-[#2D4873] hover:bg-[#2D4873]/90" 
           disabled={mutation.isPending}
         >
           {mutation.isPending ? (
