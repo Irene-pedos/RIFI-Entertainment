@@ -10,6 +10,33 @@ import { trpc } from "@/lib/trpc"
 import { CheckCircle2, Loader2, Send } from "lucide-react"
 
 export function ContactForm() {
+  const [isMounted, setIsMounted] = React.useState(false)
+
+  React.useEffect(() => {
+    setIsMounted((prev) => (prev ? prev : true))
+  }, [])
+
+  if (!isMounted) {
+    return (
+      <div className="bg-white/60 backdrop-blur-md p-6 sm:p-10 rounded-md border border-border/60 animate-pulse min-h-[400px]">
+        <div className="h-8 w-48 bg-muted mb-8 rounded" />
+        <div className="space-y-6">
+           <div className="grid grid-cols-2 gap-6">
+              <div className="h-10 bg-muted rounded" />
+              <div className="h-10 bg-muted rounded" />
+           </div>
+           <div className="h-10 bg-muted rounded" />
+           <div className="h-32 bg-muted rounded" />
+           <div className="h-12 bg-muted rounded" />
+        </div>
+      </div>
+    )
+  }
+
+  return <ContactFormInternal />
+}
+
+function ContactFormInternal() {
   const t = useTranslations()
   const [isSubmitted, setIsSubmitted] = React.useState(false)
   

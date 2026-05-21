@@ -1,9 +1,18 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 
 export function useSiteSettings() {
-  const { data: settings, isLoading } = trpc.siteSetting.getPublicSettings.useQuery();
+  const [isReady, setIsReady] = useState(false);
+  
+  useEffect(() => {
+    setIsReady((prev) => (prev ? prev : true));
+  }, []);
+
+  const { data: settings, isLoading } = trpc.siteSetting.getPublicSettings.useQuery(undefined, {
+    enabled: isReady
+  });
 
   const getSetting = (key: string, defaultValue: string = "") => {
     return settings?.find((s) => s.key === key)?.value || defaultValue;
@@ -11,7 +20,8 @@ export function useSiteSettings() {
 
   return {
     settings,
-    isLoading,
+    isLoading: isLoading || !isReady,
+    isReady,
     getSetting,
     businessEmail: getSetting("business_email", "rifientertainment7@gmail.com"),
     businessPhone: getSetting("business_phone", "0788878824"),

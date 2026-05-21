@@ -2,10 +2,9 @@
 
 import * as React from "react"
 import Image from "next/image"
-import { Loader2, Camera, Filter, ArrowRight } from "lucide-react"
+import { Camera, Filter } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
 import { PageIntro } from "@/components/marketing/page-intro"
 import { Gallery4, type Gallery4Item } from "@/components/ui/gallery4"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -13,11 +12,308 @@ import { CtaCard } from "@/components/ui/cta-card"
 import { trpc } from "@/lib/trpc"
 import type { AppRouter } from "@/server/api/root"
 import type { inferRouterOutputs } from "@trpc/server"
+import { MediaCategory, ServiceCategory } from "@prisma/client"
 
 type RouterOutputs = inferRouterOutputs<AppRouter>;
 type MediaItem = RouterOutputs["media"]["list"][number];
 
-function GalleryGrid({ items, isLoading }: { items: MediaItem[] | undefined, isLoading: boolean }) {
+const DEMO_MEDIA: Record<string, MediaItem[]> = {
+  weddings: [
+    {
+      id: "demo-w1",
+      publicUrl: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&q=80&w=1200",
+      altText: "Grand Reception Hall",
+      originalName: "wedding-1.jpg",
+      serviceType: ServiceCategory.WEDDING,
+      category: MediaCategory.GALLERY,
+      fileName: "demo-w1.jpg",
+      mimeType: "image/jpeg",
+      fileSize: 0,
+      storagePath: "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      uploadedById: null,
+    } as unknown as MediaItem,
+    {
+      id: "demo-w2",
+      publicUrl: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=1200",
+      altText: "Traditional Rwandan Wedding Celebration",
+      originalName: "wedding-2.jpg",
+      serviceType: ServiceCategory.WEDDING,
+      category: MediaCategory.GALLERY,
+      fileName: "demo-w2.jpg",
+      mimeType: "image/jpeg",
+      fileSize: 0,
+      storagePath: "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      uploadedById: null,
+    } as unknown as MediaItem,
+    {
+      id: "demo-w3",
+      publicUrl: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=1200",
+      altText: "Elegant Garden Ceremony",
+      originalName: "wedding-3.jpg",
+      serviceType: ServiceCategory.WEDDING,
+      category: MediaCategory.GALLERY,
+      fileName: "demo-w3.jpg",
+      mimeType: "image/jpeg",
+      fileSize: 0,
+      storagePath: "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      uploadedById: null,
+    } as unknown as MediaItem,
+    {
+      id: "demo-w4",
+      publicUrl: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=1200",
+      altText: "The Perfect Ring Exchange",
+      originalName: "wedding-4.jpg",
+      serviceType: ServiceCategory.WEDDING,
+      category: MediaCategory.GALLERY,
+      fileName: "demo-w4.jpg",
+      mimeType: "image/jpeg",
+      fileSize: 0,
+      storagePath: "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      uploadedById: null,
+    } as unknown as MediaItem,
+    {
+      id: "demo-w5",
+      publicUrl: "https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?auto=format&fit=crop&q=80&w=1200",
+      altText: "Sunset Vows",
+      originalName: "wedding-5.jpg",
+      serviceType: ServiceCategory.WEDDING,
+      category: MediaCategory.GALLERY,
+      fileName: "demo-w5.jpg",
+      mimeType: "image/jpeg",
+      fileSize: 0,
+      storagePath: "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      uploadedById: null,
+    } as unknown as MediaItem,
+    {
+      id: "demo-w6",
+      publicUrl: "https://images.unsplash.com/photo-1510076857177-7470076d4098?auto=format&fit=crop&q=80&w=1200",
+      altText: "Champagne Toast",
+      originalName: "wedding-6.jpg",
+      serviceType: ServiceCategory.WEDDING,
+      category: MediaCategory.GALLERY,
+      fileName: "demo-w6.jpg",
+      mimeType: "image/jpeg",
+      fileSize: 0,
+      storagePath: "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      uploadedById: null,
+    } as unknown as MediaItem,
+  ],
+  events: [
+    {
+      id: "demo-e1",
+      publicUrl: "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=1200",
+      altText: "Professional Event Hosting",
+      originalName: "event-1.jpg",
+      serviceType: ServiceCategory.PROTOCOL,
+      category: MediaCategory.GALLERY,
+      fileName: "demo-e1.jpg",
+      mimeType: "image/jpeg",
+      fileSize: 0,
+      storagePath: "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      uploadedById: null,
+    } as unknown as MediaItem,
+    {
+      id: "demo-e2",
+      publicUrl: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&q=80&w=1200",
+      altText: "Corporate Conference Management",
+      originalName: "event-2.jpg",
+      serviceType: ServiceCategory.PROTOCOL,
+      category: MediaCategory.GALLERY,
+      fileName: "demo-e2.jpg",
+      mimeType: "image/jpeg",
+      fileSize: 0,
+      storagePath: "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      uploadedById: null,
+    } as unknown as MediaItem,
+    {
+      id: "demo-e3",
+      publicUrl: "https://images.unsplash.com/photo-1540575861501-7c908107939a?auto=format&fit=crop&q=80&w=1200",
+      altText: "VIP Guest Reception",
+      originalName: "event-3.jpg",
+      serviceType: ServiceCategory.PROTOCOL,
+      category: MediaCategory.GALLERY,
+      fileName: "demo-e3.jpg",
+      mimeType: "image/jpeg",
+      fileSize: 0,
+      storagePath: "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      uploadedById: null,
+    } as unknown as MediaItem,
+    {
+      id: "demo-e4",
+      publicUrl: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80&w=1200",
+      altText: "Event Coordination Excellence",
+      originalName: "event-4.jpg",
+      serviceType: ServiceCategory.PROTOCOL,
+      category: MediaCategory.GALLERY,
+      fileName: "demo-e4.jpg",
+      mimeType: "image/jpeg",
+      fileSize: 0,
+      storagePath: "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      uploadedById: null,
+    } as unknown as MediaItem,
+  ],
+  models: [
+    {
+      id: "demo-m1",
+      publicUrl: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&q=80&w=1200",
+      altText: "High Fashion Editorial",
+      originalName: "model-1.jpg",
+      serviceType: ServiceCategory.MODELS,
+      category: MediaCategory.GALLERY,
+      fileName: "demo-m1.jpg",
+      mimeType: "image/jpeg",
+      fileSize: 0,
+      storagePath: "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      uploadedById: null,
+    } as unknown as MediaItem,
+    {
+      id: "demo-m2",
+      publicUrl: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&q=80&w=1200",
+      altText: "Commercial Brand Campaign",
+      originalName: "model-2.jpg",
+      serviceType: ServiceCategory.MODELS,
+      category: MediaCategory.GALLERY,
+      fileName: "demo-m2.jpg",
+      mimeType: "image/jpeg",
+      fileSize: 0,
+      storagePath: "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      uploadedById: null,
+    } as unknown as MediaItem,
+    {
+      id: "demo-m3",
+      publicUrl: "https://images.unsplash.com/photo-1529139513477-323c66b8ad51?auto=format&fit=crop&q=80&w=1200",
+      altText: "Runway Presence",
+      originalName: "model-3.jpg",
+      serviceType: ServiceCategory.MODELS,
+      category: MediaCategory.GALLERY,
+      fileName: "demo-m3.jpg",
+      mimeType: "image/jpeg",
+      fileSize: 0,
+      storagePath: "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      uploadedById: null,
+    } as unknown as MediaItem,
+    {
+      id: "demo-m4",
+      publicUrl: "https://images.unsplash.com/photo-1488161628813-04466f872be2?auto=format&fit=crop&q=80&w=1200",
+      altText: "Lifestyle Representation",
+      originalName: "model-4.jpg",
+      serviceType: ServiceCategory.MODELS,
+      category: MediaCategory.GALLERY,
+      fileName: "demo-m4.jpg",
+      mimeType: "image/jpeg",
+      fileSize: 0,
+      storagePath: "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      uploadedById: null,
+    } as unknown as MediaItem,
+  ],
+  dance: [
+    {
+      id: "demo-d1",
+      publicUrl: "https://images.unsplash.com/photo-1504609773096-104ff2e818cf?auto=format&fit=crop&q=80&w=1200",
+      altText: "Traditional Performance Energy",
+      originalName: "dance-1.jpg",
+      serviceType: ServiceCategory.DANCE,
+      category: MediaCategory.GALLERY,
+      fileName: "demo-d1.jpg",
+      mimeType: "image/jpeg",
+      fileSize: 0,
+      storagePath: "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      uploadedById: null,
+    } as unknown as MediaItem,
+    {
+      id: "demo-d2",
+      publicUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&q=80&w=1200",
+      altText: "Contemporary Fusion",
+      originalName: "dance-2.jpg",
+      serviceType: ServiceCategory.DANCE,
+      category: MediaCategory.GALLERY,
+      fileName: "demo-d2.jpg",
+      mimeType: "image/jpeg",
+      fileSize: 0,
+      storagePath: "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      uploadedById: null,
+    } as unknown as MediaItem,
+    {
+      id: "demo-d3",
+      publicUrl: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&q=80&w=1200",
+      altText: "Stage Presence & Power",
+      originalName: "dance-3.jpg",
+      serviceType: ServiceCategory.DANCE,
+      category: MediaCategory.GALLERY,
+      fileName: "demo-d3.jpg",
+      mimeType: "image/jpeg",
+      fileSize: 0,
+      storagePath: "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      uploadedById: null,
+    } as unknown as MediaItem,
+    {
+      id: "demo-d4",
+      publicUrl: "https://images.unsplash.com/photo-1535525153412-5a42439a210d?auto=format&fit=crop&q=80&w=1200",
+      altText: "Modern Choreography",
+      originalName: "dance-4.jpg",
+      serviceType: ServiceCategory.DANCE,
+      category: MediaCategory.GALLERY,
+      fileName: "demo-d4.jpg",
+      mimeType: "image/jpeg",
+      fileSize: 0,
+      storagePath: "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      uploadedById: null,
+    } as unknown as MediaItem,
+  ],
+};
+
+function GalleryGrid({ items, isLoading, category }: { items: MediaItem[] | undefined, isLoading: boolean, category: string }) {
+  const combinedItems = React.useMemo(() => {
+    const dbItems = items || [];
+    const demoItems = DEMO_MEDIA[category] || [];
+    
+    // Combine items, keeping DB items first
+    // Filter out duplicates if any (by id)
+    const all = [...dbItems, ...demoItems];
+    const uniqueIds = new Set();
+    return all.filter(item => {
+      if (uniqueIds.has(item.id)) return false;
+      uniqueIds.add(item.id);
+      return true;
+    });
+  }, [items, category]);
+
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -28,7 +324,7 @@ function GalleryGrid({ items, isLoading }: { items: MediaItem[] | undefined, isL
     )
   }
 
-  if (!items || items.length === 0) {
+  if (combinedItems.length === 0) {
     return (
       <div className="flex h-80 flex-col items-center justify-center border border-dashed border-border/60 rounded-md bg-primary/5 text-muted-foreground transition-all">
         <Camera className="size-8 text-primary/20 mb-4" />
@@ -39,7 +335,7 @@ function GalleryGrid({ items, isLoading }: { items: MediaItem[] | undefined, isL
 
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {items.map((item, index) => (
+      {combinedItems.map((item, index) => (
         <div
           key={item.id}
           className={cn(
@@ -81,13 +377,35 @@ export default function GalleryClient() {
   const { data: modelItems, isLoading: isModelLoading } = trpc.media.list.useQuery({ serviceType: "MODELS" })
   const { data: danceItems, isLoading: isDanceLoading } = trpc.media.list.useQuery({ serviceType: "DANCE" })
 
-  const formattedFeatured: Gallery4Item[] = featuredItems?.map(item => ({
-    id: item.id,
-    title: item.altText || "Featured Event",
-    description: "Experience the standard of excellence.",
-    href: item.serviceType ? `/${item.serviceType.toLowerCase()}` : "/gallery",
-    image: item.publicUrl
-  })) || []
+  const formattedFeatured: Gallery4Item[] = React.useMemo(() => {
+    const dbItems = featuredItems?.map(item => ({
+      id: item.id,
+      title: item.altText || "Featured Event",
+      description: "Experience the standard of excellence.",
+      href: item.serviceType ? `/${item.serviceType.toLowerCase()}` : "/gallery",
+      image: item.publicUrl
+    })) || [];
+
+    if (dbItems.length > 0) return dbItems;
+
+    // Fallback featured items if DB is empty
+    return [
+      {
+        id: "feat-1",
+        title: "The Royal Wedding",
+        description: "A celebration of love and heritage in Kigali.",
+        href: "/wedding",
+        image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=1600"
+      },
+      {
+        id: "feat-2",
+        title: "Corporate Excellence",
+        description: "Professional protocol for international delegations.",
+        href: "/protocol-services",
+        image: "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=1600"
+      }
+    ];
+  }, [featuredItems]);
 
   return (
     <div className="flex flex-col gap-16 pb-24">
@@ -147,16 +465,16 @@ export default function GalleryClient() {
           
           <div className="mt-8">
             <TabsContent value="weddings" className="mt-0 focus-visible:outline-none">
-                <GalleryGrid items={weddingItems} isLoading={isWeddingLoading} />
+                <GalleryGrid items={weddingItems} isLoading={isWeddingLoading} category="weddings" />
             </TabsContent>
             <TabsContent value="events" className="mt-0 focus-visible:outline-none">
-                <GalleryGrid items={eventItems} isLoading={isEventLoading} />
+                <GalleryGrid items={eventItems} isLoading={isEventLoading} category="events" />
             </TabsContent>
             <TabsContent value="models" className="mt-0 focus-visible:outline-none">
-                <GalleryGrid items={modelItems} isLoading={isModelLoading} />
+                <GalleryGrid items={modelItems} isLoading={isModelLoading} category="models" />
             </TabsContent>
             <TabsContent value="dance" className="mt-0 focus-visible:outline-none">
-                <GalleryGrid items={danceItems} isLoading={isDanceLoading} />
+                <GalleryGrid items={danceItems} isLoading={isDanceLoading} category="dance" />
             </TabsContent>
           </div>
         </Tabs>

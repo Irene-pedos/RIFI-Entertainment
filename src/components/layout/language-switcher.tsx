@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 export function LanguageSwitcher({ isDark }: { isDark?: boolean }) {
+  const [isMounted, setIsMounted] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -18,6 +19,10 @@ export function LanguageSwitcher({ isDark }: { isDark?: boolean }) {
 
   const activeLanguageCode = useCurrentLanguage()
 
+  useEffect(() => {
+    setIsMounted((prev) => (prev ? prev : true))
+  }, [])
+
   const selectedLanguage = useMemo(() => {
     return siteConfig.languages.find(
       (language) => language.code === activeLanguageCode
@@ -25,6 +30,7 @@ export function LanguageSwitcher({ isDark }: { isDark?: boolean }) {
   }, [activeLanguageCode])
 
   useEffect(() => {
+    if (!isMounted) return
     function onPointerDown(event: MouseEvent) {
       if (!containerRef.current?.contains(event.target as Node)) {
         setOpen(false)
@@ -44,7 +50,7 @@ export function LanguageSwitcher({ isDark }: { isDark?: boolean }) {
       document.removeEventListener("mousedown", onPointerDown)
       document.removeEventListener("keydown", onEscape)
     }
-  }, [])
+  }, [isMounted])
 
   function onLanguageChange(languageCode: string) {
     const params = new URLSearchParams(searchParams.toString())

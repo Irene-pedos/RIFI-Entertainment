@@ -1,15 +1,32 @@
 "use client"
 
+import * as React from "react"
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa"
 
 import { useTranslations } from "@/lib/i18n"
 import { siteConfig } from "@/lib/site"
 import { Footer7 } from "@/components/ui/footer-7"
 import { useSiteSettings } from "@/hooks/use-site-settings"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export function SiteFooter() {
+  const [isMounted, setIsMounted] = React.useState(false)
   const t = useTranslations()
-  const { businessEmail, businessPhone, businessLocation, businessInstagram } = useSiteSettings()
+  const { businessEmail, businessPhone, businessLocation, businessInstagram, isReady } = useSiteSettings()
+
+  React.useEffect(() => {
+    setIsMounted((prev) => (prev ? prev : true))
+  }, [])
+
+  if (!isMounted || !isReady) {
+    return (
+      <footer className="bg-primary/5 border-t border-border/60">
+        <div className="container mx-auto px-4 py-12">
+          <Skeleton className="h-64 w-full rounded-md" />
+        </div>
+      </footer>
+    )
+  }
 
   const sections = [
     {

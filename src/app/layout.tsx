@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Geist_Mono, Inter, Noto_Sans, Geist, Roboto } from "next/font/google"
+import { Geist_Mono, Geist, Roboto } from "next/font/google"
 import { Suspense } from "react"
 
 import "./globals.css"

@@ -36,8 +36,6 @@ export const Footer7 = ({
   copyright,
   legalLinks = [],
 }: Footer7Props) => {
-  const brandColor = "#2D4873"
-  
   return (
     <footer className="border-t border-border/60 bg-white py-12 lg:py-16">
       <div className="mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-8">

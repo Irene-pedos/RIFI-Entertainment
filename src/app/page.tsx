@@ -1,17 +1,13 @@
 "use client"
 
+import * as React from "react"
 import {
   ArrowRight,
-  Briefcase,
-  Calendar,
   Mail,
   MapPin,
   Phone,
   Users,
   Sparkles,
-  HeartHandshake,
-  ShieldCheck,
-  Languages,
 } from "lucide-react"
 import Link from "next/link"
 
@@ -26,13 +22,38 @@ import { HeroSection4 } from "@/components/ui/hero-section-4"
 import { trpc } from "@/lib/trpc"
 import { useSiteSettings } from "@/hooks/use-site-settings"
 import { InfiniteSlider } from "@/components/ui/infinite-slider"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export default function HomePage() {
+  const [isMounted, setIsMounted] = React.useState(false)
   const t = useTranslations()
-  const { businessEmail, businessPhone, businessLocation, businessTagline } = useSiteSettings()
+  const { businessEmail, businessPhone, businessLocation, businessTagline, isReady } = useSiteSettings()
+
+  React.useEffect(() => {
+    setIsMounted((prev) => (prev ? prev : true))
+  }, [])
   
-  const { data: testimonials, isLoading: testimonialsLoading } = trpc.testimonial.listPublic.useQuery()
-  const { data: services, isLoading: servicesLoading } = trpc.service.listPublic.useQuery()
+  const { data: testimonials, isLoading: testimonialsLoading } = trpc.testimonial.listPublic.useQuery(undefined, {
+    enabled: isMounted && isReady
+  })
+  const { data: services, isLoading: servicesLoading } = trpc.service.listPublic.useQuery(undefined, {
+    enabled: isMounted && isReady
+  })
+
+  if (!isMounted) {
+    return (
+      <div className="flex flex-col gap-20 pb-20">
+        <Skeleton className="h-[70vh] w-full" />
+        <div className="container mx-auto px-4 space-y-12">
+           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <Skeleton className="h-64" />
+              <Skeleton className="h-64" />
+              <Skeleton className="h-64" />
+           </div>
+        </div>
+      </div>
+    )
+  }
 
   const testimonialCards = testimonials?.map((test) => ({
     name: test.clientName,

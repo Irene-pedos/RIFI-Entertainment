@@ -163,7 +163,3 @@ export {
   NavigationMenuViewport,
   navigationMenuTriggerStyle,
 }
-nMenuIndicator,
-  NavigationMenuViewport,
-  navigationMenuTriggerStyle,
-}

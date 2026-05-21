@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, type FormEvent, useRef } from "react"
+import { useState, type FormEvent, useRef, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Sparkles, Star, Calendar, Users, Music, ChevronRight, ChevronLeft, CheckCircle2, BadgeCheck, Zap, ArrowRight } from "lucide-react"
 
@@ -12,6 +12,8 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { trpc } from "@/lib/trpc"
 import { siteConfig } from "@/lib/site"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useSiteSettings } from "@/hooks/use-site-settings"
 
 const galleryImages = [
   "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&q=60&w=1080",
@@ -20,8 +22,34 @@ const galleryImages = [
   "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=60&w=1080",
 ]
 
-export default function DancePage() {
+export default function DanceClient() {
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted((prev) => (prev ? prev : true))
+  }, [])
+
+  if (!isMounted) {
+    return (
+      <div className="flex flex-col gap-20 pb-20 pt-12">
+        <div className="container mx-auto px-4 space-y-6">
+          <Skeleton className="h-10 w-48" />
+          <Skeleton className="h-20 w-full" />
+        </div>
+        <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8">
+          <Skeleton className="h-96 rounded-md" />
+          <Skeleton className="h-96 rounded-md" />
+        </div>
+      </div>
+    )
+  }
+
+  return <DanceContentInternal />
+}
+
+function DanceContentInternal() {
   const t = useTranslations()
+  const { isReady } = useSiteSettings()
   const bookingFormRef = useRef<HTMLDivElement>(null)
   const [step, setStep] = useState(1)
   const [formData, setFormData] = useState<{
@@ -97,6 +125,21 @@ export default function DancePage() {
     href: "/gallery",
     image: galleryImages[index] ?? galleryImages[0],
   }))
+
+  if (!isReady) {
+    return (
+      <div className="flex flex-col gap-20 pb-20 pt-12">
+        <div className="container mx-auto px-4 space-y-6">
+          <Skeleton className="h-10 w-48" />
+          <Skeleton className="h-20 w-full" />
+        </div>
+        <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8">
+          <Skeleton className="h-96 rounded-md" />
+          <Skeleton className="h-96 rounded-md" />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="flex flex-col pb-12 lg:pb-20">

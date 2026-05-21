@@ -29,12 +29,10 @@ interface HeroSectionProps {
 export function HeroSection4({ slides }: HeroSectionProps) {
     const [currentSlide, setCurrentSlide] = useState(0)
 
-    const nextSlide = () => {
-        setCurrentSlide((prev) => (prev + 1) % slides.length)
-    }
-
     useEffect(() => {
-        const timer = setInterval(nextSlide, 8000)
+        const timer = setInterval(() => {
+            setCurrentSlide((prev) => (prev + 1) % slides.length)
+        }, 8000)
         return () => clearInterval(timer)
     }, [slides.length])
 

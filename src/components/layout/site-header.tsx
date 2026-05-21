@@ -22,6 +22,18 @@ import {
 } from "@/components/ui/shadcnblocks-com-navbar1"
 
 export function SiteHeader() {
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted((prev) => (prev ? prev : true))
+  }, [])
+
+  if (!isMounted) return null
+
+  return <SiteHeaderContent />
+}
+
+function SiteHeaderContent() {
   const t = useTranslations()
   const pathname = usePathname()
   const isHome = pathname === "/"

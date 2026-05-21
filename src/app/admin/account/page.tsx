@@ -18,6 +18,24 @@ import { Separator } from "@/components/ui/separator"
 import { trpc } from "@/lib/trpc"
 
 export default function AccountPage() {
+  const [isMounted, setIsMounted] = React.useState(false)
+
+  React.useEffect(() => {
+    setIsMounted((prev) => (prev ? prev : true))
+  }, [])
+
+  if (!isMounted) {
+    return (
+      <div className="flex h-[400px] items-center justify-center">
+        <Loader2 className="animate-spin size-8 text-primary" />
+      </div>
+    )
+  }
+
+  return <AccountContent />
+}
+
+function AccountContent() {
   const { data: user, isLoading: isUserLoading } = trpc.auth.me.useQuery()
   const [currentPassword, setCurrentPassword] = React.useState("")
   const [newPassword, setNewPassword] = React.useState("")
